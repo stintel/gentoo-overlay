@@ -1,0 +1,32 @@
+Index: xbmc/lib/cximage-6.0/Makefile.in
+===================================================================
+--- xbmc/lib/cximage-6.0/Makefile.in	(revision 22487)
++++ xbmc/lib/cximage-6.0/Makefile.in	(working copy)
+@@ -5,15 +5,15 @@
+ SYSDIR=../../../system
+ SLIB=$(SYSDIR)/$(SO)
+ DIRS=CxImage raw jbig tiff
+-SLIBS=CxImage/cximage.a raw/raw.a jbig/jbig.a tiff/tiff.a
++SLIBS=CxImage/cximage.a raw/raw.a
+ 
+ ifeq ($(findstring osx,$(ARCH)), osx)
+ 	export MACOSX_DEPLOYMENT_TARGET=10.4
+ 	export ARCH
+ 	CFLAGS+=-isysroot /Developer/SDKs/MacOSX10.4u.sdk -mmacosx-version-min=10.4
+ 	CXXFLAGS+=-isysroot /Developer/SDKs/MacOSX10.4u.sdk -mmacosx-version-min=10.4
+-	DIRS+=jasper jpeg
+-	SLIBS+=jasper/jasper.a jpeg/jpeg.a
++	DIRS+=jasper jpeg jbig tiff
++	SLIBS+=jasper/jasper.a jpeg/jpeg.a jbig/jbig.a tiff/tiff.a
+ endif
+ 
+ .PHONY: compile
+@@ -26,7 +26,7 @@
+ 	../../../tools/Mach5/wrapper.rb $@;mv output.so $@
+ 	chmod +x $@
+ else
+-	$(CXX) -shared -o $(SLIB) -Wl,--whole-archive -lpng -ljasper -ljpeg \
++	$(CXX) -shared -o $(SLIB) -Wl,--whole-archive -lpng -ljasper -ljpeg -ljbig -ltiff \
+ 		-lz $(SLIBS) -Wl,--no-whole-archive \
+ 		`cat ../../cores/DllLoader/exports/wrapper.def` \
+ 		../../cores/DllLoader/exports/wrapper.o

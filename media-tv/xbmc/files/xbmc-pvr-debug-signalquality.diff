@@ -1,0 +1,19 @@
+Index: xbmc/pvrclients/vdr/pvrclient-vdr.cpp
+===================================================================
+--- xbmc/pvrclients/vdr/pvrclient-vdr.cpp	(revision 25092)
++++ xbmc/pvrclients/vdr/pvrclient-vdr.cpp	(working copy)
+@@ -1185,12 +1185,14 @@
+     return PVR_ERROR_SERVER_ERROR;
+   }
+ 
++  CLog::Log(LOGDEBUG, "stintel - looping through signalquality vector");
+   for (vector<string>::iterator it = lines.begin(); it < lines.end(); it++)
+   {
+     string& data(*it);
+     CStdString str_result = data;
+ 
+     const char *s = str_result.c_str();
++    CLog::Log(LOGDEBUG, "stintel - string: %s", s);
+     if (!strncasecmp(s, "Device", 6))
+       strncpy(qualityinfo.frontend_name, s + 9, sizeof(qualityinfo.frontend_name));
+     else if (!strncasecmp(s, "Status", 6))

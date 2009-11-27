@@ -1,0 +1,12 @@
+Index: xbmc/MathUtils.h
+===================================================================
+--- xbmc/MathUtils.h	(revision 23196)
++++ xbmc/MathUtils.h	(working copy)
+@@ -30,6 +30,7 @@
+   // to assert in these functions
+   inline int round_int (double x)
+   {
++    CLog::Log(LOGDEBUG,"MathUtils.h: x is %d, INT_MIN is %d, INT_MAX is %d", x, INT_MIN, INT_MAX);
+     assert(x > static_cast<double>(INT_MIN / 2) - 1.0);
+     assert(x < static_cast <double>(INT_MAX / 2) + 1.0);
+     const float round_to_nearest = 0.5f;
