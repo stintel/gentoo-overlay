@@ -41,7 +41,7 @@ RDEPEND="opengl? ( virtual/opengl )
 	>=dev-lang/python-2.4
 	dev-libs/boost
 	dev-libs/fribidi
-	dev-libs/libcdio
+	dev-libs/libcdio[-minimal]
 	dev-libs/libpcre
 	dev-libs/lzo
 	>=dev-python/pysqlite-2
