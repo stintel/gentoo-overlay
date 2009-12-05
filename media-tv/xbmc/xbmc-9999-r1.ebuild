@@ -13,7 +13,7 @@ inherit eutils
 # XBMC trunk
 #ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/trunk}
 # XBMC pvr-testing branch
-ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/branches/pvr-testing/XBMC}
+ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/branches/pvr-testing2}
 
 ESVN_PROJECT=${ESVN_REPO_URI##*/svnroot/}
 ESVN_PROJECT=${ESVN_PROJECT%/*}
@@ -108,6 +108,9 @@ src_unpack() {
 }
 
 src_prepare() {
+	# Show some debug info in pvr signalinfo method
+	#epatch "${FILESDIR}/xbmc-pvr-debug-signalquality.diff"
+
 	local squish #290564
 	use altivec && squish="-DSQUISH_USE_ALTIVEC=1 -maltivec"
 	use sse && squish="-DSQUISH_USE_SSE=1 -msse"
