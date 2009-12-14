@@ -1,0 +1,21 @@
+#!/sbin/runscript
+# Copyright 1999-2009 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: $
+
+depend() {
+	need net
+}
+
+start() {
+	ebegin "Starting tvheadend"
+	start-stop-daemon --start --quiet --exec /usr/bin/tvheadend -- -f -u tvheadend -g video
+	eend $?
+}
+
+stop() {
+	ebegin "Stopping tvheadend"
+	start-stop-daemon --stop --quiet --exec /usr/bin/tvheadend
+	eend $?
+
+}

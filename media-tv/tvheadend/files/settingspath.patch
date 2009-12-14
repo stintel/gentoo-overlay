@@ -1,0 +1,29 @@
+Index: tvheadend/src/settings.c
+===================================================================
+--- src/settings.c	(Revision 3571)
++++ src/settings.c	(Arbeitskopie)
+@@ -49,23 +49,7 @@
+ void
+ hts_settings_init(const char *programname, const char *homedir)
+ {
+-  char buf[256];
+-  struct stat st;
+-  
+-  if(homedir == NULL)
+-    homedir = getenv("HOME");
+-  
+-  if(homedir == NULL)
+-    return;
+-
+-  snprintf(buf, sizeof(buf), "%s/.hts", homedir);
+-  if(stat(buf, &st) == 0 || mkdir(buf, 0700) == 0) {
+-
+-    snprintf(buf, sizeof(buf), "%s/.hts/%s", homedir, programname);
+-
+-    if(stat(buf, &st) == 0 || mkdir(buf, 0700) == 0)
+-      settingspath = strdup(buf);
+-  }
++  settingspath = strdup("/etc/tvheadend");
+ }
+ 
+ /**
