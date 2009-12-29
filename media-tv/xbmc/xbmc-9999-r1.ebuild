@@ -1,9 +1,6 @@
 # Copyright 1999-2009 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-tv/xbmc/xbmc-9999.ebuild,v 1.40 2009/11/22 21:09:10 mr_bones_ Exp $
-
-# XXX: be nice to split out packages that come bundled and use the
-#      system libraries ...
+# $Header: /var/cvsroot/gentoo-x86/media-tv/xbmc/xbmc-9999.ebuild,v 1.44 2009/12/19 20:44:11 vapier Exp $
 
 EAPI="2"
 
@@ -13,9 +10,9 @@ inherit eutils
 # XBMC trunk
 #ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/trunk}
 # XBMC pvr-testing branch
-#ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/branches/pvr-testing2}
+ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/branches/pvr-testing2}
 # XBMC 9.11 branch
-ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/branches/9.11_Camelot}
+#ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/branches/9.11_Camelot}
 
 ESVN_PROJECT=${ESVN_REPO_URI##*/svnroot/}
 ESVN_PROJECT=${ESVN_PROJECT%/*}
@@ -23,8 +20,11 @@ if [[ ${PV} == "9999" ]] ; then
 	inherit subversion autotools
 	KEYWORDS=""
 else
-	SRC_URI="mirror://sourceforge/${PN}/XBMC-${PV}.src.tar.gz"
+	inherit autotools
+	MY_P=${P/_/-}
+	SRC_URI="mirror://sourceforge/${PN}/${MY_P}.tar.gz"
 	KEYWORDS="~amd64 ~x86"
+	S=${WORKDIR}/${MY_P}
 fi
 
 DESCRIPTION="XBMC is a free and open source media-player and entertainment hub"
@@ -98,20 +98,34 @@ src_unpack() {
 	if [[ ${PV} == "9999" ]] ; then
 		subversion_src_unpack
 		cd "${S}"
-		eautoreconf
+		rm -f configure
 	else
 		unpack ${A}
 		cd "${S}"
 	fi
 
 	# Fix case sensitivity
-	mv media/Fonts/{a,A}rial.ttf
-	mv media/{S,s}plash.png
+	mv media/Fonts/{a,A}rial.ttf || die
+	mv media/{S,s}plash.png || die
 }
 
 src_prepare() {
-	# Show some debug info in pvr signalinfo method
-	#epatch "${FILESDIR}/xbmc-pvr-debug-signalquality.diff"
+	##
+	#epatch "${FILESDIR}/"
+
+	sed -i \
+		-e '1i#include <stdlib.h>\n#include <string.h>\n' \
+		xbmc/lib/libid3tag/libid3tag/metadata.c || die
+
+	# some dirs ship generated autotools, some dont
+	local d
+	for d in . xbmc/cores/dvdplayer/Codecs/libbdnav ; do
+		[[ -e ${d}/configure ]] && continue
+		pushd ${d} >/dev/null
+		einfo "Generating autotools in ${d}"
+		eautoreconf
+		popd >/dev/null
+	done
 
 	local squish #290564
 	use altivec && squish="-DSQUISH_USE_ALTIVEC=1 -maltivec"
@@ -122,13 +136,9 @@ src_prepare() {
 		-e "1iCXXFLAGS += ${squish}" \
 		xbmc/lib/libsquish/Makefile.in || die
 
-	# Tweak autotool timestamps to avoid regeneration
-	find . -type f -print0 | xargs -0 touch -r configure
-
 	# Fix XBMC's final version string showing as "exported"
 	# instead of the SVN revision number.
 	export SVN_REV=${ESVN_WC_REVISION:-exported}
-	export SVN_REVISION=${ESVN_WC_REVISION:-exported}
 
 	# Avoid lsb-release dependency
 	sed -i \
@@ -137,6 +147,11 @@ src_prepare() {
 
 	# Do not use termcap #262822
 	sed -i 's:-ltermcap::' xbmc/lib/libPython/Python/configure
+
+	epatch_user #293109
+
+	# Tweak autotool timestamps to avoid regeneration
+	find . -type f -print0 | xargs -0 touch -r configure
 }
 
 src_configure() {
@@ -165,6 +180,9 @@ src_configure() {
 
 src_install() {
 	einstall || die "Install failed!"
+
+	insinto /usr/share/xbmc/web/styles/
+	doins -r "${S}"/web/*/styles/*/ || die
 
 	insinto /usr/share/applications
 	doins tools/Linux/xbmc.desktop
