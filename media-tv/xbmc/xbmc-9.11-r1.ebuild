@@ -1,19 +1,13 @@
 # Copyright 1999-2009 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-tv/xbmc/xbmc-9999.ebuild,v 1.44 2009/12/19 20:44:11 vapier Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-tv/xbmc/xbmc-9.11.ebuild,v 1.1 2009/12/26 18:45:08 vapier Exp $
 
 EAPI="2"
 
 inherit eutils
 
 # Use XBMC_ESVN_REPO_URI to track a different branch
-# XBMC trunk
 ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/trunk}
-# XBMC pvr-testing branch
-#ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/branches/pvr-testing2}
-# XBMC 9.11 branch
-#ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/branches/9.11_Camelot}
-
 ESVN_PROJECT=${ESVN_REPO_URI##*/svnroot/}
 ESVN_PROJECT=${ESVN_PROJECT%/*}
 if [[ ${PV} == "9999" ]] ; then
@@ -43,7 +37,7 @@ RDEPEND="opengl? ( virtual/opengl )
 	>=dev-lang/python-2.4
 	dev-libs/boost
 	dev-libs/fribidi
-	dev-libs/libcdio[-minimal]
+	dev-libs/libcdio
 	dev-libs/libpcre
 	dev-libs/lzo
 	>=dev-python/pysqlite-2
@@ -110,9 +104,12 @@ src_unpack() {
 }
 
 src_prepare() {
-	##
-	#epatch "${FILESDIR}/"
-
+	epatch "${FILESDIR}/${P}-wavpack.patch"
+	epatch "${FILESDIR}/${P}-smartplaylist-deletelastrule.diff"
+	# http://xbmc.org/trac/ticket/8218
+	sed -i \
+		-e 's: ftell64: dll_ftell64:' \
+		xbmc/cores/DllLoader/exports/wrapper.c || die
 	sed -i \
 		-e '1i#include <stdlib.h>\n#include <string.h>\n' \
 		xbmc/lib/libid3tag/libid3tag/metadata.c || die
@@ -120,6 +117,7 @@ src_prepare() {
 	# some dirs ship generated autotools, some dont
 	local d
 	for d in . xbmc/cores/dvdplayer/Codecs/libbdnav ; do
+		[[ -d ${d} ]] || continue
 		[[ -e ${d}/configure ]] && continue
 		pushd ${d} >/dev/null
 		einfo "Generating autotools in ${d}"
