@@ -58,7 +58,6 @@ RDEPEND="opengl? ( virtual/opengl )
 	media-libs/jasper
 	media-libs/jbigkit
 	media-libs/jpeg
-	media-libs/jpeg-compat
 	>=media-libs/libass-0.9.7
 	media-libs/libdca
 	css? ( media-libs/libdvdcss )
