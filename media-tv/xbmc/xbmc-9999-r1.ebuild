@@ -85,7 +85,10 @@ RDEPEND="opengl? ( virtual/opengl )
 	virtual/mysql
 	x11-apps/xdpyinfo
 	x11-apps/mesa-progs
-	vdpau? ( >=x11-drivers/nvidia-drivers-180.51 )
+	vdpau? (
+		|| ( x11-libs/libvdpau >=x11-drivers/nvidia-drivers-180.51 )
+		media-video/ffmpeg[vdpau]
+	)
 	x11-libs/libXinerama
 	xrandr? ( x11-libs/libXrandr )
 	x11-libs/libXrender"
