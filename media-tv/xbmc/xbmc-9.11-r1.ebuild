@@ -106,7 +106,7 @@ src_unpack() {
 src_prepare() {
 	epatch "${FILESDIR}/${P}-wavpack.patch"
 	epatch "${FILESDIR}/${P}-smartplaylist-deletelastrule.diff"
-	epatch "${FILESDIR}/xbmc-jpeg6.patch"
+	epatch "${FILESDIR}/xbmc-jpeg6.diff"
 
 	# http://xbmc.org/trac/ticket/8218
 	sed -i \
