@@ -113,8 +113,8 @@ src_unpack() {
 }
 
 src_prepare() {
-	# Link against libjpeg6 - v7 has severe performance issues
-	epatch "${FILESDIR}/xbmc-jpeg6.diff"
+	##
+	#epatch "${FILESDIR}/"
 
 	sed -i \
 		-e '1i#include <stdlib.h>\n#include <string.h>\n' \
