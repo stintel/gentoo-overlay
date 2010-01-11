@@ -51,7 +51,7 @@ RDEPEND="opengl? ( virtual/opengl )
 	media-libs/glew
 	media-libs/jasper
 	media-libs/jbigkit
-	media-libs/jpeg
+	media-libs/jpeg-compat
 	>=media-libs/libass-0.9.7
 	media-libs/libdca
 	css? ( media-libs/libdvdcss )
@@ -106,6 +106,8 @@ src_unpack() {
 src_prepare() {
 	epatch "${FILESDIR}/${P}-wavpack.patch"
 	epatch "${FILESDIR}/${P}-smartplaylist-deletelastrule.diff"
+	epatch "${FILESDIR}/${P}-jpeg6.patch"
+
 	# http://xbmc.org/trac/ticket/8218
 	sed -i \
 		-e 's: ftell64: dll_ftell64:' \
@@ -160,7 +162,7 @@ src_configure() {
 
 	econf \
 		--disable-ccache \
-		--disable-optimizations \
+		--enable-optimizations \
 		--enable-external-libraries \
 		--enable-goom \
 		$(use_enable avahi) \
