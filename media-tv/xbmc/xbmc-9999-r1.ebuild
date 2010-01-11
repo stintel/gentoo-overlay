@@ -57,7 +57,7 @@ RDEPEND="opengl? ( virtual/opengl )
 	media-libs/glew
 	media-libs/jasper
 	media-libs/jbigkit
-	media-libs/jpeg
+	media-libs/jpeg-compat
 	>=media-libs/libass-0.9.7
 	media-libs/libdca
 	css? ( media-libs/libdvdcss )
@@ -113,8 +113,8 @@ src_unpack() {
 }
 
 src_prepare() {
-	##
-	#epatch "${FILESDIR}/"
+	# Link against libjpeg6 - v7 has severe performance issues
+	epatch "${FILESDIR}/xbmc-jpeg6.diff"
 
 	sed -i \
 		-e '1i#include <stdlib.h>\n#include <string.h>\n' \
@@ -165,7 +165,7 @@ src_configure() {
 
 	econf \
 		--disable-ccache \
-		--disable-optimizations \
+		--enable-optimizations \
 		--enable-external-libraries \
 		--enable-goom \
 		$(use_enable avahi) \
