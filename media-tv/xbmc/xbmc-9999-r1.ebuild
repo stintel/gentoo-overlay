@@ -32,9 +32,9 @@ HOMEPAGE="http://xbmc.org/"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="aac alsa altivec avahi css debug joystick midi opengl profile pulseaudio sse sse2 vdpau xrandr"
+IUSE="aac alsa altivec avahi css debug joystick midi profile pulseaudio sse sse2 vdpau xrandr"
 
-RDEPEND="opengl? ( virtual/opengl )
+RDEPEND="virtual/opengl
 	app-arch/bzip2
 	|| ( app-arch/unrar app-arch/unrar-gpl )
 	app-arch/unzip
@@ -78,7 +78,7 @@ RDEPEND="opengl? ( virtual/opengl )
 	media-video/ffmpeg
 	avahi? ( net-dns/avahi )
 	net-misc/curl
-	net-fs/samba
+	|| ( net-fs/samba-libs[smbclient] <net-fs/samba-3.3 )
 	sys-apps/dbus
 	sys-apps/hal
 	sys-libs/zlib
@@ -168,13 +168,13 @@ src_configure() {
 		--enable-optimizations \
 		--enable-external-libraries \
 		--enable-goom \
+		--enable-gl \
 		$(use_enable avahi) \
 		$(use_enable css dvdcss) \
 		$(use_enable debug) \
 		$(use_enable aac faac) \
 		$(use_enable joystick) \
 		$(use_enable midi mid) \
-		$(use_enable opengl gl) \
 		$(use_enable profile profiling) \
 		$(use_enable pulseaudio pulse) \
 		$(use_enable vdpau) \
