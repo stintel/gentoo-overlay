@@ -9,7 +9,7 @@ inherit eutils
 # Use XBMC_ESVN_REPO_URI to track a different branch
 # XBMC trunk
 ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/trunk}
-# XBMC pvr-testing branch
+# XBMC pvr-testing2 branch
 #ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/branches/pvr-testing2}
 # XBMC 9.11 branch
 #ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/branches/9.11_Camelot}
@@ -57,7 +57,7 @@ RDEPEND="virtual/opengl
 	media-libs/glew
 	media-libs/jasper
 	media-libs/jbigkit
-	media-libs/jpeg
+	media-libs/jpeg:0
 	>=media-libs/libass-0.9.7
 	media-libs/libdca
 	css? ( media-libs/libdvdcss )
