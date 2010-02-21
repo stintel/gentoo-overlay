@@ -166,7 +166,6 @@ src_configure() {
 	econf \
 		--disable-ccache \
 		--enable-optimizations \
-		--enable-external-libraries \
 		--enable-goom \
 		--enable-gl \
 		$(use_enable avahi) \
