@@ -8,9 +8,9 @@ inherit eutils
 
 # Use XBMC_ESVN_REPO_URI to track a different branch
 # XBMC trunk
-ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/trunk}
+#ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/trunk}
 # XBMC pvr-testing2 branch
-#ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/branches/pvr-testing2}
+ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/branches/pvr-testing2}
 # XBMC 9.11 branch
 #ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/branches/9.11_Camelot}
 
@@ -77,6 +77,7 @@ RDEPEND="virtual/opengl
 	media-sound/wavpack
 	media-video/ffmpeg
 	avahi? ( net-dns/avahi )
+	net-libs/libmicrohttpd
 	net-misc/curl
 	|| ( net-fs/samba-libs[smbclient] <net-fs/samba-3.3 )
 	sys-apps/dbus
@@ -166,6 +167,8 @@ src_configure() {
 	econf \
 		--disable-ccache \
 		--enable-optimizations \
+		--disable-external-ffmpeg \
+		--enable-external-libraries \
 		--enable-goom \
 		--enable-gl \
 		$(use_enable avahi) \
@@ -184,7 +187,6 @@ src_install() {
 	einstall || die "Install failed!"
 
 	insinto /usr/share/xbmc/web/styles/
-	doins -r "${S}"/web/*/styles/*/ || die
 
 	insinto /usr/share/applications
 	doins tools/Linux/xbmc.desktop
