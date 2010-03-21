@@ -54,6 +54,7 @@ RDEPEND="virtual/opengl
 	media-libs/flac
 	media-libs/fontconfig
 	media-libs/freetype
+	media-libs/ftgl
 	media-libs/glew
 	media-libs/jasper
 	media-libs/jbigkit
