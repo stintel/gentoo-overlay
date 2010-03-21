@@ -63,6 +63,7 @@ RDEPEND="virtual/opengl
 	css? ( media-libs/libdvdcss )
 	media-libs/libmad
 	media-libs/libmms
+	media-libs/libmodplug
 	media-libs/libmpeg2
 	media-libs/libogg
 	media-libs/libsamplerate
