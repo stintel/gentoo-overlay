@@ -4,7 +4,7 @@
 
 EAPI="2"
 
-inherit eutils
+inherit eutils python
 
 # Use XBMC_ESVN_REPO_URI to track a different branch
 # XBMC trunk
@@ -32,11 +32,11 @@ HOMEPAGE="http://xbmc.org/"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="aac alsa altivec avahi css debug joystick midi profile pulseaudio sse sse2 vdpau xrandr"
+IUSE="aac alsa altivec avahi css debug hal joystick midi profile pulseaudio sse sse2 vaapi vdpau xrandr"
 
 RDEPEND="virtual/opengl
 	app-arch/bzip2
-	|| ( app-arch/unrar app-arch/unrar-gpl )
+	app-arch/unrar
 	app-arch/unzip
 	app-arch/zip
 	app-i18n/enca
@@ -54,7 +54,6 @@ RDEPEND="virtual/opengl
 	media-libs/flac
 	media-libs/fontconfig
 	media-libs/freetype
-	media-libs/ftgl
 	media-libs/glew
 	media-libs/jasper
 	media-libs/jbigkit
@@ -68,7 +67,7 @@ RDEPEND="virtual/opengl
 	media-libs/libmpeg2
 	media-libs/libogg
 	media-libs/libsamplerate
-	media-libs/libsdl[alsa,audio,video,X]
+	media-libs/libsdl[alsa,audio,opengl,video,X]
 	media-libs/libvorbis
 	media-libs/sdl-gfx
 	media-libs/sdl-image[gif,jpeg,png]
@@ -81,13 +80,14 @@ RDEPEND="virtual/opengl
 	avahi? ( net-dns/avahi )
 	net-libs/libmicrohttpd
 	net-misc/curl
-	|| ( net-fs/samba-libs[smbclient] <net-fs/samba-3.3 )
+	|| ( >=net-fs/samba-3.4.6[smbclient] <net-fs/samba-3.3 )
 	sys-apps/dbus
-	sys-apps/hal
+	hal? ( sys-apps/hal )
 	sys-libs/zlib
 	virtual/mysql
 	x11-apps/xdpyinfo
 	x11-apps/mesa-progs
+	vaapi? ( x11-libs/libva )
 	vdpau? (
 		|| ( x11-libs/libvdpau >=x11-drivers/nvidia-drivers-180.51 )
 		media-video/ffmpeg[vdpau]
@@ -95,7 +95,9 @@ RDEPEND="virtual/opengl
 	x11-libs/libXinerama
 	xrandr? ( x11-libs/libXrandr )
 	x11-libs/libXrender"
+# The cpluff bundled addon uses gettext which needs CVS ...
 DEPEND="${RDEPEND}
+	dev-util/cvs
 	x11-proto/xineramaproto
 	dev-util/cmake
 	x86? ( dev-lang/nasm )"
@@ -125,7 +127,7 @@ src_prepare() {
 
 	# some dirs ship generated autotools, some dont
 	local d
-	for d in . xbmc/cores/dvdplayer/Codecs/libbdnav ; do
+	for d in . xbmc/cores/dvdplayer/Codecs/{libbdnav,libdvd/lib*/} lib/cpluff ; do
 		[[ -e ${d}/configure ]] && continue
 		pushd ${d} >/dev/null
 		einfo "Generating autotools in ${d}"
@@ -177,25 +179,30 @@ src_configure() {
 		$(use_enable css dvdcss) \
 		$(use_enable debug) \
 		$(use_enable aac faac) \
+		$(use_enable hal) \
 		$(use_enable joystick) \
 		$(use_enable midi mid) \
 		$(use_enable profile profiling) \
 		$(use_enable pulseaudio pulse) \
+		$(use_enable vaapi) \
 		$(use_enable vdpau) \
 		$(use_enable xrandr)
 }
 
 src_install() {
-	einstall || die "Install failed!"
+	emake install DESTDIR="${D}" || die
+	prepalldocs
 
 	insinto /usr/share/xbmc/web/styles/
+	doins -r "${S}"/web/* || die
 
 	insinto /usr/share/applications
 	doins tools/Linux/xbmc.desktop
 	doicon tools/Linux/xbmc.png
 
-	dodoc README.linux known_issues.txt
-	rm "${D}"/usr/share/xbmc/{README.linux,LICENSE.GPL,*.txt}
+	insinto "$(python_get_sitedir)" #309885
+	doins tools/EventClients/lib/python/xbmcclient.py || die
+	newbin "tools/EventClients/Clients/XBMC Send/xbmc-send.py" xbmc-send || die
 }
 
 pkg_postinst() {
