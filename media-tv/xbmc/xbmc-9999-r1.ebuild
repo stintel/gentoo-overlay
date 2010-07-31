@@ -8,9 +8,9 @@ inherit eutils python
 
 # Use XBMC_ESVN_REPO_URI to track a different branch
 # XBMC trunk
-#ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/trunk}
+ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/trunk}
 # XBMC pvr-testing2 branch
-ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/branches/pvr-testing2}
+#ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/branches/pvr-testing2}
 # XBMC 9.11 branch
 #ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/branches/9.11_Camelot}
 
@@ -67,7 +67,8 @@ RDEPEND="virtual/opengl
 	media-libs/libmpeg2
 	media-libs/libogg
 	media-libs/libsamplerate
-	media-libs/libsdl[alsa,audio,opengl,video,X]
+	media-libs/libsdl[audio,opengl,video,X]
+	alsa? ( media-libs/libsdl[alsa] )
 	media-libs/libvorbis
 	media-libs/sdl-gfx
 	media-libs/sdl-image[gif,jpeg,png]
@@ -97,7 +98,7 @@ RDEPEND="virtual/opengl
 	x11-libs/libXrender"
 # The cpluff bundled addon uses gettext which needs CVS ...
 DEPEND="${RDEPEND}
-	dev-util/cvs
+	dev-vcs/cvs
 	x11-proto/xineramaproto
 	dev-util/cmake
 	x86? ( dev-lang/nasm )"
@@ -119,7 +120,7 @@ src_unpack() {
 
 src_prepare() {
 	##
-	#epatch "${FILESDIR}/"
+	#epatch "${FILESDIR}/xbmc-pvr2-libdir.diff"
 
 	sed -i \
 		-e '1i#include <stdlib.h>\n#include <string.h>\n' \
@@ -150,7 +151,7 @@ src_prepare() {
 
 	# Avoid lsb-release dependency
 	sed -i \
-		-e 's:/usr/bin/lsb_release -d:cat /etc/gentoo-release:' \
+		-e 's:lsb_release -d:cat /etc/gentoo-release:' \
 		xbmc/utils/SystemInfo.cpp
 
 	# Do not use termcap #262822
@@ -169,10 +170,10 @@ src_configure() {
 	export HELP2MAN=$(type -P help2man || echo true)
 
 	econf \
+		--docdir=/usr/share/doc/${PF} \
 		--disable-ccache \
 		--enable-optimizations \
-		--disable-external-ffmpeg \
-		--enable-external-libraries \
+		--disable-external-libraries \
 		--enable-goom \
 		--enable-gl \
 		$(use_enable avahi) \
