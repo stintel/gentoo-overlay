@@ -8,9 +8,9 @@ inherit eutils python
 
 # Use XBMC_ESVN_REPO_URI to track a different branch
 # XBMC trunk
-ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/trunk}
+#ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/trunk}
 # XBMC pvr-testing2 branch
-#ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/branches/pvr-testing2}
+ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/branches/pvr-testing2}
 # XBMC 9.11 branch
 #ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/branches/9.11_Camelot}
 
@@ -128,7 +128,7 @@ src_prepare() {
 
 	# some dirs ship generated autotools, some dont
 	local d
-	for d in . xbmc/cores/dvdplayer/Codecs/{libbdnav,libdvd/lib*/} lib/cpluff ; do
+	for d in . lib/cpluff lib/libass xbmc/cores/dvdplayer/Codecs/libdvd/lib* ; do
 		[[ -e ${d}/configure ]] && continue
 		pushd ${d} >/dev/null
 		einfo "Generating autotools in ${d}"
@@ -173,7 +173,7 @@ src_configure() {
 		--docdir=/usr/share/doc/${PF} \
 		--disable-ccache \
 		--enable-optimizations \
-		--disable-external-libraries \
+		--enable-external-libraries \
 		--enable-goom \
 		--enable-gl \
 		$(use_enable avahi) \
