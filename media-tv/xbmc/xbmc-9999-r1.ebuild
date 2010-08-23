@@ -6,18 +6,11 @@ EAPI="2"
 
 inherit eutils python
 
-# Use XBMC_ESVN_REPO_URI to track a different branch
-# XBMC trunk
-#ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/trunk}
-# XBMC pvr-testing2 branch
-ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/branches/pvr-testing2}
-# XBMC 9.11 branch
-#ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/branches/9.11_Camelot}
+EGIT_REPO_URI="git://xbmc.git.sourceforge.net/gitroot/xbmc/xbmc"
+EGIT_BRANCH="Dharma"
 
-ESVN_PROJECT=${ESVN_REPO_URI##*/svnroot/}
-ESVN_PROJECT=${ESVN_PROJECT%/*}
 if [[ ${PV} == "9999" ]] ; then
-	inherit subversion autotools
+	inherit git autotools
 	KEYWORDS=""
 else
 	inherit autotools
@@ -106,7 +99,7 @@ DEPEND="${RDEPEND}
 
 src_unpack() {
 	if [[ ${PV} == "9999" ]] ; then
-		subversion_src_unpack
+		git_src_unpack
 		cd "${S}"
 		rm -f configure
 	else
@@ -129,7 +122,7 @@ src_prepare() {
 
 	# some dirs ship generated autotools, some dont
 	local d
-	for d in . lib/cpluff lib/libass xbmc/cores/dvdplayer/Codecs/libdvd/lib* ; do
+	for d in . xbmc/cores/dvdplayer/Codecs/{libbdnav,libdts,libdvd/lib*/} lib/cpluff ; do
 		[[ -e ${d}/configure ]] && continue
 		pushd ${d} >/dev/null
 		einfo "Generating autotools in ${d}"
@@ -145,10 +138,6 @@ src_prepare() {
 		-e '/^CXXFLAGS/{s:-D[^=]*=.::;s:-m[[:alnum:]]*::}' \
 		-e "1iCXXFLAGS += ${squish}" \
 		xbmc/lib/libsquish/Makefile.in || die
-
-	# Fix XBMC's final version string showing as "exported"
-	# instead of the SVN revision number.
-	export SVN_REV=${ESVN_WC_REVISION:-exported}
 
 	# Avoid lsb-release dependency
 	sed -i \
@@ -174,7 +163,7 @@ src_configure() {
 		--docdir=/usr/share/doc/${PF} \
 		--disable-ccache \
 		--enable-optimizations \
-		--enable-external-libraries \
+		--disable-external-libraries \
 		--enable-goom \
 		--enable-gl \
 		$(use_enable avahi) \
