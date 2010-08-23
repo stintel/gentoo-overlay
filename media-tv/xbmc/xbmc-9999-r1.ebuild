@@ -32,7 +32,7 @@ HOMEPAGE="http://xbmc.org/"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="aac alsa altivec avahi css debug hal joystick midi profile pulseaudio sse sse2 vaapi vdpau xrandr"
+IUSE="aac alsa altivec avahi css debug hal joystick midi profile pulseaudio rtmp sse sse2 vaapi vdpau webserver xrandr"
 
 RDEPEND="virtual/opengl
 	app-arch/bzip2
@@ -78,8 +78,9 @@ RDEPEND="virtual/opengl
 	pulseaudio? ( media-sound/pulseaudio )
 	media-sound/wavpack
 	media-video/ffmpeg
+	rtmp? ( media-video/rtmpdump )
 	avahi? ( net-dns/avahi )
-	net-libs/libmicrohttpd
+	webserver? ( net-libs/libmicrohttpd )
 	net-misc/curl
 	|| ( >=net-fs/samba-3.4.6[smbclient] <net-fs/samba-3.3 )
 	sys-apps/dbus
@@ -185,17 +186,16 @@ src_configure() {
 		$(use_enable midi mid) \
 		$(use_enable profile profiling) \
 		$(use_enable pulseaudio pulse) \
+		$(use_enable rtmp) \
 		$(use_enable vaapi) \
 		$(use_enable vdpau) \
+		$(use_enable webserver) \
 		$(use_enable xrandr)
 }
 
 src_install() {
 	emake install DESTDIR="${D}" || die
 	prepalldocs
-
-	insinto /usr/share/xbmc/web/styles/
-	doins -r "${S}"/web/* || die
 
 	insinto /usr/share/applications
 	doins tools/Linux/xbmc.desktop
