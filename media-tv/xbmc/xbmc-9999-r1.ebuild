@@ -8,6 +8,7 @@ inherit eutils python
 
 EGIT_REPO_URI="git://xbmc.git.sourceforge.net/gitroot/xbmc/xbmc"
 EGIT_BRANCH="Dharma"
+EGIT_PATCHES="/usr/local/portage/stintel/media-tv/xbmc/files/xbmc-database-restrict-index-size.diff"
 
 if [[ ${PV} == "9999" ]] ; then
 	inherit git autotools
@@ -100,6 +101,7 @@ DEPEND="${RDEPEND}
 src_unpack() {
 	if [[ ${PV} == "9999" ]] ; then
 		git_src_unpack
+		git_apply_patches
 		cd "${S}"
 		rm -f configure
 	else

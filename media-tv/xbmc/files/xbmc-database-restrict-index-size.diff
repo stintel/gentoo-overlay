@@ -1,0 +1,60 @@
+Index: trunk/xbmc/VideoDatabase.cpp
+===================================================================
+--- trunk/xbmc/VideoDatabase.cpp	(revision 33273)
++++ trunk/xbmc/VideoDatabase.cpp	(revision 33288)
+@@ -165,10 +165,10 @@
+ 
+     CLog::Log(LOGINFO, "create path table");
+-    m_pDS->exec("CREATE TABLE path ( idPath integer primary key, strPath varchar(512), strContent text, strScraper text, strHash text, scanRecursive integer, useFolderNames bool, strSettings text, noUpdate bool, exclude bool)\n");
+-    m_pDS->exec("CREATE UNIQUE INDEX ix_path ON path ( strPath )\n");
++    m_pDS->exec("CREATE TABLE path ( idPath integer primary key, strPath text, strContent text, strScraper text, strHash text, scanRecursive integer, useFolderNames bool, strSettings text, noUpdate bool, exclude bool)");
++    m_pDS->exec("CREATE UNIQUE INDEX ix_path ON path ( strPath(255) )");
+ 
+     CLog::Log(LOGINFO, "create files table");
+-    m_pDS->exec("CREATE TABLE files ( idFile integer primary key, idPath integer, strFilename varchar(512), playCount integer, lastPlayed text)\n");
+-    m_pDS->exec("CREATE UNIQUE INDEX ix_files ON files ( idPath, strFilename )\n");
++    m_pDS->exec("CREATE TABLE files ( idFile integer primary key, idPath integer, strFilename text, playCount integer, lastPlayed text)");
++    m_pDS->exec("CREATE UNIQUE INDEX ix_files ON files ( idPath, strFilename(255) )");
+ 
+     CLog::Log(LOGINFO, "create tvshow table");
+Index: trunk/xbmc/lib/sqLite/sqlitedataset.cpp
+===================================================================
+--- trunk/xbmc/lib/sqLite/sqlitedataset.cpp	(revision 32850)
++++ trunk/xbmc/lib/sqLite/sqlitedataset.cpp	(revision 33288)
+@@ -472,7 +472,35 @@
+ int SqliteDataset::exec(const string &sql) {
+   if (!handle()) throw DbErrors("No Database Connection");
++  string qry = sql;
+   int res;
+   exec_res.clear();
+-  if((res = db->setErr(sqlite3_exec(handle(),sql.c_str(),&callback,&exec_res,&errmsg),sql.c_str())) == SQLITE_OK)
++
++  // Strip size constraints from indexes (not supported in sqlite)
++  //
++  // Example:
++  //   before: CREATE UNIQUE INDEX ixPath ON path ( strPath(255) )
++  //   after:  CREATE UNIQUE INDEX ixPath ON path ( strPath )
++  //
++  // NOTE: unexpected results occur if brackets are not matched
++  if ( qry.find("CREATE UNIQUE INDEX") != string::npos )
++  {
++    size_t pos = 0;
++    size_t pos2 = 0;
++
++    if ( (pos = qry.find("(")) != string::npos )
++    {
++      pos++;
++      while ( (pos = qry.find("(", pos)) != string::npos )
++      {
++        if ( (pos2 = qry.find(")", pos)) != string::npos )
++        {
++          qry.replace(pos, pos2-pos+1, "");
++          pos = pos2;
++        }
++      }
++    }
++  }
++
++  if((res = db->setErr(sqlite3_exec(handle(),qry.c_str(),&callback,&exec_res,&errmsg),qry.c_str())) == SQLITE_OK)
+     return res;
+   else
