@@ -8,7 +8,7 @@ inherit eutils python
 
 EGIT_REPO_URI="git://xbmc.git.sourceforge.net/gitroot/xbmc/xbmc"
 EGIT_BRANCH="Dharma"
-EGIT_PATCHES="/usr/local/portage/stintel/media-tv/xbmc/files/xbmc-database-restrict-index-size.diff"
+EGIT_PATCHES="/usr/local/portage/stintel/media-tv/xbmc/files/playercontrol_partymode_fix2.diff"
 
 if [[ ${PV} == "9999" ]] ; then
 	inherit git autotools
@@ -125,7 +125,7 @@ src_prepare() {
 
 	# some dirs ship generated autotools, some dont
 	local d
-	for d in . xbmc/cores/dvdplayer/Codecs/{libbdnav,libdts,libdvd/lib*/} lib/cpluff ; do
+	for d in . xbmc/cores/dvdplayer/Codecs/{libdts,libdvd/lib*/} lib/cpluff ; do
 		[[ -e ${d}/configure ]] && continue
 		pushd ${d} >/dev/null
 		einfo "Generating autotools in ${d}"
@@ -166,7 +166,7 @@ src_configure() {
 		--docdir=/usr/share/doc/${PF} \
 		--disable-ccache \
 		--enable-optimizations \
-		--disable-external-libraries \
+		--enable-external-libraries \
 		--enable-goom \
 		--enable-gl \
 		$(use_enable avahi) \
@@ -199,5 +199,5 @@ src_install() {
 }
 
 pkg_postinst() {
-	elog "Visit http://xbmc.org/wiki/?title=XBMC_Online_Manual"
+	elog "Visit http://wiki.xbmc.org/?title=XBMC_Online_Manual"
 }
