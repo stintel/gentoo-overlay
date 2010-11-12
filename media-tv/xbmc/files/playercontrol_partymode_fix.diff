@@ -1,0 +1,16 @@
+diff --git a/xbmc/utils/Builtins.cpp b/xbmc/utils/Builtins.cpp
+index 0d83683..9192b21 100644
+--- a/xbmc/utils/Builtins.cpp
++++ b/xbmc/utils/Builtins.cpp
+@@ -626,8 +626,10 @@ int CBuiltins::Execute(const CStdString& execString)
+         }
+       }
+       if (g_partyModeManager.IsEnabled())
++      {
+         g_partyModeManager.Disable();
+-      else
++      }
++      //else
+         g_partyModeManager.Enable(context, strXspPath);
+     }
+     else if (parameter.Equals("random")    ||

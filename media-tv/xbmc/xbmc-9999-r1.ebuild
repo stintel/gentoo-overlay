@@ -7,8 +7,16 @@ EAPI="2"
 inherit eutils python
 
 EGIT_REPO_URI="git://xbmc.git.sourceforge.net/gitroot/xbmc/xbmc"
-EGIT_BRANCH="Dharma"
-EGIT_PATCHES="/usr/local/portage/stintel/media-tv/xbmc/files/playercontrol_partymode_fix2.diff"
+
+if use pvr2 ; then
+	EGIT_BRANCH="pvr-testing2"
+else
+	EGIT_BRANCH="Dharma"
+fi
+
+EGIT_PATCHES=(
+"/usr/local/portage/stintel/media-tv/xbmc/files/playercontrol_partymode_fix.diff"
+)
 
 if [[ ${PV} == "9999" ]] ; then
 	inherit git autotools
@@ -26,7 +34,7 @@ HOMEPAGE="http://xbmc.org/"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="aac alsa altivec avahi css debug hal joystick midi profile pulseaudio rtmp sse sse2 vaapi vdpau webserver xrandr"
+IUSE="aac alsa altivec avahi css debug hal joystick midi profile pulseaudio pvr2 rtmp sse sse2 udev vaapi vdpau webserver xrandr"
 
 RDEPEND="virtual/opengl
 	app-arch/bzip2
@@ -80,6 +88,10 @@ RDEPEND="virtual/opengl
 	sys-apps/dbus
 	hal? ( sys-apps/hal )
 	sys-libs/zlib
+	udev? (
+		sys-fs/udisks
+		sys-power/upower
+	)
 	virtual/mysql
 	x11-apps/xdpyinfo
 	x11-apps/mesa-progs
@@ -165,8 +177,8 @@ src_configure() {
 	econf \
 		--docdir=/usr/share/doc/${PF} \
 		--disable-ccache \
-		--enable-optimizations \
-		--enable-external-libraries \
+		--disable-optimizations \
+		--disable-external-libraries \
 		--enable-goom \
 		--enable-gl \
 		$(use_enable avahi) \
