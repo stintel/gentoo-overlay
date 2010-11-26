@@ -138,7 +138,7 @@ src_prepare() {
 	# some dirs ship generated autotools, some dont
 	local d
 	for d in . xbmc/cores/dvdplayer/Codecs/{libdts,libdvd/lib*/} lib/cpluff ; do
-		[[ -e ${d}/configure ]] && continue
+		#[[ -e ${d}/configure ]] && continue
 		pushd ${d} >/dev/null
 		einfo "Generating autotools in ${d}"
 		eautoreconf
