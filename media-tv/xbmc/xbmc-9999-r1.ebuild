@@ -15,7 +15,7 @@ else
 fi
 
 EGIT_PATCHES=(
-"playercontrol_partymode_fix.diff"
+"${FILESDIR}/playercontrol_partymode_fix.diff"
 )
 
 if [[ ${PV} == "9999" ]] ; then
