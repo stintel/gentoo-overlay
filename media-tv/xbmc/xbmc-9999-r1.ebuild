@@ -6,7 +6,7 @@ EAPI="3"
 
 inherit eutils python
 
-if use pvr2 ; then
+if use pvr ; then
 	EGIT_REPO_URI="git://github.com/opdenkamp/xbmc.git"
 	EGIT_BRANCH="Dharma"
 else
@@ -34,7 +34,7 @@ HOMEPAGE="http://xbmc.org/"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="aac alsa altivec avahi css debug hal joystick midi profile pulseaudio pvr2 rtmp sse sse2 udev vaapi vdpau webserver xrandr"
+IUSE="aac alsa altivec avahi css debug hal joystick midi profile pulseaudio pvr rtmp sse sse2 udev vaapi vdpau webserver xrandr"
 
 RDEPEND="virtual/opengl
 	app-arch/bzip2
