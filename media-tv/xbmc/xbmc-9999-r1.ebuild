@@ -7,8 +7,8 @@ EAPI="3"
 inherit eutils python
 
 if use pvr2 ; then
-	EGIT_REPO_URI="http://github.com/opdenkamp/xbmc.git"
-	EGIT_BRANCH="master"
+	EGIT_REPO_URI="git://github.com/opdenkamp/xbmc.git"
+	EGIT_BRANCH="Dharma"
 else
 	EGIT_REPO_URI="git://github.com/xbmc/xbmc.git"
 	EGIT_BRANCH="master"
