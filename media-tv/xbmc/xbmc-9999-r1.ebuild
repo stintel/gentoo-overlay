@@ -2,16 +2,16 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/media-tv/xbmc/xbmc-9999.ebuild,v 1.44 2009/12/19 20:44:11 vapier Exp $
 
-EAPI="2"
+EAPI="3"
 
 inherit eutils python
 
-EGIT_REPO_URI="git://xbmc.git.sourceforge.net/gitroot/xbmc/xbmc"
-
 if use pvr2 ; then
-	EGIT_BRANCH="pvr-testing2"
+	EGIT_REPO_URI="http://github.com/opdenkamp/xbmc.git"
+	EGIT_BRANCH="master"
 else
-	EGIT_BRANCH="Dharma"
+	EGIT_REPO_URI="git://github.com/xbmc/xbmc.git"
+	EGIT_BRANCH="master"
 fi
 
 EGIT_PATCHES=(
