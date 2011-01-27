@@ -6,9 +6,12 @@ EAPI=2
 
 RESTRICT="mirror strip"
 
-inherit vdr-plugin subversion
+inherit vdr-plugin git
 
-ESVN_REPO_URI="https://xbmc.svn.sourceforge.net/svnroot/xbmc/branches/pvr-testing2/xbmc/pvrclients/vdr-vnsi/vdr-plugin-vnsiserver"
+EGIT_REPO_URI="git://github.com/opdenkamp/xbmc.git"
+EGIT_BRANCH="master"
+
+
 DESCRIPTION="VDR plugin: VNSI Streamserver Plugin"
 HOMEPAGE="http://xbmc.org"
 SRC_URI=""
