@@ -15,7 +15,7 @@ else
 fi
 
 EGIT_PATCHES=(
-"/usr/local/portage/stintel/media-tv/xbmc/files/playercontrol_partymode_fix.diff"
+"playercontrol_partymode_fix.diff"
 )
 
 if [[ ${PV} == "9999" ]] ; then
