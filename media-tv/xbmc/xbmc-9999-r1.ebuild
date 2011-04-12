@@ -1,4 +1,4 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/media-tv/xbmc/xbmc-9999.ebuild,v 1.44 2009/12/19 20:44:11 vapier Exp $
 
@@ -47,17 +47,16 @@ COMMON_DEPEND="virtual/opengl
 	dev-libs/fribidi
 	dev-libs/libcdio[-minimal]
 	dev-libs/libpcre[cxx]
-	dev-libs/lzo
+	>=dev-libs/lzo-2.04
 	>=dev-python/pysqlite-2
 	media-libs/alsa-lib
-	media-libs/faad2
 	media-libs/flac
 	media-libs/fontconfig
 	media-libs/freetype
-	media-libs/glew
+	>=media-libs/glew-1.5.6
 	media-libs/jasper
 	media-libs/jbigkit
-	media-libs/jpeg:0
+	virtual/jpeg
 	>=media-libs/libass-0.9.7
 	bluray? ( media-libs/libbluray )
 	css? ( media-libs/libdvdcss )
@@ -70,13 +69,13 @@ COMMON_DEPEND="virtual/opengl
 	alsa? ( media-libs/libsdl[alsa] )
 	media-libs/libvorbis
 	media-libs/sdl-gfx
-	media-libs/sdl-image[gif,jpeg,png]
+	>=media-libs/sdl-image-1.2.10[gif,jpeg,png]
 	media-libs/sdl-mixer
 	media-libs/sdl-sound
 	media-libs/tiff
 	pulseaudio? ( media-sound/pulseaudio )
 	media-sound/wavpack
-	>=media-video/ffmpeg-0.6
+	>=virtual/ffmpeg-0.6
 	rtmp? ( media-video/rtmpdump )
 	avahi? ( net-dns/avahi )
 	webserver? ( net-libs/libmicrohttpd )
@@ -90,7 +89,7 @@ COMMON_DEPEND="virtual/opengl
 	vaapi? ( x11-libs/libva )
 	vdpau? (
 		|| ( x11-libs/libvdpau >=x11-drivers/nvidia-drivers-180.51 )
-		media-video/ffmpeg[vdpau]
+		virtual/ffmpeg[vdpau]
 	)
 	x11-libs/libXinerama
 	xrandr? ( x11-libs/libXrandr )
@@ -127,7 +126,7 @@ src_prepare() {
 
 	# some dirs ship generated autotools, some dont
 	local d
-	for d in . lib/{libdts,libdvd/lib*/,cpluff} ; do
+	for d in . lib/{libdvd/lib*/,cpluff} ; do
 		#[[ -e ${d}/configure ]] && continue
 		pushd ${d} >/dev/null
 		einfo "Generating autotools in ${d}"
@@ -153,9 +152,6 @@ src_prepare() {
 		-e 's:lsb_release -d:cat /etc/gentoo-release:' \
 		xbmc/utils/SystemInfo.cpp || die
 
-	# Do not use termcap #262822
-	sed -i 's:-ltermcap::' lib/python/configure || die
-
 	# avoid long delays when powerkit isn't running #348580
 	sed -i \
 		-e '/dbus_connection_send_with_reply_and_block/s:-1:3000:' \
@@ -180,8 +176,6 @@ src_configure() {
 		--disable-external-libraries \
 		--enable-goom \
 		--enable-gl \
-		--disable-liba52 \
-		--disable-libdts \
 		$(use_enable avahi) \
 		$(use_enable bluray libbluray) \
 		$(use_enable css dvdcss) \
