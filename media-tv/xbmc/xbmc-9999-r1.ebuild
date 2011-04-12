@@ -8,14 +8,14 @@ inherit eutils python
 
 if use pvr ; then
 	EGIT_REPO_URI="git://github.com/opdenkamp/xbmc.git"
-	EGIT_BRANCH="Dharma"
+	EGIT_BRANCH="master"
 else
 	EGIT_REPO_URI="git://github.com/xbmc/xbmc.git"
 	EGIT_BRANCH="master"
 fi
 
 EGIT_PATCHES=(
-"${FILESDIR}/playercontrol_partymode_fix.diff"
+#"${FILESDIR}/playercontrol_partymode_fix.diff"
 )
 
 if [[ ${PV} == "9999" ]] ; then
@@ -34,9 +34,9 @@ HOMEPAGE="http://xbmc.org/"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="aac alsa altivec avahi css debug hal joystick midi profile pulseaudio pvr rtmp sse sse2 udev vaapi vdpau webserver xrandr"
+IUSE="alsa altivec avahi bluray css debug joystick midi profile pulseaudio pvr rtmp sse sse2 udev vaapi vdpau webserver xrandr"
 
-RDEPEND="virtual/opengl
+COMMON_DEPEND="virtual/opengl
 	app-arch/bzip2
 	app-arch/unrar
 	app-arch/unzip
@@ -46,12 +46,10 @@ RDEPEND="virtual/opengl
 	dev-libs/boost
 	dev-libs/fribidi
 	dev-libs/libcdio[-minimal]
-	dev-libs/libpcre
+	dev-libs/libpcre[cxx]
 	dev-libs/lzo
 	>=dev-python/pysqlite-2
-	media-libs/a52dec
 	media-libs/alsa-lib
-	aac? ( media-libs/faac )
 	media-libs/faad2
 	media-libs/flac
 	media-libs/fontconfig
@@ -61,10 +59,9 @@ RDEPEND="virtual/opengl
 	media-libs/jbigkit
 	media-libs/jpeg:0
 	>=media-libs/libass-0.9.7
-	media-libs/libdca
+	bluray? ( media-libs/libbluray )
 	css? ( media-libs/libdvdcss )
 	media-libs/libmad
-	media-libs/libmms
 	media-libs/libmodplug
 	media-libs/libmpeg2
 	media-libs/libogg
@@ -86,12 +83,7 @@ RDEPEND="virtual/opengl
 	net-misc/curl
 	|| ( >=net-fs/samba-3.4.6[smbclient] <net-fs/samba-3.3 )
 	sys-apps/dbus
-	hal? ( sys-apps/hal )
 	sys-libs/zlib
-	udev? (
-		sys-fs/udisks
-		sys-power/upower
-	)
 	virtual/mysql
 	x11-apps/xdpyinfo
 	x11-apps/mesa-progs
@@ -104,7 +96,9 @@ RDEPEND="virtual/opengl
 	xrandr? ( x11-libs/libXrandr )
 	x11-libs/libXrender"
 # The cpluff bundled addon uses gettext which needs CVS ...
-DEPEND="${RDEPEND}
+RDEPEND="${COMMON_DEPEND}
+	   udev? ( sys-fs/udisks sys-power/upower )"
+DEPEND="${COMMON_DEPEND}
 	dev-util/gperf
 	dev-vcs/cvs
 	x11-proto/xineramaproto
@@ -131,13 +125,9 @@ src_prepare() {
 	##
 	#epatch "${FILESDIR}/xbmc-pvr2-libdir.diff"
 
-	sed -i \
-		-e '1i#include <stdlib.h>\n#include <string.h>\n' \
-		xbmc/lib/libid3tag/libid3tag/metadata.c || die
-
 	# some dirs ship generated autotools, some dont
 	local d
-	for d in . xbmc/cores/dvdplayer/Codecs/{libdts,libdvd/lib*/} lib/cpluff ; do
+	for d in . lib/{libdts,libdvd/lib*/,cpluff} ; do
 		#[[ -e ${d}/configure ]] && continue
 		pushd ${d} >/dev/null
 		einfo "Generating autotools in ${d}"
@@ -152,17 +142,26 @@ src_prepare() {
 	sed -i \
 		-e '/^CXXFLAGS/{s:-D[^=]*=.::;s:-m[[:alnum:]]*::}' \
 		-e "1iCXXFLAGS += ${squish}" \
-		xbmc/lib/libsquish/Makefile.in || die
+		lib/libsquish/Makefile.in || die
+
+	# Fix XBMC's final version string showing as "exported"
+	# instead of the SVN revision number.
+	export HAVE_GIT=no GIT_REV=${EGIT_VERSION:-exported}
 
 	# Avoid lsb-release dependency
 	sed -i \
 		-e 's:lsb_release -d:cat /etc/gentoo-release:' \
-		xbmc/utils/SystemInfo.cpp
+		xbmc/utils/SystemInfo.cpp || die
 
 	# Do not use termcap #262822
-	sed -i 's:-ltermcap::' xbmc/lib/libPython/Python/configure
+	sed -i 's:-ltermcap::' lib/python/configure || die
 
-	epatch_user #293109
+	# avoid long delays when powerkit isn't running #348580
+	sed -i \
+		-e '/dbus_connection_send_with_reply_and_block/s:-1:3000:' \
+		xbmc/linux/*.cpp || die
+
+		epatch_user #293109
 
 	# Tweak autotool timestamps to avoid regeneration
 	find . -type f -print0 | xargs -0 touch -r configure
@@ -177,15 +176,17 @@ src_configure() {
 	econf \
 		--docdir=/usr/share/doc/${PF} \
 		--disable-ccache \
-		--disable-optimizations \
+		--enable-optimizations \
 		--disable-external-libraries \
 		--enable-goom \
 		--enable-gl \
+		--disable-liba52 \
+		--disable-libdts \
 		$(use_enable avahi) \
+		$(use_enable bluray libbluray) \
 		$(use_enable css dvdcss) \
 		$(use_enable debug) \
-		$(use_enable aac faac) \
-		$(use_enable hal) \
+		--disable-hal \
 		$(use_enable joystick) \
 		$(use_enable midi mid) \
 		$(use_enable profile profiling) \
