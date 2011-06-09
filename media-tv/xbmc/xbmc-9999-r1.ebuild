@@ -38,7 +38,6 @@ IUSE="alsa altivec avahi bluray css debug joystick midi profile pulseaudio pvr r
 
 COMMON_DEPEND="virtual/opengl
 	app-arch/bzip2
-	app-arch/unrar
 	app-arch/unzip
 	app-arch/zip
 	app-i18n/enca
@@ -48,6 +47,7 @@ COMMON_DEPEND="virtual/opengl
 	dev-libs/libcdio[-minimal]
 	dev-libs/libpcre[cxx]
 	>=dev-libs/lzo-2.04
+	dev-libs/yajl
 	>=dev-python/pysqlite-2
 	media-libs/alsa-lib
 	media-libs/flac
@@ -126,7 +126,7 @@ src_prepare() {
 
 	# some dirs ship generated autotools, some dont
 	local d
-	for d in . lib/{libdvd/lib*/,cpluff} ; do
+	for d in . lib/{libdvd/lib*/,cpluff,libapetag,libid3tag/libid3tag} xbmc/screensavers/rsxs-* ; do
 		#[[ -e ${d}/configure ]] && continue
 		pushd ${d} >/dev/null
 		einfo "Generating autotools in ${d}"
