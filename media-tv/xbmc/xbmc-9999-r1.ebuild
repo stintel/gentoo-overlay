@@ -8,7 +8,7 @@ inherit eutils python
 
 if use pvr ; then
 	EGIT_REPO_URI="git://github.com/opdenkamp/xbmc.git"
-	EGIT_BRANCH="master"
+	EGIT_BRANCH="pvr-ppa"
 else
 	EGIT_REPO_URI="git://github.com/xbmc/xbmc.git"
 	EGIT_BRANCH="master"
