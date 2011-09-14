@@ -34,13 +34,14 @@ HOMEPAGE="http://xbmc.org/"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="alsa altivec avahi bluray css debug joystick midi profile pulseaudio pvr rtmp sse sse2 udev vaapi vdpau webserver xrandr"
+IUSE="alsa altivec avahi bluray css debug joystick midi profile pulseaudio pvr rtmp sse sse2 udev vaapi vdpau webserver +xrandr"
 
 COMMON_DEPEND="virtual/opengl
 	app-arch/bzip2
 	app-arch/unzip
 	app-arch/zip
 	app-i18n/enca
+	app-pda/libplist
 	>=dev-lang/python-2.4
 	dev-libs/boost
 	dev-libs/fribidi
@@ -64,6 +65,7 @@ COMMON_DEPEND="virtual/opengl
 	media-libs/libmodplug
 	media-libs/libmpeg2
 	media-libs/libogg
+	media-libs/libpng
 	media-libs/libsamplerate
 	media-libs/libsdl[audio,opengl,video,X]
 	alsa? ( media-libs/libsdl[alsa] )
