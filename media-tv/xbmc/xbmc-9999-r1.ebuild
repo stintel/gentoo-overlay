@@ -34,14 +34,14 @@ HOMEPAGE="http://xbmc.org/"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="alsa altivec avahi bluray css debug joystick midi profile pulseaudio pvr rtmp sse sse2 udev vaapi vdpau webserver +xrandr"
+IUSE="airplay alsa altivec avahi bluray css debug goom joystick midi profile +projectm pulseaudio pvr +rsxs rtmp +samba sse sse2 udev vaapi vdpau webserver +xrandr"
 
 COMMON_DEPEND="virtual/opengl
 	app-arch/bzip2
 	app-arch/unzip
 	app-arch/zip
 	app-i18n/enca
-	app-pda/libplist
+	airplay? ( app-pda/libplist )
 	>=dev-lang/python-2.4
 	dev-libs/boost
 	dev-libs/fribidi
@@ -66,6 +66,7 @@ COMMON_DEPEND="virtual/opengl
 	media-libs/libmpeg2
 	media-libs/libogg
 	media-libs/libpng
+	projectm? ( media-libs/libprojectm )
 	media-libs/libsamplerate
 	media-libs/libsdl[audio,opengl,video,X]
 	alsa? ( media-libs/libsdl[alsa] )
@@ -82,7 +83,7 @@ COMMON_DEPEND="virtual/opengl
 	avahi? ( net-dns/avahi )
 	webserver? ( net-libs/libmicrohttpd )
 	net-misc/curl
-	|| ( >=net-fs/samba-3.4.6[smbclient] <net-fs/samba-3.3 )
+	samba? ( >=net-fs/samba-3.4.6[smbclient] )
 	sys-apps/dbus
 	sys-libs/zlib
 	virtual/mysql
@@ -96,12 +97,10 @@ COMMON_DEPEND="virtual/opengl
 	x11-libs/libXinerama
 	xrandr? ( x11-libs/libXrandr )
 	x11-libs/libXrender"
-# The cpluff bundled addon uses gettext which needs CVS ...
 RDEPEND="${COMMON_DEPEND}
 	   udev? ( sys-fs/udisks sys-power/upower )"
 DEPEND="${COMMON_DEPEND}
 	dev-util/gperf
-	dev-vcs/cvs
 	x11-proto/xineramaproto
 	dev-util/cmake
 	x86? ( dev-lang/nasm )"
@@ -128,7 +127,12 @@ src_prepare() {
 
 	# some dirs ship generated autotools, some dont
 	local d
-	for d in . lib/{libdvd/lib*/,cpluff,libapetag,libid3tag/libid3tag} xbmc/screensavers/rsxs-* ; do
+	for d in \
+		 . \
+		lib/{libdvd/lib*/,cpluff,libapetag,libid3tag/libid3tag} \
+		xbmc/screensavers/rsxs-* \
+		xbmc/visualizations/Goom/goom2k4-0
+	do
 		#[[ -e ${d}/configure ]] && continue
 		pushd ${d} >/dev/null
 		einfo "Generating autotools in ${d}"
