@@ -34,7 +34,7 @@ HOMEPAGE="http://xbmc.org/"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="airplay alsa altivec avahi bluray css debug goom joystick midi profile +projectm pulseaudio pvr +rsxs rtmp +samba sse sse2 udev vaapi vdpau webserver +xrandr"
+IUSE="airplay alsa altivec avahi bluray css debug goom joystick libcec midi profile +projectm pulseaudio pvr +rsxs rtmp +samba sse sse2 udev vaapi vdpau webserver +xrandr"
 
 COMMON_DEPEND="virtual/opengl
 	app-arch/bzip2
@@ -76,6 +76,7 @@ COMMON_DEPEND="virtual/opengl
 	media-libs/sdl-mixer
 	media-libs/sdl-sound
 	media-libs/tiff
+	libcec? ( media-tv/libcec )
 	pulseaudio? ( media-sound/pulseaudio )
 	media-sound/wavpack
 	>=virtual/ffmpeg-0.6
@@ -189,6 +190,7 @@ src_configure() {
 		$(use_enable debug) \
 		--disable-hal \
 		$(use_enable joystick) \
+		$(use_enable libcec) \
 		$(use_enable midi mid) \
 		$(use_enable profile profiling) \
 		$(use_enable pulseaudio pulse) \
