@@ -60,6 +60,7 @@ COMMON_DEPEND="virtual/opengl
 	virtual/jpeg
 	>=media-libs/libass-0.9.7
 	bluray? ( media-libs/libbluray )
+	libcec? ( media-libs/libcec )
 	css? ( media-libs/libdvdcss )
 	media-libs/libmad
 	media-libs/libmodplug
@@ -76,7 +77,6 @@ COMMON_DEPEND="virtual/opengl
 	media-libs/sdl-mixer
 	media-libs/sdl-sound
 	media-libs/tiff
-	libcec? ( media-tv/libcec )
 	pulseaudio? ( media-sound/pulseaudio )
 	media-sound/wavpack
 	>=virtual/ffmpeg-0.6
