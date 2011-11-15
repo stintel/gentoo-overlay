@@ -19,7 +19,7 @@ EGIT_PATCHES=(
 )
 
 if [[ ${PV} == "9999" ]] ; then
-	inherit git autotools
+	inherit git-2 autotools
 	KEYWORDS=""
 else
 	inherit autotools
@@ -108,8 +108,7 @@ DEPEND="${COMMON_DEPEND}
 
 src_unpack() {
 	if [[ ${PV} == "9999" ]] ; then
-		git_src_unpack
-		git_apply_patches
+		git-2_src_unpack
 		cd "${S}"
 		rm -f configure
 	else
@@ -131,7 +130,7 @@ src_prepare() {
 	local d
 	for d in \
 		 . \
-		lib/{libdvd/lib*/,cpluff,libapetag,libid3tag/libid3tag} \
+		lib/{libdvd/{libdvdcss,libdvdread,libdvdnav}/,cpluff,libapetag,libid3tag/libid3tag} \
 		xbmc/screensavers/rsxs-* \
 		xbmc/visualizations/Goom/goom2k4-0
 	do
@@ -182,19 +181,23 @@ src_configure() {
 		--disable-ccache \
 		--enable-optimizations \
 		--disable-external-libraries \
-		--enable-goom \
 		--enable-gl \
+		$(use_enable airplay) \
 		$(use_enable avahi) \
 		$(use_enable bluray libbluray) \
 		$(use_enable css dvdcss) \
 		$(use_enable debug) \
+		$(use_enable goom) \
 		--disable-hal \
 		$(use_enable joystick) \
 		$(use_enable libcec) \
 		$(use_enable midi mid) \
 		$(use_enable profile profiling) \
+		$(use_enable projectm) \
 		$(use_enable pulseaudio pulse) \
+		$(use_enable rsxs) \
 		$(use_enable rtmp) \
+		$(use_enable samba) \
 		$(use_enable vaapi) \
 		$(use_enable vdpau) \
 		$(use_enable webserver) \
