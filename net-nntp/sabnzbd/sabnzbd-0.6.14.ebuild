@@ -27,6 +27,7 @@ RDEPEND="
 		>=dev-python/celementtree-1.0.5
 		>=dev-python/cheetah-2.0.1
 		>=dev-python/cherrypy-3.2
+		dev-python/gntp
 		dev-python/pysqlite:2
 		rar? ( >=app-arch/unrar-3.9.0 )
 		unzip? ( >=app-arch/unzip-5.5.2 )
