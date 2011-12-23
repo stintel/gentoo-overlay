@@ -50,6 +50,7 @@ COMMON_DEPEND="virtual/opengl
 	>=dev-libs/lzo-2.04
 	dev-libs/yajl
 	>=dev-python/pysqlite-2
+	dev-python/simplejson
 	media-libs/alsa-lib
 	media-libs/flac
 	media-libs/fontconfig
