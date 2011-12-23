@@ -180,7 +180,7 @@ src_configure() {
 	econf \
 		--docdir=/usr/share/doc/${PF} \
 		--disable-ccache \
-		--enable-optimizations \
+		--disable-optimizations \
 		--disable-external-libraries \
 		--enable-gl \
 		$(use_enable airplay) \
