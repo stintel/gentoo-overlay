@@ -1,0 +1,902 @@
+From df8100463272c3c9a7a680d547b675ec277ed53e Mon Sep 17 00:00:00 2001
+From: Ansis Atteka <aatteka@nicira.com>
+Date: Fri, 10 Feb 2012 23:09:00 +0200
+Subject: [PATCH] network: support Open vSwitch
+
+This patch allows libvirt to add interfaces to already
+existing Open vSwitch bridges. The following syntax in
+domain XML file can be used:
+
+    <interface type='bridge'>
+      <mac address='52:54:00:d0:3f:f2'/>
+      <source bridge='ovsbr'/>
+      <virtualport type='openvswitch'>
+        <parameters interfaceid='921a80cd-e6de-5a2e-db9c-ab27f15a6e1d'/>
+      </virtualport>
+      <address type='pci' domain='0x0000' bus='0x00'
+                          slot='0x03' function='0x0'/>
+    </interface>
+
+or if libvirt should auto-generate the interfaceid use
+following syntax:
+
+    <interface type='bridge'>
+      <mac address='52:54:00:d0:3f:f2'/>
+      <source bridge='ovsbr'/>
+      <virtualport type='openvswitch'>
+      </virtualport>
+      <address type='pci' domain='0x0000' bus='0x00'
+                          slot='0x03' function='0x0'/>
+    </interface>
+
+It is also possible to pass an optional profileid. To do that
+use following syntax:
+
+   <interface type='bridge'>
+     <source bridge='ovsbr'/>
+     <mac address='00:55:1a:65:a2:8d'/>
+     <virtualport type='openvswitch'>
+       <parameters interfaceid='921a80cd-e6de-5a2e-db9c-ab27f15a6e1d'
+                   profileid='test-profile'/>
+     </virtualport>
+   </interface>
+
+To create Open vSwitch bridge install Open vSwitch and
+run the following command:
+
+    ovs-vsctl add-br ovsbr
+---
+ AUTHORS                              |    3 +
+ configure.ac                         |    5 +
+ po/POTFILES.in                       |    1 +
+ src/Makefile.am                      |    1 +
+ src/conf/domain_conf.c               |   48 ++++++++++--
+ src/conf/domain_conf.h               |    3 +
+ src/conf/netdev_vport_profile_conf.c |   47 +++++++++++-
+ src/libvirt_private.syms             |    5 +
+ src/lxc/lxc_driver.c                 |   33 +++++++--
+ src/network/bridge_driver.c          |    3 +-
+ src/qemu/qemu_command.c              |    3 +-
+ src/qemu/qemu_hotplug.c              |   14 ++++
+ src/qemu/qemu_process.c              |    8 ++
+ src/uml/uml_conf.c                   |    3 +-
+ src/util/virnetdevopenvswitch.c      |  134 ++++++++++++++++++++++++++++++++++
+ src/util/virnetdevopenvswitch.h      |   42 +++++++++++
+ src/util/virnetdevtap.c              |   16 +++-
+ src/util/virnetdevtap.h              |    5 +-
+ src/util/virnetdevvportprofile.c     |    2 +
+ src/util/virnetdevvportprofile.h     |    7 ++-
+ 20 files changed, 359 insertions(+), 24 deletions(-)
+ create mode 100644 src/util/virnetdevopenvswitch.c
+ create mode 100644 src/util/virnetdevopenvswitch.h
+
+diff --git a/AUTHORS b/AUTHORS
+index 578a377..7a1fb63 100644
+--- a/AUTHORS
++++ b/AUTHORS
+@@ -217,6 +217,9 @@ Patches have also been contributed by:
+   Zeeshan Ali (Khattak) <zeeshanak@gnome.org>
+   Marcelo Cerri        <mhcerri@linux.vnet.ibm.com>
+   Hendrik Schwartke    <hendrik@os-t.de>
++  Ansis Atteka         <aatteka@nicira.com>
++  Dan Wendlandt        <dan@nicira.com>
++  Kyle Mestery         <kmestery@cisco.com>
+ 
+   [....send patches to get your name here....]
+ 
+diff --git a/configure.ac b/configure.ac
+index 67351d9..12e8ce6 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -213,6 +213,8 @@ AC_PATH_PROG([UDEVSETTLE], [udevsettle], [],
+ 	[/sbin:/usr/sbin:/usr/local/sbin:$PATH])
+ AC_PATH_PROG([MODPROBE], [modprobe], [],
+ 	[/sbin:/usr/sbin:/usr/local/sbin:$PATH])
++AC_PATH_PROG([OVSVSCTL], [ovs-vsctl], [ovs-vsctl],
++	[/sbin:/usr/sbin:/usr/local/sbin:$PATH])
+ 
+ AC_DEFINE_UNQUOTED([DNSMASQ],["$DNSMASQ"],
+         [Location or name of the dnsmasq program])
+@@ -220,6 +222,9 @@ AC_DEFINE_UNQUOTED([RADVD],["$RADVD"],
+         [Location or name of the radvd program])
+ AC_DEFINE_UNQUOTED([TC],["$TC"],
+         [Location or name of the tc profram (see iproute2)])
++AC_DEFINE_UNQUOTED([OVSVSCTL],["$OVSVSCTL"],
++        [Location or name of the ovs-vsctl program])
++
+ if test -n "$UDEVADM"; then
+   AC_DEFINE_UNQUOTED([UDEVADM],["$UDEVADM"],
+         [Location or name of the udevadm program])
+diff --git a/po/POTFILES.in b/po/POTFILES.in
+index 35ddf83..0eff13b 100644
+--- a/po/POTFILES.in
++++ b/po/POTFILES.in
+@@ -129,6 +129,7 @@ src/util/virhash.c
+ src/util/virnetdev.c
+ src/util/virnetdevbridge.c
+ src/util/virnetdevmacvlan.c
++src/util/virnetdevopenvswitch.c
+ src/util/virnetdevtap.c
+ src/util/virnetdevvportprofile.c
+ src/util/virnetlink.c
+diff --git a/src/Makefile.am b/src/Makefile.am
+index a3dd847..d5f52a0 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -97,6 +97,7 @@ UTIL_SOURCES =							\
+ 		util/virnetdevbandwidth.h util/virnetdevbandwidth.c \
+ 		util/virnetdevbridge.h util/virnetdevbridge.c	\
+ 		util/virnetdevmacvlan.c util/virnetdevmacvlan.h	\
++		util/virnetdevopenvswitch.h util/virnetdevopenvswitch.c \
+ 		util/virnetdevtap.h util/virnetdevtap.c		\
+ 		util/virnetdevveth.h util/virnetdevveth.c \
+ 		util/virnetdevvportprofile.h util/virnetdevvportprofile.c \
+diff --git a/src/conf/domain_conf.c b/src/conf/domain_conf.c
+index 9464122..9b03b56 100644
+--- a/src/conf/domain_conf.c
++++ b/src/conf/domain_conf.c
+@@ -31,6 +31,7 @@
+ #include <sys/time.h>
+ #include <strings.h>
+ 
++#include "internal.h"
+ #include "virterror_internal.h"
+ #include "datatypes.h"
+ #include "domain_conf.h"
+@@ -949,6 +950,7 @@ virDomainActualNetDefFree(virDomainActualNetDefPtr def)
+     switch (def->type) {
+     case VIR_DOMAIN_NET_TYPE_BRIDGE:
+         VIR_FREE(def->data.bridge.brname);
++        VIR_FREE(def->data.bridge.virtPortProfile);
+         break;
+     case VIR_DOMAIN_NET_TYPE_DIRECT:
+         VIR_FREE(def->data.direct.linkdev);
+@@ -992,6 +994,7 @@ void virDomainNetDefFree(virDomainNetDefPtr def)
+     case VIR_DOMAIN_NET_TYPE_BRIDGE:
+         VIR_FREE(def->data.bridge.brname);
+         VIR_FREE(def->data.bridge.ipaddr);
++        VIR_FREE(def->data.bridge.virtPortProfile);
+         break;
+ 
+     case VIR_DOMAIN_NET_TYPE_INTERNAL:
+@@ -3730,7 +3733,11 @@ virDomainActualNetDefParseXML(xmlNodePtr node,
+     }
+ 
+     if (actual->type == VIR_DOMAIN_NET_TYPE_BRIDGE) {
+-        actual->data.bridge.brname = virXPathString("string(./source[1]/@bridge)", ctxt);
++        xmlNodePtr virtPortNode = virXPathNode("./virtualport", ctxt);
++        if (virtPortNode &&
++            (!(actual->data.bridge.virtPortProfile =
++               virNetDevVPortProfileParse(virtPortNode))))
++            goto error;
+     } else if (actual->type == VIR_DOMAIN_NET_TYPE_DIRECT) {
+         xmlNodePtr virtPortNode;
+ 
+@@ -3859,7 +3866,8 @@ virDomainNetDefParseXML(virCapsPtr caps,
+                 mode = virXMLPropString(cur, "mode");
+             } else if ((virtPort == NULL) &&
+                        ((def->type == VIR_DOMAIN_NET_TYPE_DIRECT) ||
+-                        (def->type == VIR_DOMAIN_NET_TYPE_NETWORK)) &&
++                        (def->type == VIR_DOMAIN_NET_TYPE_NETWORK) ||
++                        (def->type == VIR_DOMAIN_NET_TYPE_BRIDGE)) &&
+                        xmlStrEqual(cur->name, BAD_CAST "virtualport")) {
+                 if (!(virtPort = virNetDevVPortProfileParse(cur)))
+                     goto error;
+@@ -3998,6 +4006,8 @@ virDomainNetDefParseXML(virCapsPtr caps,
+             def->data.bridge.ipaddr = address;
+             address = NULL;
+         }
++        def->data.bridge.virtPortProfile = virtPort;
++        virtPort = NULL;
+         break;
+ 
+     case VIR_DOMAIN_NET_TYPE_CLIENT:
+@@ -10427,6 +10437,12 @@ virDomainActualNetDefFormat(virBufferPtr buf,
+     case VIR_DOMAIN_NET_TYPE_BRIDGE:
+         virBufferEscapeString(buf, "        <source bridge='%s'/>\n",
+                               def->data.bridge.brname);
++        if (def->data.bridge.virtPortProfile) {
++            virBufferAdjustIndent(buf, 6);
++            if (virNetDevVPortProfileFormat(def->data.bridge.virtPortProfile, buf) < 0)
++                return -1;
++            virBufferAdjustIndent(buf, -6);
++        }
+         break;
+ 
+     case VIR_DOMAIN_NET_TYPE_DIRECT:
+@@ -10514,6 +10530,12 @@ virDomainNetDefFormat(virBufferPtr buf,
+         if (def->data.bridge.ipaddr)
+             virBufferAsprintf(buf, "      <ip address='%s'/>\n",
+                               def->data.bridge.ipaddr);
++        if (def->data.bridge.virtPortProfile) {
++            virBufferAdjustIndent(buf, 6);
++            if (virNetDevVPortProfileFormat(def->data.bridge.virtPortProfile, buf) < 0)
++                return -1;
++            virBufferAdjustIndent(buf, -6);
++        }
+         break;
+ 
+     case VIR_DOMAIN_NET_TYPE_SERVER:
+@@ -13832,13 +13854,25 @@ virDomainNetGetActualDirectMode(virDomainNetDefPtr iface)
+ virNetDevVPortProfilePtr
+ virDomainNetGetActualVirtPortProfile(virDomainNetDefPtr iface)
+ {
+-    if (iface->type == VIR_DOMAIN_NET_TYPE_DIRECT)
++    switch (iface->type) {
++    case VIR_DOMAIN_NET_TYPE_DIRECT:
+         return iface->data.direct.virtPortProfile;
+-    if (iface->type != VIR_DOMAIN_NET_TYPE_NETWORK)
+-        return NULL;
+-    if (!iface->data.network.actual)
++    case VIR_DOMAIN_NET_TYPE_BRIDGE:
++        return iface->data.bridge.virtPortProfile;
++    case VIR_DOMAIN_NET_TYPE_NETWORK:
++        if (!iface->data.network.actual)
++            return NULL;
++        switch (iface->data.network.actual->type) {
++        case VIR_DOMAIN_NET_TYPE_DIRECT:
++            return iface->data.network.actual->data.direct.virtPortProfile;
++        case VIR_DOMAIN_NET_TYPE_BRIDGE:
++            return iface->data.network.actual->data.bridge.virtPortProfile;
++        default:
++            return NULL;
++        }
++    default:
+         return NULL;
+-    return iface->data.network.actual->data.direct.virtPortProfile;
++    }
+ }
+ 
+ virNetDevBandwidthPtr
+diff --git a/src/conf/domain_conf.h b/src/conf/domain_conf.h
+index 4a12402..9c8792a 100644
+--- a/src/conf/domain_conf.h
++++ b/src/conf/domain_conf.h
+@@ -41,6 +41,7 @@
+ # include "virnetdevmacvlan.h"
+ # include "sysinfo.h"
+ # include "virnetdevvportprofile.h"
++# include "virnetdevopenvswitch.h"
+ # include "virnetdevbandwidth.h"
+ 
+ /* Different types of hypervisor */
+@@ -594,6 +595,7 @@ struct _virDomainActualNetDef {
+     union {
+         struct {
+             char *brname;
++            virNetDevVPortProfilePtr virtPortProfile;
+         } bridge;
+         struct {
+             char *linkdev;
+@@ -645,6 +647,7 @@ struct _virDomainNetDef {
+         struct {
+             char *brname;
+             char *ipaddr;
++            virNetDevVPortProfilePtr virtPortProfile;
+         } bridge;
+         struct {
+             char *name;
+diff --git a/src/conf/netdev_vport_profile_conf.c b/src/conf/netdev_vport_profile_conf.c
+index b48b2cb..6bc29ba 100644
+--- a/src/conf/netdev_vport_profile_conf.c
++++ b/src/conf/netdev_vport_profile_conf.c
+@@ -35,7 +35,8 @@
+ VIR_ENUM_IMPL(virNetDevVPort, VIR_NETDEV_VPORT_PROFILE_LAST,
+               "none",
+               "802.1Qbg",
+-              "802.1Qbh")
++              "802.1Qbh",
++              "openvswitch")
+ 
+ 
+ virNetDevVPortProfilePtr
+@@ -47,6 +48,7 @@ virNetDevVPortProfileParse(xmlNodePtr node)
+     char *virtPortTypeIDVersion = NULL;
+     char *virtPortInstanceID = NULL;
+     char *virtPortProfileID = NULL;
++    char *virtPortInterfaceID = NULL;
+     virNetDevVPortProfilePtr virtPort = NULL;
+     xmlNodePtr cur = node->children;
+ 
+@@ -76,7 +78,7 @@ virNetDevVPortProfileParse(xmlNodePtr node)
+             virtPortTypeIDVersion = virXMLPropString(cur, "typeidversion");
+             virtPortInstanceID = virXMLPropString(cur, "instanceid");
+             virtPortProfileID = virXMLPropString(cur, "profileid");
+-
++            virtPortInterfaceID = virXMLPropString(cur, "interfaceid");
+             break;
+         }
+ 
+@@ -171,6 +173,33 @@ virNetDevVPortProfileParse(xmlNodePtr node)
+             goto error;
+         }
+         break;
++    case VIR_NETDEV_VPORT_PROFILE_OPENVSWITCH:
++        if (virtPortInterfaceID != NULL) {
++            if (virUUIDParse(virtPortInterfaceID,
++                             virtPort->u.openvswitch.interfaceID)) {
++                virNetDevError(VIR_ERR_XML_ERROR, "%s",
++                               _("cannot parse interfaceid parameter as a uuid"));
++                goto error;
++            }
++        } else {
++            if (virUUIDGenerate(virtPort->u.openvswitch.interfaceID)) {
++                virNetDevError(VIR_ERR_XML_ERROR, "%s",
++                               _("cannot generate a random uuid for interfaceid"));
++                goto error;
++            }
++        }
++        /* profileid is not mandatory for Open vSwitch */
++        if (virtPortProfileID != NULL) {
++            if (virStrcpyStatic(virtPort->u.openvswitch.profileID,
++                                virtPortProfileID) == NULL) {
++                virNetDevError(VIR_ERR_XML_ERROR, "%s",
++                               _("profileid parameter too long"));
++                goto error;
++            }
++        } else {
++            virtPort->u.openvswitch.profileID[0] = '\0';
++        }
++        break;
+ 
+     default:
+         virNetDevError(VIR_ERR_XML_ERROR,
+@@ -225,6 +254,20 @@ virNetDevVPortProfileFormat(virNetDevVPortProfilePtr virtPort,
+                           virtPort->u.virtPort8021Qbh.profileID);
+         break;
+ 
++    case VIR_NETDEV_VPORT_PROFILE_OPENVSWITCH:
++        virUUIDFormat(virtPort->u.openvswitch.interfaceID,
++                      uuidstr);
++        if (virtPort->u.openvswitch.profileID[0] == '\0') {
++            virBufferAsprintf(buf, "  <parameters interfaceid='%s'/>\n",
++                              uuidstr);
++        } else {
++            virBufferAsprintf(buf, "  <parameters interfaceid='%s' "
++                              "profileid='%s'/>\n", uuidstr,
++                              virtPort->u.openvswitch.profileID);
++        }
++
++        break;
++
+     default:
+         virNetDevError(VIR_ERR_XML_ERROR,
+                        _("unexpected virtualport type %d"), virtPort->virtPortType);
+diff --git a/src/libvirt_private.syms b/src/libvirt_private.syms
+index beb8828..9e3573f 100644
+--- a/src/libvirt_private.syms
++++ b/src/libvirt_private.syms
+@@ -1237,6 +1237,11 @@ virNetDevMacVLanCreateWithVPortProfile;
+ virNetDevMacVLanDeleteWithVPortProfile;
+ 
+ 
++# virnetdevopenvswitch.h
++virNetDevOpenvswitchAddPort;
++virNetDevOpenvswitchRemovePort;
++
++
+ # virnetdevtap.h
+ virNetDevTapCreate;
+ virNetDevTapCreateInBridgePort;
+diff --git a/src/lxc/lxc_driver.c b/src/lxc/lxc_driver.c
+index f6f66b3..b6962cf 100644
+--- a/src/lxc/lxc_driver.c
++++ b/src/lxc/lxc_driver.c
+@@ -56,6 +56,7 @@
+ #include "domain_nwfilter.h"
+ #include "network/bridge_driver.h"
+ #include "virnetdev.h"
++#include "virnetdevtap.h"
+ #include "virnodesuspend.h"
+ #include "virtime.h"
+ #include "virtypedparam.h"
+@@ -1105,6 +1106,7 @@ static void lxcVmCleanup(lxc_driver_t *driver,
+     virCgroupPtr cgroup;
+     int i;
+     lxcDomainObjPrivatePtr priv = vm->privateData;
++    virNetDevVPortProfilePtr vport = NULL;
+ 
+     /* now that we know it's stopped call the hook if present */
+     if (virHookPresent(VIR_HOOK_DRIVER_LXC)) {
+@@ -1132,10 +1134,15 @@ static void lxcVmCleanup(lxc_driver_t *driver,
+     priv->monitorWatch = -1;
+ 
+     for (i = 0 ; i < vm->def->nnets ; i++) {
+-        ignore_value(virNetDevSetOnline(vm->def->nets[i]->ifname, false));
+-        ignore_value(virNetDevVethDelete(vm->def->nets[i]->ifname));
+-
+-        networkReleaseActualDevice(vm->def->nets[i]);
++        virDomainNetDefPtr iface = vm->def->nets[i];
++        vport = virDomainNetGetActualVirtPortProfile(iface);
++        ignore_value(virNetDevSetOnline(iface->ifname, false));
++        if (vport && vport->virtPortType == VIR_NETDEV_VPORT_PROFILE_OPENVSWITCH)
++            ignore_value(virNetDevOpenvswitchRemovePort(
++                            virDomainNetGetActualBridgeName(iface),
++                            iface->ifname));
++        ignore_value(virNetDevVethDelete(iface->ifname));
++        networkReleaseActualDevice(iface);
+     }
+ 
+     virDomainConfVMNWFilterTeardown(vm);
+@@ -1165,6 +1172,7 @@ static int lxcSetupInterfaceBridged(virConnectPtr conn,
+     int ret = -1;
+     char *parentVeth;
+     char *containerVeth = NULL;
++    const virNetDevVPortProfilePtr vport = virDomainNetGetActualVirtPortProfile(net);
+ 
+     VIR_DEBUG("calling vethCreate()");
+     parentVeth = net->ifname;
+@@ -1186,7 +1194,11 @@ static int lxcSetupInterfaceBridged(virConnectPtr conn,
+     if (virNetDevSetMAC(containerVeth, net->mac) < 0)
+         goto cleanup;
+ 
+-    if (virNetDevBridgeAddPort(brname, parentVeth) < 0)
++    if (vport && vport->virtPortType == VIR_NETDEV_VPORT_PROFILE_OPENVSWITCH)
++        ret = virNetDevOpenvswitchAddPort(brname, parentVeth, net->mac, vport);
++    else
++        ret = virNetDevBridgeAddPort(brname, parentVeth);
++    if (ret < 0)
+         goto cleanup;
+ 
+     if (virNetDevSetOnline(parentVeth, true) < 0)
+@@ -1377,8 +1389,15 @@ static int lxcSetupInterfaces(virConnectPtr conn,
+ 
+ cleanup:
+     if (ret != 0) {
+-        for (i = 0 ; i < def->nnets ; i++)
+-            networkReleaseActualDevice(def->nets[i]);
++        for (i = 0 ; i < def->nnets ; i++) {
++            virDomainNetDefPtr iface = def->nets[i];
++            virNetDevVPortProfilePtr vport = virDomainNetGetActualVirtPortProfile(iface);
++            if (vport && vport->virtPortType == VIR_NETDEV_VPORT_PROFILE_OPENVSWITCH)
++                ignore_value(virNetDevOpenvswitchRemovePort(
++                                virDomainNetGetActualBridgeName(iface),
++                                iface->ifname));
++            networkReleaseActualDevice(iface);
++        }
+     }
+     return ret;
+ }
+diff --git a/src/network/bridge_driver.c b/src/network/bridge_driver.c
+index 57ebb9f..8575d3e 100644
+--- a/src/network/bridge_driver.c
++++ b/src/network/bridge_driver.c
+@@ -1765,7 +1765,8 @@ networkStartNetworkVirtual(struct network_driver *driver,
+             goto err0;
+         }
+         if (virNetDevTapCreateInBridgePort(network->def->bridge,
+-                                           &macTapIfName, network->def->mac, 0, false, NULL) < 0) {
++                                           &macTapIfName, network->def->mac,
++                                           0, false, NULL, NULL) < 0) {
+             VIR_FREE(macTapIfName);
+             goto err0;
+         }
+diff --git a/src/qemu/qemu_command.c b/src/qemu/qemu_command.c
+index eb16d95..14e4142 100644
+--- a/src/qemu/qemu_command.c
++++ b/src/qemu/qemu_command.c
+@@ -247,7 +247,8 @@ qemuNetworkIfaceConnect(virDomainDefPtr def,
+     memcpy(tapmac, net->mac, VIR_MAC_BUFLEN);
+     tapmac[0] = 0xFE; /* Discourage bridge from using TAP dev MAC */
+     err = virNetDevTapCreateInBridgePort(brname, &net->ifname, tapmac,
+-                                         vnet_hdr, true, &tapfd);
++                                         vnet_hdr, true, &tapfd,
++                                         virDomainNetGetActualVirtPortProfile(net));
+     virDomainAuditNetDevice(def, net, "/dev/net/tun", tapfd >= 0);
+     if (err < 0) {
+         if (template_ifname)
+diff --git a/src/qemu/qemu_hotplug.c b/src/qemu/qemu_hotplug.c
+index 9f2ad48..3dd7c0a 100644
+--- a/src/qemu/qemu_hotplug.c
++++ b/src/qemu/qemu_hotplug.c
+@@ -40,6 +40,7 @@
+ #include "qemu_cgroup.h"
+ #include "locking/domain_lock.h"
+ #include "network/bridge_driver.h"
++#include "virnetdevtap.h"
+ 
+ #define VIR_FROM_THIS VIR_FROM_QEMU
+ 
+@@ -652,6 +653,7 @@ int qemuDomainAttachNetDevice(virConnectPtr conn,
+     int vhostfd = -1;
+     char *nicstr = NULL;
+     char *netstr = NULL;
++    virNetDevVPortProfilePtr vport = NULL;
+     int ret = -1;
+     virDomainDevicePCIAddress guestAddr;
+     int vlan;
+@@ -838,6 +840,11 @@ cleanup:
+         if (iface_connected)
+             virDomainConfNWFilterTeardown(net);
+ 
++        vport = virDomainNetGetActualVirtPortProfile(net);
++        if (vport && vport->virtPortType == VIR_NETDEV_VPORT_PROFILE_OPENVSWITCH)
++            ignore_value(virNetDevOpenvswitchRemovePort(
++                            virDomainNetGetActualBridgeName(net), net->ifname));
++
+         networkReleaseActualDevice(net);
+     }
+ 
+@@ -1833,6 +1840,7 @@ int qemuDomainDetachNetDevice(struct qemud_driver *driver,
+     qemuDomainObjPrivatePtr priv = vm->privateData;
+     int vlan;
+     char *hostnet_name = NULL;
++    virNetDevVPortProfilePtr vport = NULL;
+ 
+     for (i = 0 ; i < vm->def->nnets ; i++) {
+         virDomainNetDefPtr net = vm->def->nets[i];
+@@ -1938,6 +1946,12 @@ int qemuDomainDetachNetDevice(struct qemud_driver *driver,
+         }
+     }
+ 
++    vport = virDomainNetGetActualVirtPortProfile(detach);
++    if (vport && vport->virtPortType == VIR_NETDEV_VPORT_PROFILE_OPENVSWITCH)
++        ignore_value(virNetDevOpenvswitchRemovePort(
++                        virDomainNetGetActualBridgeName(detach),
++                        detach->ifname));
++
+     networkReleaseActualDevice(detach);
+     if (vm->def->nnets > 1) {
+         memmove(vm->def->nets + i,
+diff --git a/src/qemu/qemu_process.c b/src/qemu/qemu_process.c
+index 6f07564..939a83d 100644
+--- a/src/qemu/qemu_process.c
++++ b/src/qemu/qemu_process.c
+@@ -62,6 +62,7 @@
+ #include "network/bridge_driver.h"
+ #include "uuid.h"
+ #include "virtime.h"
++#include "virnetdevtap.h"
+ 
+ #define VIR_FROM_THIS VIR_FROM_QEMU
+ 
+@@ -3638,6 +3639,7 @@ void qemuProcessStop(struct qemud_driver *driver,
+     qemuDomainObjPrivatePtr priv = vm->privateData;
+     virErrorPtr orig_err;
+     virDomainDefPtr def;
++    virNetDevVPortProfilePtr vport = NULL;
+     int i;
+     int logfile = -1;
+     char *timestamp;
+@@ -3765,6 +3767,12 @@ void qemuProcessStop(struct qemud_driver *driver,
+         /* release the physical device (or any other resources used by
+          * this interface in the network driver
+          */
++        vport = virDomainNetGetActualVirtPortProfile(net);
++        if (vport && vport->virtPortType == VIR_NETDEV_VPORT_PROFILE_OPENVSWITCH)
++            ignore_value(virNetDevOpenvswitchRemovePort(
++                                       virDomainNetGetActualBridgeName(net),
++                                       net->ifname));
++
+         networkReleaseActualDevice(net);
+     }
+ 
+diff --git a/src/uml/uml_conf.c b/src/uml/uml_conf.c
+index 316d558..dbbbfda 100644
+--- a/src/uml/uml_conf.c
++++ b/src/uml/uml_conf.c
+@@ -142,7 +142,8 @@ umlConnectTapDevice(virConnectPtr conn,
+     memcpy(tapmac, net->mac, VIR_MAC_BUFLEN);
+     tapmac[0] = 0xFE; /* Discourage bridge from using TAP dev MAC */
+     if (virNetDevTapCreateInBridgePort(bridge, &net->ifname, tapmac,
+-                                       0, true, NULL) < 0) {
++                                       0, true, NULL,
++                                       virDomainNetGetActualVirtPortProfile(net)) < 0) {
+         if (template_ifname)
+             VIR_FREE(net->ifname);
+         goto error;
+diff --git a/src/util/virnetdevopenvswitch.c b/src/util/virnetdevopenvswitch.c
+new file mode 100644
+index 0000000..e427c94
+--- /dev/null
++++ b/src/util/virnetdevopenvswitch.c
+@@ -0,0 +1,134 @@
++/*
++ * Copyright (C) 2012 Nicira, Inc.
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public
++ * License as published by the Free Software Foundation; either
++ * version 2.1 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General Public
++ * License along with this library; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
++ *
++ * Authors:
++ *     Dan Wendlandt <dan@nicira.com>
++ *     Kyle Mestery <kmestery@cisco.com>
++ *     Ansis Atteka <aatteka@nicira.com>
++ */
++
++#include <config.h>
++
++#include "virnetdevopenvswitch.h"
++#include "command.h"
++#include "memory.h"
++#include "virterror_internal.h"
++#include "virmacaddr.h"
++
++#define VIR_FROM_THIS VIR_FROM_NONE
++
++/**
++ * virNetDevOpenvswitchAddPort:
++ * @brname: the bridge name
++ * @ifname: the network interface name
++ * @macaddr: the mac address of the virtual interface
++ * @ovsport: the ovs specific fields
++ *
++ * Add an interface to the OVS bridge
++ *
++ * Returns 0 in case of success or -1 in case of failure.
++ */
++int virNetDevOpenvswitchAddPort(const char *brname, const char *ifname,
++                                   const unsigned char *macaddr,
++                                   virNetDevVPortProfilePtr ovsport)
++{
++    int ret = -1;
++    virCommandPtr cmd = NULL;
++    char macaddrstr[VIR_MAC_STRING_BUFLEN];
++    char uuidstr[VIR_UUID_STRING_BUFLEN];
++    char *attachedmac_ex_id = NULL;
++    char *ifaceid_ex_id = NULL;
++    char *profile_ex_id = NULL;
++
++    virMacAddrFormat(macaddr, macaddrstr);
++    virUUIDFormat(ovsport->u.openvswitch.interfaceID, uuidstr);
++
++    if (virAsprintf(&attachedmac_ex_id, "external-ids:attached-mac=\"%s\"",
++                    macaddrstr) < 0)
++        goto cleanup;
++    if (virAsprintf(&ifaceid_ex_id, "external-ids:iface-id=\"%s\"",
++                    uuidstr) < 0)
++        goto cleanup;
++    if (ovsport->u.openvswitch.profileID[0] != '\0') {
++        if (virAsprintf(&profile_ex_id, "external-ids:port-profile=\"%s\"",
++                        ovsport->u.openvswitch.profileID) < 0)
++            goto cleanup;
++    }
++
++    cmd = virCommandNew(OVSVSCTL);
++    if (ovsport->u.openvswitch.profileID[0] == '\0') {
++        virCommandAddArgList(cmd, "--", "--may-exist", "add-port",
++                        brname, ifname,
++                        "--", "set", "Interface", ifname, attachedmac_ex_id,
++                        "--", "set", "Interface", ifname, ifaceid_ex_id,
++                        "--", "set", "Interface", ifname,
++                        "external-ids:iface-status=active",
++                        NULL);
++    } else {
++        virCommandAddArgList(cmd, "--", "--may-exist", "add-port",
++                        brname, ifname,
++                        "--", "set", "Interface", ifname, attachedmac_ex_id,
++                        "--", "set", "Interface", ifname, ifaceid_ex_id,
++                        "--", "set", "Interface", ifname, profile_ex_id,
++                        "--", "set", "Interface", ifname,
++                        "external-ids:iface-status=active",
++                        NULL);
++    }
++
++    if (virCommandRun(cmd, NULL) < 0) {
++        virReportSystemError(VIR_ERR_INTERNAL_ERROR,
++                             _("Unable to add port %s to OVS bridge %s"),
++                             ifname, brname);
++        goto cleanup;
++    }
++    ret = 0;
++
++    cleanup:
++        VIR_FREE(attachedmac_ex_id);
++        VIR_FREE(ifaceid_ex_id);
++        VIR_FREE(profile_ex_id);
++        virCommandFree(cmd);
++        return ret;
++}
++
++/**
++ * virNetDevOpenvswitchRemovePort:
++ * @ifname: the network interface name
++ *
++ * Deletes an interface from a OVS bridge
++ *
++ * Returns 0 in case of success or -1 in case of failure.
++ */
++int virNetDevOpenvswitchRemovePort(const char *brname ATTRIBUTE_UNUSED, const char *ifname)
++{
++    int ret = -1;
++    virCommandPtr cmd = NULL;
++
++    cmd = virCommandNew(OVSVSCTL);
++    virCommandAddArgList(cmd, "--", "--if-exists", "del-port", ifname, NULL);
++
++    if (virCommandRun(cmd, NULL) < 0) {
++        virReportSystemError(VIR_ERR_INTERNAL_ERROR,
++                             _("Unable to delete port %s from OVS"), ifname);
++        goto cleanup;
++    }
++    ret = 0;
++
++    cleanup:
++        virCommandFree(cmd);
++        return ret;
++}
+diff --git a/src/util/virnetdevopenvswitch.h b/src/util/virnetdevopenvswitch.h
+new file mode 100644
+index 0000000..bca4c3e
+--- /dev/null
++++ b/src/util/virnetdevopenvswitch.h
+@@ -0,0 +1,42 @@
++/*
++ * Copyright (C) 2012 Nicira, Inc.
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public
++ * License as published by the Free Software Foundation; either
++ * version 2.1 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General Public
++ * License along with this library; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
++ *
++ * Authors:
++ *     Dan Wendlandt <dan@nicira.com>
++ *     Kyle Mestery <kmestery@cisco.com>
++ *     Ansis Atteka <aatteka@nicira.com>
++ */
++
++#ifndef __VIR_NETDEV_OPENVSWITCH_H__
++# define __VIR_NETDEV_OPENVSWITCH_H__
++
++# include "internal.h"
++# include "util.h"
++# include "virnetdevvportprofile.h"
++
++
++int virNetDevOpenvswitchAddPort(const char *brname,
++                                const char *ifname,
++                                const unsigned char *macaddr,
++                                virNetDevVPortProfilePtr ovsport)
++    ATTRIBUTE_NONNULL(1) ATTRIBUTE_NONNULL(2) ATTRIBUTE_NONNULL(3)
++    ATTRIBUTE_RETURN_CHECK;
++
++int virNetDevOpenvswitchRemovePort(const char *brname, const char *ifname)
++    ATTRIBUTE_NONNULL(2) ATTRIBUTE_RETURN_CHECK;
++
++#endif /* __VIR_NETDEV_OPENVSWITCH_H__ */
+diff --git a/src/util/virnetdevtap.c b/src/util/virnetdevtap.c
+index 2ed53c6..0fce08d 100644
+--- a/src/util/virnetdevtap.c
++++ b/src/util/virnetdevtap.c
+@@ -25,6 +25,7 @@
+ #include "virnetdevtap.h"
+ #include "virnetdev.h"
+ #include "virnetdevbridge.h"
++#include "virnetdevopenvswitch.h"
+ #include "virterror_internal.h"
+ #include "virfile.h"
+ #include "virterror_internal.h"
+@@ -249,6 +250,7 @@ int virNetDevTapDelete(const char *ifname ATTRIBUTE_UNUSED)
+  * @macaddr: desired MAC address (VIR_MAC_BUFLEN long)
+  * @vnet_hdr: whether to try enabling IFF_VNET_HDR
+  * @tapfd: file descriptor return value for the new tap device
++ * @virtPortProfile: bridge/port specific configuration
+  *
+  * This function creates a new tap device on a bridge. @ifname can be either
+  * a fixed name or a name template with '%d' for dynamic name allocation.
+@@ -265,7 +267,8 @@ int virNetDevTapCreateInBridgePort(const char *brname,
+                                    const unsigned char *macaddr,
+                                    int vnet_hdr,
+                                    bool up,
+-                                   int *tapfd)
++                                   int *tapfd,
++                                   virNetDevVPortProfilePtr virtPortProfile)
+ {
+     if (virNetDevTapCreate(ifname, vnet_hdr, tapfd) < 0)
+         return -1;
+@@ -286,8 +289,15 @@ int virNetDevTapCreateInBridgePort(const char *brname,
+     if (virNetDevSetMTUFromDevice(*ifname, brname) < 0)
+         goto error;
+ 
+-    if (virNetDevBridgeAddPort(brname, *ifname) < 0)
+-        goto error;
++    if (virtPortProfile) {
++        if (virNetDevOpenvswitchAddPort(brname, *ifname, macaddr,
++                                        virtPortProfile) < 0) {
++            goto error;
++        }
++    } else {
++        if (virNetDevBridgeAddPort(brname, *ifname) < 0)
++            goto error;
++    }
+ 
+     if (virNetDevSetOnline(*ifname, up) < 0)
+         goto error;
+diff --git a/src/util/virnetdevtap.h b/src/util/virnetdevtap.h
+index fb35ac5..918f3dc 100644
+--- a/src/util/virnetdevtap.h
++++ b/src/util/virnetdevtap.h
+@@ -24,6 +24,7 @@
+ # define __VIR_NETDEV_TAP_H__
+ 
+ # include "internal.h"
++# include "virnetdevvportprofile.h"
+ 
+ int virNetDevTapCreate(char **ifname,
+                        int vnet_hdr,
+@@ -38,8 +39,10 @@ int virNetDevTapCreateInBridgePort(const char *brname,
+                                    const unsigned char *macaddr,
+                                    int vnet_hdr,
+                                    bool up,
+-                                   int *tapfd)
++                                   int *tapfd,
++                                   virNetDevVPortProfilePtr virtPortProfile)
+     ATTRIBUTE_NONNULL(1) ATTRIBUTE_NONNULL(2) ATTRIBUTE_NONNULL(3)
+     ATTRIBUTE_RETURN_CHECK;
+ 
++
+ #endif /* __VIR_NETDEV_TAP_H__ */
+diff --git a/src/util/virnetdevvportprofile.c b/src/util/virnetdevvportprofile.c
+index faadc3a..67fd7bc 100644
+--- a/src/util/virnetdevvportprofile.c
++++ b/src/util/virnetdevvportprofile.c
+@@ -968,6 +968,7 @@ virNetDevVPortProfileAssociate(const char *macvtap_ifname,
+ 
+     switch (virtPort->virtPortType) {
+     case VIR_NETDEV_VPORT_PROFILE_NONE:
++    case VIR_NETDEV_VPORT_PROFILE_OPENVSWITCH:
+     case VIR_NETDEV_VPORT_PROFILE_LAST:
+         break;
+ 
+@@ -1027,6 +1028,7 @@ virNetDevVPortProfileDisassociate(const char *macvtap_ifname,
+ 
+     switch (virtPort->virtPortType) {
+     case VIR_NETDEV_VPORT_PROFILE_NONE:
++    case VIR_NETDEV_VPORT_PROFILE_OPENVSWITCH:
+     case VIR_NETDEV_VPORT_PROFILE_LAST:
+         break;
+ 
+diff --git a/src/util/virnetdevvportprofile.h b/src/util/virnetdevvportprofile.h
+index 7a8d81f..ec2d06d 100644
+--- a/src/util/virnetdevvportprofile.h
++++ b/src/util/virnetdevvportprofile.h
+@@ -35,6 +35,7 @@ enum virNetDevVPortProfile {
+     VIR_NETDEV_VPORT_PROFILE_NONE,
+     VIR_NETDEV_VPORT_PROFILE_8021QBG,
+     VIR_NETDEV_VPORT_PROFILE_8021QBH,
++    VIR_NETDEV_VPORT_PROFILE_OPENVSWITCH,
+ 
+     VIR_NETDEV_VPORT_PROFILE_LAST,
+ };
+@@ -54,7 +55,7 @@ enum virNetDevVPortProfileOp {
+ };
+ VIR_ENUM_DECL(virNetDevVPortProfileOp)
+ 
+-/* profile data for macvtap (VEPA) */
++/* profile data for macvtap (VEPA) and openvswitch */
+ typedef struct _virNetDevVPortProfile virNetDevVPortProfile;
+ typedef virNetDevVPortProfile *virNetDevVPortProfilePtr;
+ struct _virNetDevVPortProfile {
+@@ -69,6 +70,10 @@ struct _virNetDevVPortProfile {
+         struct {
+             char          profileID[LIBVIRT_IFLA_VF_PORT_PROFILE_MAX];
+         } virtPort8021Qbh;
++        struct {
++            unsigned char interfaceID[VIR_UUID_BUFLEN];
++            char          profileID[LIBVIRT_IFLA_VF_PORT_PROFILE_MAX];
++        } openvswitch;
+     } u;
+ };
+ 
+-- 
+1.7.1
+
