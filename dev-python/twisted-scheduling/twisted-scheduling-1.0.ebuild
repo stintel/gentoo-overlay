@@ -1,26 +1,36 @@
-# Copyright 1999-2011 Gentoo Foundation
+# Copyright 1999-2009 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-python/libcloud/libcloud-0.5.2.ebuild,v 1.1 2011/07/25 15:57:56 patrick Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-python/twistedsnmp/twistedsnmp-0.3.13.ebuild,v 1.2 2009/11/28 18:14:10 arfrever Exp $
 
-EAPI="3"
-
-PYTHON_DEPEND="2"
+EAPI="2"
 SUPPORT_PYTHON_ABIS="1"
-RESTRICT_PYTHON_ABIS="3.*"
 
 inherit distutils
 
-DESCRIPTION="Unified Interface to the Cloud - python support libs"
+MY_PN="twisted.scheduling"
+MY_P="${MY_PN}-${PV}"
+
+DESCRIPTION="SNMP protocols and APIs for use with the Twisted networking framework"
 HOMEPAGE="http://code.google.com/p/meercat/"
-#SRC_URI="mirror://apache/${PN}/apache-${P}.tar.bz2"
 SRC_URI="http://pypi.python.org/packages/source/t/twisted.scheduling/twisted.scheduling-1.0.tar.gz"
 
-LICENSE="GPLv2"
+
+LICENSE="BSD"
 SLOT="0"
-KEYWORDS="amd64 x86"
-IUSE="doc"
+KEYWORDS="~amd64 ~ppc ~x86"
+IUSE=""
 
-RDEPEND=""
-DEPEND=""
+RDEPEND=">=dev-python/twisted-1.3"
+DEPEND="${RDEPEND}"
+RESTRICT_PYTHON_ABIS="3.*"
 
-#S="${WORKDIR}/apache-${P}"
+S="${WORKDIR}/${MY_P}"
+
+src_prepare() {
+	distutils_src_prepare
+
+}
+
+src_install() {
+	distutils_src_install
+}
