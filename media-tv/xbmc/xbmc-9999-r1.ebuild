@@ -129,8 +129,7 @@ src_unpack() {
 
 src_prepare() {
 	##
-	#epatch "${FILESDIR}/xbmc-pvr2-libdir.diff"
-	epatch "${FILESDIR}/xbmc-9999-libpng-1.5.patch"
+	#epatch "${FILESDIR}/xbmc-9999-libpng-1.5.patch"
 
 	# some dirs ship generated autotools, some dont
 	local d
