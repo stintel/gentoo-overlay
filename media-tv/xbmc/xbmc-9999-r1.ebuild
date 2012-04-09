@@ -7,8 +7,13 @@ EAPI="3"
 inherit eutils python
 
 if use pvr ; then
-	EGIT_REPO_URI="git://github.com/opdenkamp/xbmc.git"
-	EGIT_BRANCH="pvr-ppa"
+    if use ae ; then
+		EGIT_REPO_URI="git://github.com/opdenkamp/xbmc.git"
+		EGIT_BRANCH="Eden-pvr-cec-AE"
+	else
+		EGIT_REPO_URI="git://github.com/opdenkamp/xbmc.git"
+		EGIT_BRANCH="pvr-ppa"
+	fi
 else
 	EGIT_REPO_URI="git://github.com/xbmc/xbmc.git"
 	EGIT_BRANCH="master"
