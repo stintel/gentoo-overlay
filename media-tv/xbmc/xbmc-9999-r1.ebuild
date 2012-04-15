@@ -43,7 +43,8 @@ HOMEPAGE="http://xbmc.org/"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="ae airplay alsa altivec avahi bluetooth bluray cec css debug goom joystick midi mysql profile +projectm pulseaudio pvr +rsxs rtmp +samba sse sse2 udev vaapi vdpau webserver +xrandr"
+IUSE="ae airplay alsa altivec avahi bluetooth bluray cec css debug goom joystick midi mysql
+	nfs profile +projectm pulseaudio pvr +rsxs rtmp +samba sse sse2 udev usb vaapi vdpau webserver +xrandr"
 REQUIRED_USE="pvr? ( mysql )"
 
 COMMON_DEPEND="virtual/opengl
@@ -95,10 +96,12 @@ COMMON_DEPEND="virtual/opengl
 	avahi? ( net-dns/avahi )
 	webserver? ( net-libs/libmicrohttpd )
 	net-misc/curl
+	nfs? ( net-fs/libnfs )
 	samba? ( >=net-fs/samba-3.4.6[smbclient] )
 	bluetooth? ( net-wireless/bluez )
 	sys-apps/dbus
 	sys-libs/zlib
+	usb? ( virtual/libusb )
 	mysql? ( virtual/mysql )
 	x11-apps/xdpyinfo
 	x11-apps/mesa-progs
