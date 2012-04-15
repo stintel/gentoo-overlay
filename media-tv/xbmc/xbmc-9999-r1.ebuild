@@ -2,7 +2,11 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/media-tv/xbmc/xbmc-9999.ebuild,v 1.44 2009/12/19 20:44:11 vapier Exp $
 
-EAPI="3"
+EAPI="4"
+
+# Does not work with py3 here
+# It might work with py:2.5 but I didn't test that
+PYTHON_DEPEND="2:2.6"
 
 inherit eutils python
 
@@ -39,7 +43,8 @@ HOMEPAGE="http://xbmc.org/"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="ae airplay alsa altivec avahi bluray css debug goom joystick libcec midi profile +projectm pulseaudio pvr +rsxs rtmp +samba sse sse2 udev vaapi vdpau webserver +xrandr"
+IUSE="ae airplay alsa altivec avahi bluetooth bluray cec css debug goom joystick midi mysql profile +projectm pulseaudio pvr +rsxs rtmp +samba sse sse2 udev vaapi vdpau webserver +xrandr"
+REQUIRED_USE="pvr? ( mysql )"
 
 COMMON_DEPEND="virtual/opengl
 	app-arch/bzip2
@@ -51,7 +56,7 @@ COMMON_DEPEND="virtual/opengl
 	dev-libs/boost
 	dev-libs/fribidi
 	dev-libs/libcdio[-minimal]
-	libcec? ( dev-libs/libcec )
+	cec? ( dev-libs/libcec )
 	dev-libs/libpcre[cxx]
 	>=dev-libs/lzo-2.04
 	dev-libs/yajl
@@ -85,18 +90,19 @@ COMMON_DEPEND="virtual/opengl
 	media-libs/tiff
 	pulseaudio? ( media-sound/pulseaudio )
 	media-sound/wavpack
-	>=virtual/ffmpeg-0.6
+	>=virtual/ffmpeg-0.6[encode]
 	rtmp? ( media-video/rtmpdump )
 	avahi? ( net-dns/avahi )
 	webserver? ( net-libs/libmicrohttpd )
 	net-misc/curl
 	samba? ( >=net-fs/samba-3.4.6[smbclient] )
+	bluetooth? ( net-wireless/bluez )
 	sys-apps/dbus
 	sys-libs/zlib
-	virtual/mysql
+	mysql? ( virtual/mysql )
 	x11-apps/xdpyinfo
 	x11-apps/mesa-progs
-	vaapi? ( x11-libs/libva )
+	vaapi? ( x11-libs/libva[opengl] )
 	vdpau? (
 		|| ( x11-libs/libvdpau >=x11-drivers/nvidia-drivers-180.51 )
 		virtual/ffmpeg[vdpau]
@@ -105,12 +111,17 @@ COMMON_DEPEND="virtual/opengl
 	xrandr? ( x11-libs/libXrandr )
 	x11-libs/libXrender"
 RDEPEND="${COMMON_DEPEND}
-	   udev? ( sys-fs/udisks sys-power/upower )"
+	udev? (	sys-fs/udisks:0 sys-power/upower )"
 DEPEND="${COMMON_DEPEND}
 	dev-util/gperf
 	x11-proto/xineramaproto
 	dev-util/cmake
 	x86? ( dev-lang/nasm )"
+
+pkg_setup() {
+	python_set_active_version 2
+	python_pkg_setup
+}
 
 src_unpack() {
 	if [[ ${PV} == "9999" ]] ; then
@@ -130,21 +141,28 @@ src_unpack() {
 src_prepare() {
 	##
 	#epatch "${FILESDIR}/xbmc-9999-libpng-1.5.patch"
+	epatch "${FILESDIR}"/${PN}-9999-nomythtv.patch
+	epatch "${FILESDIR}"/${PN}-9999-no-arm-flags.patch #400617
+	# The mythtv patch touches configure.ac, so force a regen
+	rm -f configure
 
 	# some dirs ship generated autotools, some dont
 	local d
 	for d in \
 		 . \
-		lib/{libdvd/{libdvdcss,libdvdread,libdvdnav}/,cpluff,libapetag,libid3tag/libid3tag} \
+		lib/{libdvd/lib*/,cpluff,libapetag,libid3tag/libid3tag} \
 		xbmc/screensavers/rsxs-* \
 		xbmc/visualizations/Goom/goom2k4-0
 	do
 		#[[ -e ${d}/configure ]] && continue
 		pushd ${d} >/dev/null
-		einfo "Generating autotools in ${d}"
 		eautoreconf
 		popd >/dev/null
 	done
+
+	# Disable internal func checks as our USE/DEPEND
+	# stuff handles this just fine already #408395
+	export ac_cv_lib_avcodec_ff_vdpau_vc1_decode_picture=yes
 
 	local squish #290564
 	use altivec && squish="-DSQUISH_USE_ALTIVEC=1 -maltivec"
@@ -158,11 +176,6 @@ src_prepare() {
 	# Fix XBMC's final version string showing as "exported"
 	# instead of the SVN revision number.
 	export HAVE_GIT=no GIT_REV=${EGIT_VERSION:-exported}
-
-	# Avoid lsb-release dependency
-	sed -i \
-		-e 's:lsb_release -d:cat /etc/gentoo-release:' \
-		xbmc/utils/SystemInfo.cpp || die
 
 	# avoid long delays when powerkit isn't running #348580
 	sed -i \
@@ -180,6 +193,8 @@ src_configure() {
 	export ac_cv_path_LATEX=no
 	# Avoid help2man
 	export HELP2MAN=$(type -P help2man || echo true)
+	# No configure flage for this #403561
+	export ac_cv_lib_bluetooth_hci_devid=$(usex bluetooth)
 
 	econf \
 		--docdir=/usr/share/doc/${PF} \
@@ -190,16 +205,18 @@ src_configure() {
 		$(use_enable airplay) \
 		$(use_enable avahi) \
 		$(use_enable bluray libbluray) \
+		$(use_enable cec libcec) \
 		$(use_enable css dvdcss) \
 		$(use_enable debug) \
 		$(use_enable goom) \
 		--disable-hal \
 		$(use_enable joystick) \
-		$(use_enable libcec) \
 		$(use_enable midi mid) \
+		$(use_enable mysql) \
 		$(use_enable profile profiling) \
 		$(use_enable projectm) \
 		$(use_enable pulseaudio pulse) \
+		$(use_enable pvr mythtv) \
 		$(use_enable rsxs) \
 		$(use_enable rtmp) \
 		$(use_enable samba) \
@@ -210,8 +227,8 @@ src_configure() {
 }
 
 src_install() {
-	emake install DESTDIR="${D}" || die
-	prepalldocs
+	default
+	rm "${ED}"/usr/share/doc/*/{LICENSE.GPL,copying.txt}*
 
 	insinto /usr/share/applications
 	doins tools/Linux/xbmc.desktop
