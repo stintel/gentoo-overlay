@@ -13,7 +13,7 @@ RDEPEND=""
 DEPEND="${RDEPEND}"
 PDEPEND=""
 IUSE=""
-KEYWORDS="~amd64 ~x86"
+KEYWORDS=""
 SLOT=0
 
 EGIT_REPO_URI="http://github.com/Pulse-Eight/libcec.git"
