@@ -149,7 +149,7 @@ src_prepare() {
 	local d
 	for d in \
 		 . \
-		lib/{libdvd/lib*/,cpluff,libapetag,libid3tag/libid3tag} \
+		lib/{cpluff,libapetag,libid3tag/libid3tag,libdvd/libdvd{css,read,nav}} \
 		xbmc/screensavers/rsxs-* \
 		xbmc/visualizations/Goom/goom2k4-0
 	do
@@ -158,6 +158,8 @@ src_prepare() {
 		eautoreconf
 		popd >/dev/null
 	done
+
+	find . -depth -type d -name "autom4te.cache" -exec rm -rf {} \;
 
 	# Disable internal func checks as our USE/DEPEND
 	# stuff handles this just fine already #408395
