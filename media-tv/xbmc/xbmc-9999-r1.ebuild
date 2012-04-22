@@ -16,7 +16,7 @@ if use pvr ; then
 		EGIT_BRANCH="Eden-pvr-cec-AE"
 	else
 		EGIT_REPO_URI="git://github.com/opdenkamp/xbmc.git"
-		EGIT_BRANCH="pvr-ppa"
+		EGIT_BRANCH="Eden-pvr"
 	fi
 else
 	EGIT_REPO_URI="git://github.com/xbmc/xbmc.git"
