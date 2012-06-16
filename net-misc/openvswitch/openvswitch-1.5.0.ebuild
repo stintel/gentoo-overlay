@@ -6,7 +6,7 @@ EAPI=4
 
 PYTHON_DEPEND="monitor? 2"
 
-inherit autotools linux-mod linux-info python
+inherit linux-mod linux-info python
 
 DESCRIPTION="Production quality, multilayer virtual switch."
 HOMEPAGE="http://openvswitch.org"
@@ -18,7 +18,7 @@ KEYWORDS="~amd64"
 IUSE="debug +modules monitor +pyside +ssl"
 
 RDEPEND="ssl? ( dev-libs/openssl )
-	monitor? ( dev-python/twisted
+		monitor? ( dev-python/twisted
 		dev-python/twisted-conch
 		pyside? ( dev-python/pyside )
 		!pyside? ( dev-python/PyQt4 )
