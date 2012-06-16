@@ -6,7 +6,7 @@ EAPI=4
 
 PYTHON_DEPEND="monitor? 2"
 
-inherit linux-mod linux-info python
+inherit autotools linux-mod linux-info python
 
 DESCRIPTION="Production quality, multilayer virtual switch."
 HOMEPAGE="http://openvswitch.org"
@@ -34,16 +34,20 @@ pkg_setup() {
 }
 
 src_configure() {
+	local myconf
 	set_arch_to_kernel
 	use monitor || export ovs_cv_python="no"
 	use pyside || export ovs_cv_pyuic4="no"
+	if use modules ; then
+		myconf="--with-linux ${KERNEL_DIR}"
+	fi
 	econf \
 		--with-rundir=/var/run/openvswitch \
 		--with-logdir=/var/log/openvswitch \
 		--with-pkidir=/etc/openvswitch/pki \
-		$(use_with modules linux "${KERNEL_DIR}") \
 		$(use_enable ssl) \
-		$(use_enable !debug ndebug)
+		$(use_enable !debug ndebug) \
+		${myconf}
 }
 
 src_compile() {
@@ -53,8 +57,10 @@ src_compile() {
 src_install() {
 	default
 
-	MODULE_NAMES="openvswitch_mod(misc:${S}:datapath/linux/) brcompat_mod(misc:${S}:datapath/linux/)"
-	linux-mod_src_install
+	if use modules ; then
+		MODULE_NAMES="openvswitch_mod(misc:${S}:datapath/linux/) brcompat_mod(misc:${S}:datapath/linux/)"
+		linux-mod_src_install
+	fi
 
 	keepdir /var/log/openvswitch
 	keepdir /etc/openvswitch/pki
