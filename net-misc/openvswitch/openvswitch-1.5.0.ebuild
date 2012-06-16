@@ -39,7 +39,7 @@ src_configure() {
 	use monitor || export ovs_cv_python="no"
 	use pyside || export ovs_cv_pyuic4="no"
 	if use modules ; then
-		myconf="--with-linux ${KERNEL_DIR}"
+		myconf="--with-linux=${KERNEL_DIR}"
 	fi
 	econf \
 		--with-rundir=/var/run/openvswitch \
@@ -47,7 +47,7 @@ src_configure() {
 		--with-pkidir=/etc/openvswitch/pki \
 		$(use_enable ssl) \
 		$(use_enable !debug ndebug) \
-		${myconf}
+		"${myconf}"
 }
 
 src_compile() {
