@@ -60,6 +60,7 @@ COMMON_DEPEND="virtual/opengl
 	cec? ( dev-libs/libcec )
 	dev-libs/libpcre[cxx]
 	>=dev-libs/lzo-2.04
+	dev-libs/tinyxml
 	dev-libs/yajl
 	>=dev-python/pysqlite-2
 	dev-python/simplejson
@@ -91,6 +92,7 @@ COMMON_DEPEND="virtual/opengl
 	media-libs/tiff
 	pulseaudio? ( media-sound/pulseaudio )
 	media-sound/wavpack
+	|| ( media-libs/libpostproc <media-video/libav-0.8.2-r1 media-video/ffmpeg )
 	>=virtual/ffmpeg-0.6[encode]
 	rtmp? ( media-video/rtmpdump )
 	avahi? ( net-dns/avahi )
@@ -161,8 +163,6 @@ src_prepare() {
 		eautoreconf
 		popd >/dev/null
 	done
-
-	find . -depth -type d -name "autom4te.cache" -exec rm -rf {} \;
 
 	# Disable internal func checks as our USE/DEPEND
 	# stuff handles this just fine already #408395
@@ -238,7 +238,7 @@ src_install() {
 
 	insinto /usr/share/applications
 	doins tools/Linux/xbmc.desktop
-	doicon tools/Linux/xbmc.png
+	newicon tools/Linux/xbmc-48x48.png xbmc.png
 
 	insinto "$(python_get_sitedir)" #309885
 	doins tools/EventClients/lib/python/xbmcclient.py || die
