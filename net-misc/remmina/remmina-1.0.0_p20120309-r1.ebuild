@@ -50,7 +50,7 @@ RDEPEND+="
 DOCS=( README )
 
 src_prepare() {
-	epatch "${FILESDIR}/${P}-fix-rdp-cliprdr.patch"
+	epatch "${FILESDIR}/reminna-1.0.0-fix-rdp-cliprdr.patch"
 }
 
 src_configure() {
