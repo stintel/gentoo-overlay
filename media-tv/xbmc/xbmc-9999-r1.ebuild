@@ -16,11 +16,12 @@ if use pvr ; then
 else
 	EGIT_REPO_URI="git://github.com/xbmc/xbmc.git"
 	EGIT_BRANCH="master"
+	EGIT_COMMIT="5dad33f680b894db4dd75673e048f04f763564d0"
+	EGIT_PATCHES=(
+		"${FILESDIR}/xbmc-9213ab6847e78007f8083b92794150397ffdc2f3.diff"
+	)
 fi
 
-EGIT_PATCHES=(
-#"${FILESDIR}/playercontrol_partymode_fix.diff"
-)
 
 if [[ ${PV} == "9999" ]] ; then
 	inherit git-2 autotools
