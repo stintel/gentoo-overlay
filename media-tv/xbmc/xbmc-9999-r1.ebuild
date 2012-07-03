@@ -17,9 +17,6 @@ else
 	EGIT_REPO_URI="git://github.com/xbmc/xbmc.git"
 	EGIT_BRANCH="master"
 	EGIT_COMMIT="5dad33f680b894db4dd75673e048f04f763564d0"
-	EGIT_PATCHES=(
-		"${FILESDIR}/xbmc-9213ab6847e78007f8083b92794150397ffdc2f3.diff"
-	)
 fi
 
 
@@ -141,8 +138,7 @@ src_unpack() {
 
 src_prepare() {
 	##
-	#epatch "${FILESDIR}"/${PN}-9999-nomythtv.patch
-	#epatch "${FILESDIR}"/${PN}-9999-no-arm-flags.patch #400617
+	epatch "${FILESDIR}/xbmc-9213ab6847e78007f8083b92794150397ffdc2f3.diff"
 	# The mythtv patch touches configure.ac, so force a regen
 	rm -f configure
 
