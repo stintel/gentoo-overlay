@@ -11,13 +11,8 @@ PYTHON_DEPEND="2:2.6"
 inherit eutils python
 
 if use pvr ; then
-    if use ae ; then
-		EGIT_REPO_URI="git://github.com/opdenkamp/xbmc.git"
-		EGIT_BRANCH="Eden-pvr-cec-AE"
-	else
-		EGIT_REPO_URI="git://github.com/opdenkamp/xbmc.git"
-		EGIT_BRANCH="Eden-pvr"
-	fi
+	EGIT_REPO_URI="git://github.com/opdenkamp/xbmc.git"
+	EGIT_BRANCH="Eden-pvr"
 else
 	EGIT_REPO_URI="git://github.com/xbmc/xbmc.git"
 	EGIT_BRANCH="master"
@@ -43,7 +38,7 @@ HOMEPAGE="http://xbmc.org/"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="ae airplay alsa altivec avahi bluetooth bluray cec css debug goom joystick midi mysql
+IUSE="airplay alsa altivec avahi bluetooth bluray cec css debug goom joystick midi mysql
 	nfs profile +projectm pulseaudio pvr +rsxs rtmp +samba sse sse2 udev usb vaapi vdpau webserver +xrandr"
 REQUIRED_USE="pvr? ( mysql )"
 
