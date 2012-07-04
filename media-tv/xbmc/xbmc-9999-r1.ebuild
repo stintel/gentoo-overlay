@@ -19,7 +19,6 @@ else
 	EGIT_COMMIT="5dad33f680b894db4dd75673e048f04f763564d0"
 fi
 
-
 if [[ ${PV} == "9999" ]] ; then
 	inherit git-2 autotools
 	KEYWORDS=""
