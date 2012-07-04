@@ -3,7 +3,6 @@
 <pkgmetadata>
 <herd>xbox</herd>
 <use>
- <flag name='ae'>Use AudioEngine branch</flag>
  <flag name='airplay'>enable AirPlay support</flag>
  <flag name='bluray'>Enable playback of Blu-ray filesystems</flag>
  <flag name='cec'>Enable support for HDMI-CEC devices via libcec</flag>
