@@ -65,9 +65,6 @@
 		macvtap support requires very new kernels and is
 		currently evolving. Support for this is experimental at best.
     </flag>
-    <flag name='json'>
-      Support QEmu 0.13 JSON-based interface, using <pkg>dev-libs/yajl</pkg>.
-    </flag>
 	<flag name='virt-network'>
 		Enable virtual networking (NAT) support for guests. Includes all
 		the dependencies for NATed network mode. Effectively any network
