@@ -1,0 +1,11 @@
+diff -Nubr pyusb-0.4.3/setup.py pyusb-0.4.3-ndebug//setup.py
+--- pyusb-0.4.3/setup.py	2010-04-08 00:58:11.000000000 +0200
++++ pyusb-0.4.3-ndebug//setup.py	2012-07-08 13:26:41.925600069 +0200
+@@ -51,6 +51,7 @@
+     extra_compile_args = ['-I/usr/pkg/include']                                                                                                         
+ 
+ usbmodule = Extension(name = 'usb',
++                    define_macros=[('NDEBUG', '1')],
+                     libraries = libraries,
+                     sources = ['pyusb.c'],
+                     extra_link_args = extra_link_args,
