@@ -137,9 +137,10 @@ src_unpack() {
 
 src_prepare() {
 	##
-	epatch "${FILESDIR}/xbmc-9213ab6847e78007f8083b92794150397ffdc2f3.diff"
-	# The mythtv patch touches configure.ac, so force a regen
-	rm -f configure
+	if ! use pvr ; then
+		epatch "${FILESDIR}/xbmc-9213ab6847e78007f8083b92794150397ffdc2f3.diff"
+		epatch "${FILESDIR}/xbmc-fix-mysql-memoryleak.diff"
+	fi
 
 	# some dirs ship generated autotools, some dont
 	local d
