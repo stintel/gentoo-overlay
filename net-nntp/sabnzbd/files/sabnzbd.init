@@ -1,9 +1,7 @@
 #!/sbin/runscript
-# Copyright 1999-2007 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
-
-opts="start stop"
 
 depend() {
     need net
@@ -11,7 +9,25 @@ depend() {
 
 start() {
 	ebegin "Starting SABnzbd"
-	start-stop-daemon --start --quiet --user "${SAB_USER}" --pidfile "${SAB_PID}" -d "${SAB_PATH}" --exec python "${SAB_PY}" -- -d -f "${SAB_CFG}" --pid /var/run/sabnzbd/
+
+	# Control if folders exist and create them
+	if [[ ! -d "${SAB_PID_FOLDER}" ]]
+	then
+		mkdir "${SAB_PID_FOLDER}"
+		chmod 770 "${SAB_PID_FOLDER}"
+		chgrp "${SAB_USER}" "${SAB_PID_FOLDER}"
+
+	fi
+
+	if [[ ! -d "${SAB_LOG_FOLDER}" ]]
+	then
+		mkdir "${SAB_LOG_FOLDER}"
+		chmod 770 "${SAB_LOG_FOLDER}"
+		chgrp "${SAB_USER}" "${SAB_LOG_FOLDER}"
+
+	fi
+
+	start-stop-daemon --start --quiet --user "${SAB_USER}" --pidfile "${SAB_PID}" -d "${SAB_PATH}" --exec "${SAB_PYTHON}" "${SAB_PY}" -- -d -f "${SAB_CFG}" --pid "${SAB_PID_FOLDER}"
 	eend $?
 }
 

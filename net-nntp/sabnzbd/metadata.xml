@@ -2,12 +2,7 @@
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
 	<maintainer>
-		<email>stijn@linux-ipv6.be</email>
+		<email>maintainer-wanted@gentoo.org</email>
 	</maintainer>
-<use>
-	<flag name='rar'>Support RAR archives</flag>
-	<flag name='unzip'>Support ZIP archives</flag>
-	<flag name='yenc'>Support yEnc archives</flag>
-</use>
+	<longdescription>Binary newsgrabber in Python, with web-interface. Successor of old SABnzbd project.</longdescription>
 </pkgmetadata>
-
