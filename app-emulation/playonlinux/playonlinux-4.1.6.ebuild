@@ -49,7 +49,6 @@ pkg_setup() {
 }
 
 src_prepare() {
-	epatch "${FILESDIR}/playonlinux-4.1.1-not-exclude-ipv6.patch"
 	sed -i -e "s/\(Categories=\).*/\1Game;Emulator;/" etc/PlayOnLinux.desktop \
 		|| die
 	sed -e 's/PYTHON="python"/PYTHON="python2"/' -i lib/variables playonlinux || die
