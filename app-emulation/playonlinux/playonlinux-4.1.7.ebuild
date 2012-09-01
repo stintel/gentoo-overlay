@@ -63,8 +63,6 @@ src_install() {
 	# bash/ install
 	exeinto "${GAMES_DATADIR}/${PN}/bash"
 	doexe bash/*
-	exeinto "${GAMES_DATADIR}/${PN}/bash/terminals"
-	doexe bash/terminals/*
 	exeinto "${GAMES_DATADIR}/${PN}/bash/expert"
 	doexe bash/expert/*
 
