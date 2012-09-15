@@ -10,22 +10,17 @@ PYTHON_DEPEND="2:2.6"
 
 inherit eutils python
 
-if use pvr ; then
-	EGIT_REPO_URI="git://github.com/opdenkamp/xbmc.git"
-	EGIT_BRANCH="Eden-pvr"
-else
-	EGIT_REPO_URI="git://github.com/xbmc/xbmc.git"
-	EGIT_BRANCH="master"
-	#EGIT_COMMIT="5dad33f680b894db4dd75673e048f04f763564d0"
-fi
+EGIT_REPO_URI="git://github.com/xbmc/xbmc.git"
+EGIT_BRANCH="master"
+#EGIT_COMMIT="5dad33f680b894db4dd75673e048f04f763564d0"
 
 if [[ ${PV} == "9999" ]] ; then
 	inherit git-2 autotools
 	KEYWORDS=""
 else
 	inherit autotools
-	MY_P=${P/_/-}
-	SRC_URI="mirror://sourceforge/${PN}/${MY_P}.tar.gz"
+	MY_P=${P/_/-*_}
+	SRC_URI="http://mirrors.xbmc.org/releases/source/${MY_P}.tar.gz"
 	KEYWORDS="~amd64 ~x86"
 	S=${WORKDIR}/${MY_P}
 fi
