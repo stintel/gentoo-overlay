@@ -76,6 +76,7 @@ COMMON_DEPEND="virtual/opengl
 	>=media-libs/sdl-image-1.2.10[gif,jpeg,png]
 	media-libs/sdl-mixer
 	media-libs/sdl-sound
+	>=media-libs/taglib-1.8
 	media-libs/tiff
 	pulseaudio? ( media-sound/pulseaudio )
 	media-sound/wavpack
