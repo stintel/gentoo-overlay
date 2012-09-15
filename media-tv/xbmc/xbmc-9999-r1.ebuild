@@ -101,6 +101,7 @@ COMMON_DEPEND="virtual/opengl
 		|| ( x11-libs/libvdpau >=x11-drivers/nvidia-drivers-180.51 )
 		virtual/ffmpeg[vdpau]
 	)
+	virtual/jre
 	x11-libs/libXinerama
 	xrandr? ( x11-libs/libXrandr )
 	x11-libs/libXrender"
