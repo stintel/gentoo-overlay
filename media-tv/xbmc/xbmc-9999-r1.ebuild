@@ -41,6 +41,7 @@ COMMON_DEPEND="virtual/opengl
 	app-i18n/enca
 	airplay? ( app-pda/libplist )
 	>=dev-lang/python-2.4
+	dev-lang/swig
 	dev-libs/boost
 	dev-libs/fribidi
 	dev-libs/libcdio[-minimal]
