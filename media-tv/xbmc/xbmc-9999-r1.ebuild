@@ -31,7 +31,7 @@ HOMEPAGE="http://xbmc.org/"
 LICENSE="GPL-2"
 SLOT="0"
 IUSE="airplay alsa altivec avahi bluetooth bluray cec css debug goom joystick midi mysql
-	nfs profile +projectm pulseaudio pvr +rsxs rtmp +samba sse sse2 udev usb vaapi vdpau webserver +xrandr"
+	nfs profile +projectm pulseaudio pvr +rsxs rtmp +samba sse sse2 udev upnp usb vaapi vdpau webserver +xrandr"
 REQUIRED_USE="pvr? ( mysql )"
 
 COMMON_DEPEND="virtual/opengl
@@ -212,6 +212,7 @@ src_configure() {
 		$(use_enable rsxs) \
 		$(use_enable rtmp) \
 		$(use_enable samba) \
+		$(use_enable upnp) \
 		$(use_enable usb) \
 		$(use_enable vaapi) \
 		$(use_enable vdpau) \
@@ -223,8 +224,7 @@ src_install() {
 	default
 	rm "${ED}"/usr/share/doc/*/{LICENSE.GPL,copying.txt}*
 
-	insinto /usr/share/applications
-	doins tools/Linux/xbmc.desktop
+	domenu tools/Linux/xbmc.desktop
 	newicon tools/Linux/xbmc-48x48.png xbmc.png
 
 	insinto "$(python_get_sitedir)" #309885
