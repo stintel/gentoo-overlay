@@ -30,8 +30,7 @@ HOMEPAGE="http://xbmc.org/"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="airplay alsa altivec avahi bluetooth bluray cec css debug goom joystick midi mysql
-	nfs profile +projectm pulseaudio pvr +rsxs rtmp +samba sse sse2 udev upnp usb vaapi vdpau webserver +xrandr"
+IUSE="airplay alsa altivec avahi bluetooth bluray cec css debug goom joystick midi mysql nfs profile +projectm pulseaudio pvr +rsxs rtmp +samba sftp sse sse2 udev upnp usb vaapi vdpau webserver +xrandr"
 REQUIRED_USE="pvr? ( mysql )"
 
 COMMON_DEPEND="virtual/opengl
@@ -59,7 +58,6 @@ COMMON_DEPEND="virtual/opengl
 	>=media-libs/glew-1.5.6
 	media-libs/jasper
 	media-libs/jbigkit
-	virtual/jpeg
 	>=media-libs/libass-0.9.7
 	bluray? ( media-libs/libbluray )
 	css? ( media-libs/libdvdcss )
@@ -72,12 +70,12 @@ COMMON_DEPEND="virtual/opengl
 	media-libs/libsamplerate
 	media-libs/libsdl[audio,opengl,video,X]
 	alsa? ( media-libs/libsdl[alsa] )
+	>=media-libs/taglib-1.8
 	media-libs/libvorbis
 	media-libs/sdl-gfx
 	>=media-libs/sdl-image-1.2.10[gif,jpeg,png]
 	media-libs/sdl-mixer
 	media-libs/sdl-sound
-	>=media-libs/taglib-1.8
 	media-libs/tiff
 	pulseaudio? ( media-sound/pulseaudio )
 	media-sound/wavpack
@@ -85,14 +83,16 @@ COMMON_DEPEND="virtual/opengl
 	>=virtual/ffmpeg-0.6[encode]
 	rtmp? ( media-video/rtmpdump )
 	avahi? ( net-dns/avahi )
-	webserver? ( net-libs/libmicrohttpd )
-	net-misc/curl
 	nfs? ( net-fs/libnfs )
+	webserver? ( net-libs/libmicrohttpd )
+	sftp? ( net-libs/libssh )
+	net-misc/curl
 	samba? ( >=net-fs/samba-3.4.6[smbclient] )
 	bluetooth? ( net-wireless/bluez )
 	sys-apps/dbus
 	sys-libs/zlib
 	usb? ( virtual/libusb )
+	virtual/jpeg
 	mysql? ( virtual/mysql )
 	x11-apps/xdpyinfo
 	x11-apps/mesa-progs
@@ -144,7 +144,7 @@ src_prepare() {
 	local d
 	for d in \
 		 . \
-		lib/{cpluff,libapetag,libid3tag/libid3tag,libdvd/libdvd{css,read,nav}} \
+		lib/{libdvd/lib*/,cpluff} \
 		xbmc/screensavers/rsxs-* \
 		xbmc/visualizations/Goom/goom2k4-0
 	do
@@ -215,6 +215,7 @@ src_configure() {
 		$(use_enable rsxs) \
 		$(use_enable rtmp) \
 		$(use_enable samba) \
+		$(use_enable sftp ssh) \
 		$(use_enable upnp) \
 		$(use_enable usb) \
 		$(use_enable vaapi) \
