@@ -87,7 +87,7 @@ COMMON_DEPEND="virtual/opengl
 	webserver? ( net-libs/libmicrohttpd )
 	sftp? ( net-libs/libssh )
 	net-misc/curl
-	samba? ( || ( >=net-fs/samba-3.4.6[smbclient] ) ( >=net-fs/samba-4.0.0 ) )
+	samba? ( || ( >=net-fs/samba-3.4.6[smbclient] net-fs/cifs-utils ) )
 	bluetooth? ( net-wireless/bluez )
 	sys-apps/dbus
 	sys-libs/zlib
