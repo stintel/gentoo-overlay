@@ -10,14 +10,13 @@ inherit distutils
 MY_PN="TxScheduling"
 MY_P="${MY_PN}-${PV}"
 
-DESCRIPTION="SNMP protocols and APIs for use with the Twisted networking framework"
-HOMEPAGE="http://code.google.com/p/meercat/"
+DESCRIPTION="A scheduling plugin for Twisted"
+HOMEPAGE="http://pypi.python.org/pypi/TxScheduling"
 SRC_URI="mirror://pypi/${MY_PN:0:1}/${MY_PN}/${MY_P}.tar.gz"
-
 
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS="~amd64 ~ppc ~x86"
+KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 RDEPEND=">=dev-python/twisted-1.3"
@@ -28,7 +27,6 @@ S="${WORKDIR}/${MY_P}"
 
 src_prepare() {
 	distutils_src_prepare
-
 }
 
 src_install() {
