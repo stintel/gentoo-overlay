@@ -1,0 +1,6 @@
+*cgminer-2.9.5 (28 Nov 2012)
+
+  28 Nov 2012; Stijn Tintel <stijn+bugs@linux-ipv6.be> +cgminer-2.9.5.ebuild,
+  +metadata.xml, +ChangeLog
+
+  Initial commit, based on 2.7.5 upstream
