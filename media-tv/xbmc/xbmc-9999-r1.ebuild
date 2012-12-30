@@ -8,46 +8,53 @@ EAPI="4"
 # It might work with py:2.5 but I didn't test that
 PYTHON_DEPEND="2:2.6"
 
-inherit eutils python
+inherit eutils python multiprocessing autotools
 
-EGIT_REPO_URI="git://github.com/xbmc/xbmc.git"
-EGIT_BRANCH="master"
-#EGIT_COMMIT="5dad33f680b894db4dd75673e048f04f763564d0"
-
-if [[ ${PV} == "9999" ]] ; then
-	inherit git-2 autotools
-	KEYWORDS=""
-else
-	inherit autotools
+case ${PV} in
+9999)
+	inherit git-2
+	EGIT_REPO_URI="git://github.com/xbmc/xbmc.git"
+	EGIT_BRANCH="master"
+	#EGIT_COMMIT="5dad33f680b894db4dd75673e048f04f763564d0"
+	SRC_URI="!java? ( mirror://gentoo/${P}-20121224-generated-addons.tar.xz )"
+	;;
+*_alpha*|*_beta*|*_rc*)
+	MY_PV="Frodo_${PV#*_}"
+	MY_P="${PN}-${MY_PV}"
+	SRC_URI="https://github.com/xbmc/xbmc/archive/${MY_PV}.tar.gz -> ${P}.tar.gz
+		!java? ( mirror://gentoo/${P}-generated-addons.tar.xz )"
+	KEYWORDS="~amd64 ~x86"
+	;;
+*)
 	MY_P=${P/_/-*_}
 	SRC_URI="http://mirrors.xbmc.org/releases/source/${MY_P}.tar.gz"
 	KEYWORDS="~amd64 ~x86"
-	S=${WORKDIR}/${MY_P}
-fi
+	;;
+esac
 
 DESCRIPTION="XBMC is a free and open source media-player and entertainment hub"
 HOMEPAGE="http://xbmc.org/"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="airplay alsa altivec avahi bluetooth bluray cec css debug goom joystick midi mysql nfs profile +projectm pulseaudio pvr +rsxs rtmp +samba sftp sse sse2 udev upnp usb vaapi vdpau webserver +xrandr"
+IUSE="airplay alsa altivec avahi bluetooth bluray cec css debug goom java joystick midi mysql nfs profile +projectm pulseaudio pvr +rsxs rtmp +samba sftp sse sse2 udev upnp usb vaapi vdpau webserver +xrandr"
 REQUIRED_USE="pvr? ( mysql )"
 
-COMMON_DEPEND="virtual/opengl
+COMMON_DEPEND="virtual/glu
+	virtual/opengl
 	app-arch/bzip2
 	app-arch/unzip
 	app-arch/zip
 	app-i18n/enca
 	airplay? ( app-pda/libplist )
 	>=dev-lang/python-2.4
-	dev-lang/swig
 	dev-libs/boost
 	dev-libs/fribidi
 	dev-libs/libcdio[-minimal]
-	cec? ( dev-libs/libcec )
+	cec? ( >=dev-libs/libcec-2 )
 	dev-libs/libpcre[cxx]
 	>=dev-libs/lzo-2.04
-	dev-libs/tinyxml
+	dev-libs/tinyxml[stl]
 	dev-libs/yajl
 	>=dev-python/pysqlite-2
 	dev-python/simplejson
@@ -84,12 +91,10 @@ COMMON_DEPEND="virtual/opengl
 	rtmp? ( media-video/rtmpdump )
 	avahi? ( net-dns/avahi )
 	nfs? ( net-fs/libnfs )
-	webserver? ( net-libs/libmicrohttpd )
+	webserver? ( net-libs/libmicrohttpd[messages] )
 	sftp? ( net-libs/libssh )
 	net-misc/curl
-	samba? ( 
-		|| ( net-fs/cifs-utils >=net-fs/samba-3.4.6[smbclient] )
-	)
+	samba? ( >=net-fs/samba-3.4.6[smbclient] )
 	bluetooth? ( net-wireless/bluez )
 	sys-apps/dbus
 	sys-libs/zlib
@@ -103,17 +108,21 @@ COMMON_DEPEND="virtual/opengl
 		|| ( x11-libs/libvdpau >=x11-drivers/nvidia-drivers-180.51 )
 		virtual/ffmpeg[vdpau]
 	)
-	virtual/jre
 	x11-libs/libXinerama
 	xrandr? ( x11-libs/libXrandr )
 	x11-libs/libXrender"
 RDEPEND="${COMMON_DEPEND}
 	udev? (	sys-fs/udisks:0 sys-power/upower )"
 DEPEND="${COMMON_DEPEND}
+	app-arch/xz-utils
+	dev-lang/swig
 	dev-util/gperf
 	x11-proto/xineramaproto
 	dev-util/cmake
-	x86? ( dev-lang/nasm )"
+	x86? ( dev-lang/nasm )
+	java? ( virtual/jre )"
+
+S=${WORKDIR}/${MY_P}
 
 pkg_setup() {
 	python_set_active_version 2
@@ -121,40 +130,30 @@ pkg_setup() {
 }
 
 src_unpack() {
-	if [[ ${PV} == "9999" ]] ; then
-		git-2_src_unpack
-		cd "${S}"
-		rm -f configure
-	else
-		unpack ${A}
-		cd "${S}"
-	fi
-
-	# Fix case sensitivity
-	mv media/Fonts/{a,A}rial.ttf || die
-	mv media/{S,s}plash.png || die
+	[[ ${PV} == "9999" ]] && git-2_src_unpack || default
 }
 
 src_prepare() {
-	##
 	#if ! use pvr ; then
-		#epatch "${FILESDIR}/xbmc-9213ab6847e78007f8083b92794150397ffdc2f3.diff"
-		#epatch "${FILESDIR}/xbmc-fix-mysql-memoryleak.diff"
+	#	epatch "${FILESDIR}/xbmc-9213ab6847e78007f8083b92794150397ffdc2f3.diff"
 	#fi
+	epatch "${FILESDIR}"/${PN}-9999-nomythtv.patch
+	epatch "${FILESDIR}"/${PN}-9999-no-arm-flags.patch #400617
+	# The mythtv patch touches configure.ac, so force a regen
+	rm -f configure
 
 	# some dirs ship generated autotools, some dont
+	multijob_init
 	local d
-	for d in \
-		 . \
-		lib/{libdvd/lib*/,cpluff} \
-		xbmc/screensavers/rsxs-* \
-		xbmc/visualizations/Goom/goom2k4-0
-	do
-		#[[ -e ${d}/configure ]] && continue
-		pushd ${d} >/dev/null
-		eautoreconf
+	for d in $(printf 'f:\n\t@echo $(BOOTSTRAP_TARGETS)\ninclude bootstrap.mk\n' | emake -f - f) ; do
+		[[ -e ${d} ]] && continue
+		pushd ${d/%configure/.} >/dev/null || die
+		AT_NOELIBTOOLIZE="yes" AT_TOPLEVEL_EAUTORECONF="yes" \
+		multijob_child_init eautoreconf
 		popd >/dev/null
 	done
+	multijob_finish
+	elibtoolize
 
 	# Disable internal func checks as our USE/DEPEND
 	# stuff handles this just fine already #408395
@@ -191,6 +190,8 @@ src_configure() {
 	export HELP2MAN=$(type -P help2man || echo true)
 	# No configure flage for this #403561
 	export ac_cv_lib_bluetooth_hci_devid=$(usex bluetooth)
+	# Requiring java is asine #434662
+	export ac_cv_path_JAVA_EXE=$(which $(usex java java true))
 
 	econf \
 		--docdir=/usr/share/doc/${PF} \
