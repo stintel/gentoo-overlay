@@ -2,6 +2,10 @@
 # Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/media-tv/xbmc/ChangeLog,v 1.26 2009/09/05 15:05:52 vapier Exp $
 
+  30 Dec 2012; Stijn Tintel <stijn+gentoo@linux-ipv6.be>
+  files/xbmc-9999-no-arm-flags.patch, files/xbmc-9999-nomythtv.patch:
+  Updated live ebuild patches from upstream.
+
   30 Dec 2012; Stijn Tintel <stijn+gentoo@linux-ipv6.be> xbmc-9999-r1.ebuild:
   Merge upstream ebuild changes.
 
