@@ -1,0 +1,9 @@
+# ChangeLog for media-plugins/xbmc-addons-pvr
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: $
+
+*xbmc-addons-pvr-9999 (11 Jan 2013)
+
+  11 Jan 2013; <stijn+gentoo@linux-ipv6.be> +xbmc-addons-pvr-9999.ebuild, +metadata.xml:
+  Initial ebuild, builds all the XBMC PVR addons from the opdenkamp repo.
+
