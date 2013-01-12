@@ -28,7 +28,8 @@ src_prepare() {
 }
 
 src_configure() {
-	econf --prefix=/usr/$(get_libdir)/xbmc
+	econf --prefix=/usr --datadir=/usr/share/xbmc/addons \
+	--libdir=/usr/share/xbmc/addons
 }
 
 src_install() {
