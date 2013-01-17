@@ -1,4 +1,4 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/media-tv/xbmc/xbmc-9999.ebuild,v 1.44 2009/12/19 20:44:11 vapier Exp $
 
@@ -47,7 +47,7 @@ COMMON_DEPEND="virtual/glu
 	app-arch/zip
 	app-i18n/enca
 	airplay? ( app-pda/libplist )
-	>=dev-lang/python-2.4
+	>=dev-lang/python-2.4[sqlite]
 	dev-libs/boost
 	dev-libs/fribidi
 	dev-libs/libcdio[-minimal]
@@ -56,7 +56,6 @@ COMMON_DEPEND="virtual/glu
 	>=dev-libs/lzo-2.04
 	dev-libs/tinyxml[stl]
 	dev-libs/yajl
-	>=dev-python/pysqlite-2
 	dev-python/simplejson
 	media-libs/alsa-lib
 	media-libs/flac
