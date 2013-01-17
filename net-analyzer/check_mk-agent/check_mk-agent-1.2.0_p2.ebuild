@@ -1,6 +1,6 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header$
+# $Header: $
 
 EAPI="3"
 PYTHON_DEPEND="2"
@@ -51,7 +51,7 @@ src_install() {
 	keepdir /usr/lib/check_mk_agent/local
 	keepdir /usr/lib/check_mk_agent/plugins
 
-	dodoc AUTHORS COPYING ChangeLog
+	dodoc AUTHORS ChangeLog
 
 	insinto /etc/xinetd.d
 	newins xinetd.conf check_mk
