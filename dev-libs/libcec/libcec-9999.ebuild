@@ -1,7 +1,8 @@
-# Copyright 1999-2011 Gentoo Foundation
+# Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
+# $Header: $
 
-EAPI="3"
+EAPI="4"
 
 inherit eutils git-2 autotools
 
@@ -19,8 +20,6 @@ SLOT=0
 EGIT_REPO_URI="http://github.com/Pulse-Eight/libcec.git"
 EGIT_MASTER="master"
 EGIT_BRANCH="${EGIT_MASTER}"
-
-
 
 src_unpack() {
 	git-2_src_unpack
