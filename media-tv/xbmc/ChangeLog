@@ -1,6 +1,9 @@
 # ChangeLog for media-tv/xbmc
-# Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/media-tv/xbmc/ChangeLog,v 1.26 2009/09/05 15:05:52 vapier Exp $
+
+  20 Jan 2013; Stijn Tintel <stijn+gentoo@linux-ipv6.be> xbmc-9999-r1.ebuild:
+  Move "inherit git-2" to the same place as the upstream ebuild.
 
   30 Dec 2012; Stijn Tintel <stijn+gentoo@linux-ipv6.be>
   files/xbmc-9999-no-arm-flags.patch, files/xbmc-9999-nomythtv.patch:
@@ -15,4 +18,3 @@
   * Also export SVN_REVISION as exported
 
 *xbmc-9999-r1 (27 Nov 2009)
-
