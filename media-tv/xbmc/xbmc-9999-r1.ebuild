@@ -13,7 +13,7 @@ inherit eutils python multiprocessing autotools
 case ${PV} in
 9999)
 	EGIT_REPO_URI="git://github.com/xbmc/xbmc.git"
-	EGIT_BRANCH="master"
+	EGIT_BRANCH="Frodo"
 	#EGIT_COMMIT="5dad33f680b894db4dd75673e048f04f763564d0"
 	inherit git-2
 	SRC_URI="!java? ( mirror://gentoo/${P}-20121224-generated-addons.tar.xz )"
