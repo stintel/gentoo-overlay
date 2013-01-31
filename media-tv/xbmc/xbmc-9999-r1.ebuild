@@ -219,7 +219,7 @@ src_configure() {
 		$(use_enable samba) \
 		$(use_enable sftp ssh) \
 		$(use_enable upnp) \
-		$(use_enable usb) \
+		$(use_enable usb libusb) \
 		$(use_enable vaapi) \
 		$(use_enable vdpau) \
 		$(use_enable webserver) \
