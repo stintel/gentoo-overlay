@@ -1,0 +1,7 @@
+*openvswitch-1.7.3 (04 Feb 2013)
+
+  04 Feb 2013; Stijn Tintel <stijn+gentoo@linux-ipv6.be>
+  +openvswitch-1.7.3.ebuild, -openvswitch-1.7.1.ebuild, files/ovs-controller,
+  files/ovs-controller_conf, files/ovs-vswitchd, files/ovs-vswitchd_conf,
+  files/ovsdb-server, files/ovsdb-server_conf, metadata.xml:
+  Version bump.
