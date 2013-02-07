@@ -6,12 +6,12 @@ EAPI="4"
 
 inherit versionator
 
-MY_PV="$(replace_version_separator 3 -)"
-S="${WORKDIR}/${PN}-${MY_PV}"
+MY_PV="$(get_version_component_range 1-2)"
+#S="${WORKDIR}/${PN}-${MY_PV}"
 
 DESCRIPTION="Bitcoin CPU/GPU/FPGA miner in C"
 HOMEPAGE="https://bitcointalk.org/index.php?topic=28402.0"
-SRC_URI="http://ck.kolivas.org/apps/${PN}/${PN}-${MY_PV}.tar.bz2"
+SRC_URI="http://ck.kolivas.org/apps/${PN}/${MY_PV}/${P}.tar.bz2"
 
 LICENSE="GPL-3"
 SLOT="0"
