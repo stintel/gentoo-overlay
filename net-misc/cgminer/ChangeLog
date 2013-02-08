@@ -1,6 +1,12 @@
   31 Jan 2013; Stijn Tintel <stijn+gentoo@linux-ipv6.be> cgminer-2.9.5.ebuild:
   Depend on virtual/udev instead of sys-fs/udev.
 
+*cgminer-2.10.5 (08 Feb 2013)
+
+  08 Feb 2013; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
+  -cgminer-2.10.4.ebuild, +cgminer-2.10.5.ebuild:
+  Version bump. Added SRC_URI for latest version.
+
 *cgminer-2.10.4 (07 Feb 2013)
 
   07 Feb 2013; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>

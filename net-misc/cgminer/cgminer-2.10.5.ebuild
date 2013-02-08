@@ -11,7 +11,8 @@ MY_PV="$(get_version_component_range 1-2)"
 
 DESCRIPTION="Bitcoin CPU/GPU/FPGA miner in C"
 HOMEPAGE="https://bitcointalk.org/index.php?topic=28402.0"
-SRC_URI="http://ck.kolivas.org/apps/${PN}/${MY_PV}/${P}.tar.bz2"
+SRC_URI="http://ck.kolivas.org/apps/${PN}/${P}.tar.bz2
+		 http://ck.kolivas.org/apps/${PN}/${MY_PV}/${P}.tar.bz2"
 
 LICENSE="GPL-3"
 SLOT="0"
