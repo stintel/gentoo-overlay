@@ -1,11 +1,11 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI="4"
-SUPPORT_PYTHON_ABIS="1"
+EAPI="5"
+PYTHON_COMPAT=(python2_{6,7})
 
-inherit distutils
+inherit distutils-r1
 
 MY_PN="TxScheduling"
 MY_P="${MY_PN}-${PV}"
@@ -20,15 +20,5 @@ KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 RDEPEND=">=dev-python/twisted-1.3"
-DEPEND="${RDEPEND}"
-RESTRICT_PYTHON_ABIS="3.*"
 
 S="${WORKDIR}/${MY_P}"
-
-src_prepare() {
-	distutils_src_prepare
-}
-
-src_install() {
-	distutils_src_install
-}

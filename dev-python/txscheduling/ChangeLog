@@ -1,10 +1,8 @@
-# ChangeLog for dev-python/libcloud
-# Copyright 1999-2011 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo-x86/dev-python/libcloud/ChangeLog,v 1.1 2011/07/25 15:57:56 patrick Exp $
+# ChangeLog for dev-python/txscheduling
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: $
 
-*libcloud-0.5.2 (25 Jul 2011)
-
-  25 Jul 2011; Patrick Lauer <patrick@gentoo.org> +libcloud-0.5.2.ebuild,
-  +metadata.xml:
-  Initial import. Ebuild by me.
+  17 Feb 2013; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
+  txscheduling-1.1.ebuild:
+  Move to EAPI 5 and distutils-r1.
 
