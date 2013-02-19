@@ -7,6 +7,7 @@ EAPI="4"
 inherit git-2 autotools multilib
 
 EGIT_REPO_URI="git://github.com/opdenkamp/xbmc-pvr-addons.git"
+EGIT_BRANCH="frodo"
 
 DESCRIPTION="XBMC addon: add VDR (http://www.cadsoft.de/vdr) as a TV/PVR Backend"
 HOMEPAGE="https://github.com/pipelka/xbmc-addon-xvdr"
