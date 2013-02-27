@@ -1,0 +1,10 @@
+# ChangeLog for app-crypt/csrng
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: $
+
+*csrng-1.1.3 (27 Feb 2013)
+
+  27 Feb 2013; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
+  +csrng-1.1.3.ebuild, +metadata.xml:
+  Initial import. Ebuild by me.
+
