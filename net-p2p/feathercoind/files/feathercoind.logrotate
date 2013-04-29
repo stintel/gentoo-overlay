@@ -1,0 +1,7 @@
+/var/lib/feathercoin/.feathercoin/debug.log {
+	weekly
+	sharedscripts
+	postrotate
+		killall -HUP feathercoind
+	endscript
+}

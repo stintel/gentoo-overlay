@@ -1,0 +1,11 @@
+# ChangeLog for net-p2p/feathercoind
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# $Header: $
+
+*feathercoind-9999 (29 Apr 2013)
+
+  29 Apr 2013; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
+  +feathercoind-9999.ebuild, +files/feathercoin.conf, +files/feathercoin.confd,
+  +files/feathercoin.initd, +files/feathercoind.logrotate, +metadata.xml:
+  Initial import. Based on bitcoind-9999.2.ebuild from the Bitcoin overlay.
+

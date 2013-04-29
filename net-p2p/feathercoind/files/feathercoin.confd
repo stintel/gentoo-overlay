@@ -1,0 +1,10 @@
+# Config file for /etc/init.d/feathercoin
+
+# owner of feathercoind process (don't change, must be existing)
+FEATHERCOIN_USER="feathercoin"
+
+# See http://www.feathercoin.org/smf/index.php?topic=1063
+FEATHERCOIN_OPTS="${FEATHERCOIN_OPTS}"
+
+# nice level
+NICELEVEL="19"
