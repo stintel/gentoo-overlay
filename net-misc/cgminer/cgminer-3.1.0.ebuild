@@ -18,7 +18,7 @@ LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~x86 ~amd64"
 
-IUSE="+adl altivec bitforce examples hardened icarus modminer ncurses +opencl padlock scrypt sse2 sse2_4way sse4 +udev ztex"
+IUSE="+adl bitforce examples hardened icarus modminer ncurses +opencl scrypt +udev ztex"
 REQUIRED_USE="
 	|| ( bitforce icarus modminer opencl ztex )
 	adl? ( opencl )
@@ -48,12 +48,6 @@ DEPEND="${DEPEND}
 	sys-apps/sed
 	adl? (
 		x11-libs/amd-adl-sdk
-	)
-	sse2? (
-		>=dev-lang/yasm-1.0.1
-	)
-	sse4? (
-		>=dev-lang/yasm-1.0.1
 	)
 "
 
