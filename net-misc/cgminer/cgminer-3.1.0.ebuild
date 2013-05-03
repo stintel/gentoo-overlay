@@ -52,7 +52,6 @@ DEPEND="${DEPEND}
 "
 
 src_prepare() {
-	sed -i 's/\(^\#define WANT_.*\(SSE\|PADLOCK\|ALTIVEC\)\)/\/\/ \1/' miner.h
 	ln -s /usr/include/ADL/* ADL_SDK/
 }
 
