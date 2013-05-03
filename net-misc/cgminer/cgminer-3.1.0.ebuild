@@ -18,9 +18,9 @@ LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~x86 ~amd64"
 
-IUSE="+adl avalon bitforce examples hardened icarus modminer ncurses +opencl scrypt +udev ztex"
+IUSE="+adl avalon bflsc bitforce examples hardened icarus modminer ncurses +opencl scrypt +udev ztex"
 REQUIRED_USE="
-	|| ( avalon bitforce icarus modminer opencl ztex )
+	|| ( avalon bflsc bitforce icarus modminer opencl ztex )
 	adl? ( opencl )
 	opencl? ( ncurses )
 	scrypt? ( opencl )
@@ -64,6 +64,7 @@ src_configure() {
 	econf \
 		$(use_enable adl) \
 		$(use_enable avalon) \
+		$(use_enable bflsc) \
 		$(use_enable bitforce) \
 		$(use_enable icarus) \
 		$(use_enable modminer) \
