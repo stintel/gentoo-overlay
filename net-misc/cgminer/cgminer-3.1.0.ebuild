@@ -18,16 +18,12 @@ LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~x86 ~amd64"
 
-IUSE="+adl altivec bitforce +cpumining examples hardened icarus modminer ncurses +opencl padlock scrypt sse2 sse2_4way sse4 +udev ztex"
+IUSE="+adl altivec bitforce examples hardened icarus modminer ncurses +opencl padlock scrypt sse2 sse2_4way sse4 +udev ztex"
 REQUIRED_USE="
-	|| ( bitforce cpumining icarus modminer opencl ztex )
+	|| ( bitforce icarus modminer opencl ztex )
 	adl? ( opencl )
-	altivec? ( cpumining ppc ppc64 )
 	opencl? ( ncurses )
-	padlock? ( cpumining || ( amd64 x86 ) )
 	scrypt? ( opencl )
-	sse2? ( cpumining || ( amd64 x86 ) )
-	sse4? ( cpumining amd64 )
 "
 
 DEPEND="
@@ -89,7 +85,6 @@ src_configure() {
 	econf \
 		$(use_enable adl) \
 		$(use_enable bitforce) \
-		$(use_enable cpumining) \
 		$(use_enable icarus) \
 		$(use_enable modminer) \
 		$(use_with ncurses curses) \
