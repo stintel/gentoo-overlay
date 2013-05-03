@@ -2,6 +2,10 @@
   Depend on virtual/udev instead of sys-fs/udev.
 
   03 May 2013; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
+  cgminer-3.1.0.ebuild, metadata.xml:
+  Add USE flag to enable support for Avalon ASICs.
+
+  03 May 2013; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
   cgminer-3.1.0.ebuild:
   Remove some more cpumining leftovers.
 
