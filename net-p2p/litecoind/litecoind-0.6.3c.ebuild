@@ -10,7 +10,15 @@ inherit db-use eutils versionator toolchain-funcs
 
 DESCRIPTION="Litecoin crypto-currency wallet for automated services"
 HOMEPAGE="http://litecoin.org/"
-SRC_URI="https://github.com/litecoin-project/litecoin/archive/v${PV/_/}.tar.gz -> litecoin-v${PV}.tgz"
+
+case ${PV} in
+9999)
+	inherit git-2
+	EGIT_REPO_URI="git://github.com/litecoin-project/litecoin.git"
+	;;
+*)
+	SRC_URI="https://github.com/litecoin-project/litecoin/archive/v${PV/_/}.tar.gz -> litecoin-v${PV}.tgz"
+esac
 
 LICENSE="MIT ISC GPL-2"
 SLOT="0"
