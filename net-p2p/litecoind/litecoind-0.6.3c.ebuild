@@ -8,7 +8,7 @@ DB_VER="4.8"
 
 inherit db-use eutils versionator toolchain-funcs
 
-DESCRIPTION="Original Bitcoin crypto-currency wallet for automated services"
+DESCRIPTION="Litecoin crypto-currency wallet for automated services"
 HOMEPAGE="http://litecoin.org/"
 SRC_URI="https://github.com/litecoin-project/litecoin/archive/v${PV/_/}.tar.gz -> litecoin-v${PV}.tgz"
 

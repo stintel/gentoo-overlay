@@ -9,19 +9,19 @@ depend() {
 }
 
 checkconfig() {
-	if [[ "${BITCOIN_USER}" == "" ]] ; then
+	if [[ "${LITECOIN_USER}" == "" ]] ; then
 		eerror "Please edit /etc/conf.d/litecoind"
 		eerror "A user must be specified to run litecoind as that user."
 		eerror "Modify USER to your needs (you may also add a group after a colon)"
 		return 1
 	fi
-	if ! `getent passwd | cut -d ':' -f 1 | grep $( echo "${BITCOIN_USER}" | cut -d ':' -f 1 ) -sq` ; then
+	if ! `getent passwd | cut -d ':' -f 1 | grep $( echo "${LITECOIN_USER}" | cut -d ':' -f 1 ) -sq` ; then
 		eerror "Please edit /etc/conf.d/litecoind"
 		eerror "Specified user must exist!"
 		return 1
 	fi
-	if `echo "${BITCOIN_USER}" | grep ':' -sq` ; then
-		if ! `cut -d ':' -f 1 /etc/group | grep $( echo "${BITCOIN_USER}" | cut -d ':' -f 2 ) -sq` ; then
+	if `echo "${LITECOIN_USER}" | grep ':' -sq` ; then
+		if ! `cut -d ':' -f 1 /etc/group | grep $( echo "${LITECOIN_USER}" | cut -d ':' -f 2 ) -sq` ; then
 			eerror "Please edit /etc/conf.d/litecoind"
 			eerror "Specified group must exist!"
 			return 1
@@ -41,7 +41,7 @@ checkconfig() {
 
 start() {
 	checkconfig || return 1
-	ebegin "Starting Bitcoind daemon"
+	ebegin "Starting Litecoind daemon"
 
 	pkg-config openrc
 	if [ $? = 0 ]; then
@@ -52,7 +52,7 @@ start() {
 }
 
 stop() {
-       ebegin "Stopping Bitcoin daemon"
+       ebegin "Stopping Litecoin daemon"
 
        pkg-config openrc
        if [ $? = 0 ]; then
@@ -64,18 +64,18 @@ stop() {
 
 start_openrc() {
 	start-stop-daemon \
-	--start --user "${BITCOIN_USER}" --name litecoind \
+	--start --user "${LITECOIN_USER}" --name litecoind \
 	--pidfile /var/run/litecoind.pid --make-pidfile \
 	--env HOME="${VARDIR}" --exec /usr/bin/litecoind \
 	--nicelevel "${NICELEVEL}" \
 	--background \
 	--wait 2000 \
-	-- ${BITCOIN_OPTS}
+	-- ${LITECOIN_OPTS}
 	eend $?
 }
 
 stop_openrc() {
-	start-stop-daemon --stop --user "${BITCOIN_USER}" \
+	start-stop-daemon --stop --user "${LITECOIN_USER}" \
 	--name litecoind --pidfile /var/run/litecoind.pid \
 	--wait 30000 \
 	--progress
@@ -84,20 +84,20 @@ stop_openrc() {
 
 start_baselayout() {
 	start-stop-daemon \
-	--start --user "${BITCOIN_USER}" --name litecoind \
+	--start --user "${LITECOIN_USER}" --name litecoind \
 	--pidfile /var/run/litecoind.pid --make-pidfile \
 	--env HOME="${VARDIR}" --exec /usr/bin/litecoind \
-	--chuid "${BITCOIN_USER}" \
+	--chuid "${LITECOIN_USER}" \
 	--nicelevel "${NICELEVEL}" \
 	--background \
-	-- ${BITCOIN_OPTS}
+	-- ${LITECOIN_OPTS}
 	eend $?
 }
 
 stop_baselayout() {
 	start-stop-daemon \
 	--stop \
-	--user "${BITCOIN_USER}" \
+	--user "${LITECOIN_USER}" \
 	--name litecoind \
 	--pidfile /var/run/litecoind.pid
 	eend $?

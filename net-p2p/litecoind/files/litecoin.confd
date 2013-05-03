@@ -1,10 +1,10 @@
 # Config file for /etc/init.d/litecoin
 
 # owner of litecoind process (don't change, must be existing)
-BITCOIN_USER="litecoin"
+LITECOIN_USER="litecoin"
 
 # See http://www.litecoin.org/smf/index.php?topic=1063
-BITCOIN_OPTS="${BITCOIN_OPTS}"
+LITECOIN_OPTS="${LITECOIN_OPTS}"
 
 # nice level
 NICELEVEL="19"
