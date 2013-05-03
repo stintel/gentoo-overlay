@@ -58,21 +58,6 @@ src_prepare() {
 
 src_configure() {
 	local CFLAGS="${CFLAGS}"
-	if ! use altivec; then
-		sed -i 's/-faltivec//g' configure
-	else
-		CFLAGS="${CFLAGS} -DWANT_ALTIVEC=1"
-	fi
-	use padlock && CFLAGS="${CFLAGS} -DWANT_VIA_PADLOCK=1"
-	if use sse2; then
-		if use amd64; then
-			CFLAGS="${CFLAGS} -DWANT_X8664_SSE2=1"
-		else
-			CFLAGS="${CFLAGS} -DWANT_X8632_SSE2=1"
-		fi
-	fi
-	use sse2_4way && CFLAGS="${CFLAGS} -DWANT_SSE2_4WAY=1"
-	use sse4 && CFLAGS="${CFLAGS} -DWANT_X8664_SSE4=1"
 	use hardened && CFLAGS="${CFLAGS} -nopie"
 
 	CFLAGS="${CFLAGS}" \

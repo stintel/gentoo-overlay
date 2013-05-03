@@ -3,6 +3,10 @@
 
   03 May 2013; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
   cgminer-3.1.0.ebuild:
+  Remove some more cpumining leftovers.
+
+  03 May 2013; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
+  cgminer-3.1.0.ebuild:
   Remove cpumining related USE flags from IUSE and DEPEND.
 
   03 May 2013; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
