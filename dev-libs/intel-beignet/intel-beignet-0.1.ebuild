@@ -32,7 +32,7 @@ DEPEND="
 	>=sys-devel/llvm-3.2"
 RDEPEND="${DEPEND}
 	app-admin/eselect-opencl
-	media-libs/mesa
+	media-libs/mesa[gbm]
 	sys-devel/clang
 	x11-libs/libdrm[video_cards_intel]
 	x11-libs/libXext
