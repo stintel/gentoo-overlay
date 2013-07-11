@@ -1,6 +1,6 @@
 # Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-tv/xbmc/xbmc-12.1-r1.ebuild,v 1.2 2013/04/23 01:33:23 vapier Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-tv/xbmc/xbmc-12.2-r1.ebuild,v 1.5 2013/07/06 12:12:03 scarabeus Exp $
 
 EAPI=5
 
@@ -10,6 +10,8 @@ PYTHON_COMPAT=( python{2_6,2_7} )
 PYTHON_REQ_USE="sqlite"
 
 inherit eutils python-single-r1 multiprocessing autotools
+
+BACKPORTS_VERSION=1
 
 case ${PV} in
 9999)
@@ -26,13 +28,11 @@ case ${PV} in
 	;;
 *)
 	MY_P=${P/_/-*_}
-	SRC_URI="http://mirrors.xbmc.org/releases/source/${MY_P}.tar.gz"
-	KEYWORDS=""
+	SRC_URI="http://mirrors.xbmc.org/releases/source/${MY_P}.tar.gz
+		mirror://gentoo/${PN}_backports-12-${BACKPORTS_VERSION}.tar.bz2"
+	KEYWORDS="~amd64 ~x86"
 	;;
 esac
-
-# libav patchset
-SRC_URI+=" http://dev.gentooexperimental.org/~scarabeus/xbmc-12-libav.tar.xz"
 
 DESCRIPTION="XBMC is a free and open source media-player and entertainment hub"
 HOMEPAGE="http://xbmc.org/"
@@ -93,14 +93,16 @@ COMMON_DEPEND="${PYTHON_DEPS}
 	pulseaudio? ( media-sound/pulseaudio )
 	media-sound/wavpack
 	|| ( media-libs/libpostproc media-video/ffmpeg )
-	>=virtual/ffmpeg-9[encode]
+	>=virtual/ffmpeg-0.6[encode]
 	rtmp? ( media-video/rtmpdump )
 	avahi? ( net-dns/avahi )
 	nfs? ( net-fs/libnfs )
 	webserver? ( net-libs/libmicrohttpd[messages] )
 	sftp? ( net-libs/libssh )
 	net-misc/curl
-	samba? ( >=net-fs/samba-3.4.6[smbclient] )
+	samba? (
+		|| ( >=net-fs/samba-3.4.6[smbclient] net-fs/cifs-utils )
+	)
 	bluetooth? ( net-wireless/bluez )
 	sys-apps/dbus
 	caps? ( sys-libs/libcap )
@@ -149,15 +151,12 @@ src_unpack() {
 src_prepare() {
 	epatch "${FILESDIR}"/${PN}-9999-nomythtv.patch
 	epatch "${FILESDIR}"/${PN}-9999-no-arm-flags.patch #400617
-	epatch "${FILESDIR}"/${PN}-12.0-system-projectm.patch
+	# Backported fixes
+	EPATCH_MULTI_MSG="Applying patches backported from master..." \
+		EPATCH_SUFFIX="patch" \
+		epatch "${WORKDIR}/${PN}_backports"
 	# The mythtv patch touches configure.ac, so force a regen
 	rm -f configure
-
-	# libav patchset
-	EPATCH_FORCE="yes" \
-	EPATCH_SOURCE="${WORKDIR}" \
-	EPATCH_SUFFIX="patch" \
-	epatch
 
 	# some dirs ship generated autotools, some dont
 	multijob_init
