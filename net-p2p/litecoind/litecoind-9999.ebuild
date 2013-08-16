@@ -22,7 +22,6 @@ esac
 
 LICENSE="MIT ISC GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~arm ~x86"
 IUSE="examples ipv6 logrotate upnp"
 
 RDEPEND="
