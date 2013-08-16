@@ -37,11 +37,16 @@ DEPEND="${RDEPEND}
 	>=app-shells/bash-4.1
 "
 
-DOCS="doc/README"
+DOCS="doc/README.md"
 
 S="${WORKDIR}/${P/-qt/}"
 
 src_prepare() {
+	mv "${S}/bitcoin-qt.pro" "${S}/${PN}.pro"
+	mv "${S}/src/bitcoin-pro.qrc" "${S}/src/${PN}.qrc"
+
+	sed -i "s/LIBS += -lrt/LIBS += -lboost_chrono -lrt/" "${S}/${PN}.pro"
+
 	cd src || die
 
 	local filt= yeslang= nolang=
@@ -49,6 +54,7 @@ src_prepare() {
 	filt="litecoin_\\(${filt:2}\\)\\.qm"
 	sed "/${filt}/d" -i 'qt/litecoin.qrc'
 	einfo "Languages -- Enabled:$yeslang -- Disabled:$nolang"
+
 }
 
 src_configure() {
