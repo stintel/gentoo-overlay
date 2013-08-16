@@ -3,6 +3,10 @@
 # $Header: $
 
   16 Aug 2013; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
+  litecoind-0.8.3.7.ebuild:
+  Fix dodoc, README has been renamed to README.md.
+
+  16 Aug 2013; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
   litecoind-9999.ebuild:
   Remove keywords from live ebuild.
 

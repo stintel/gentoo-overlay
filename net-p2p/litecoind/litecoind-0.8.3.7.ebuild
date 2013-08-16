@@ -95,7 +95,7 @@ src_install() {
 	fowners litecoin:litecoin /var/lib/litecoin/.litecoin
 	dosym /etc/litecoin/litecoin.conf /var/lib/litecoin/.litecoin/litecoin.conf
 
-	dodoc doc/README
+	dodoc doc/README.md
 
 	if use examples; then
 		docinto examples
