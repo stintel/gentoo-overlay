@@ -18,7 +18,7 @@ KEYWORDS="~amd64"
 IUSE="debug monitor +pyside +ssl"
 
 RDEPEND="ssl? ( dev-libs/openssl )
-	monitor? ( dev-python/twisted
+	monitor? ( dev-python/twisted-core
 		dev-python/twisted-conch
 		dev-python/twisted-web
 		pyside? ( dev-python/pyside )
