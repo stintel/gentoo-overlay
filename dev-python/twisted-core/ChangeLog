@@ -1,6 +1,20 @@
-# ChangeLog for dev-python/twisted
+# ChangeLog for dev-python/twisted-core
 # Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/dev-python/twisted/ChangeLog,v 1.160 2013/01/14 03:54:33 patrick Exp $
+
+*twisted-core-12.3.0-r1 (23 Aug 2013)
+*twisted-core-11.1.0-r1 (23 Aug 2013)
+
+  23 Aug 2013; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
+  +files/twisted-core-2.1.0-echo-less.patch,
+  +files/twisted-core-2.1.0-zsh-head.patch,
+  +files/twisted-core-9.0.0-respect_TWISTED_DISABLE_WRITING_OF_PLUGIN_CACHE.pat
+  ch, +twisted-core-11.1.0-r1.ebuild,
+  +files/twisted-core-12.0.0-fix-test-timeFormatting.patch,
+  +files/twisted-core-12.1.0-remove-tests-conch-dependency.patch,
+  +twisted-core-12.3.0-r1.ebuild, +files/twistd.conf, +files/twistd.init,
+  +metadata.xml:
+  Rename twisted to twisted-core.
 
 *twisted-12.3.0-r1 (02 Apr 2013)
 
