@@ -19,6 +19,6 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
 
-RDEPEND=">=dev-python/twisted-1.3"
+RDEPEND=">=dev-python/twisted-core-1.3"
 
 S="${WORKDIR}/${MY_P}"
