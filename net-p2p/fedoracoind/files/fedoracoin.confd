@@ -1,0 +1,10 @@
+# Config file for /etc/init.d/fedoracoin
+
+# owner of fedoracoind process (don't change, must be existing)
+FEDORACOIN_USER="fedoracoin"
+
+# See http://www.fedoracoin.org/smf/index.php?topic=1063
+FEDORACOIN_OPTS="${FEDORACOIN_OPTS}"
+
+# nice level
+NICELEVEL="19"
