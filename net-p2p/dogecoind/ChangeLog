@@ -2,6 +2,12 @@
 # Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
 
+*dogecoind-1.3 (27 Dec 2013)
+
+  27 Dec 2013; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
+  -dogecoind-1.2.ebuild, +dogecoind-1.3.ebuild:
+  Version bump.
+
   25 Dec 2013; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
   dogecoind-1.2.ebuild, dogecoind-9999.ebuild:
   Fix README name.
