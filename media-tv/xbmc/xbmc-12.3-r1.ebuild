@@ -1,8 +1,8 @@
 # Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-tv/xbmc/xbmc-12.2-r1.ebuild,v 1.5 2013/07/06 12:12:03 scarabeus Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-tv/xbmc/xbmc-12.3.ebuild,v 1.2 2013/12/31 19:18:32 vapier Exp $
 
-EAPI=5
+EAPI="5"
 
 # Does not work with py3 here
 # It might work with py:2.5 but I didn't test that
@@ -29,7 +29,8 @@ case ${PV} in
 *)
 	MY_P=${P/_/-*_}
 	SRC_URI="http://mirrors.xbmc.org/releases/source/${MY_P}.tar.gz
-		mirror://gentoo/${PN}_backports-12-${BACKPORTS_VERSION}.tar.bz2"
+		mirror://gentoo/${PN}_backports-12-${BACKPORTS_VERSION}.tar.bz2
+		mirror://gentoo/${P}-generated-addons.tar.xz"
 	KEYWORDS="~amd64 ~x86"
 	;;
 esac
@@ -92,17 +93,18 @@ COMMON_DEPEND="${PYTHON_DEPS}
 	media-libs/tiff
 	pulseaudio? ( media-sound/pulseaudio )
 	media-sound/wavpack
-	|| ( media-libs/libpostproc media-video/ffmpeg )
+	|| ( media-libs/libpostproc media-video/ffmpeg:0 )
 	>=virtual/ffmpeg-0.6[encode]
 	rtmp? ( media-video/rtmpdump )
 	avahi? ( net-dns/avahi )
 	nfs? ( net-fs/libnfs )
 	webserver? ( net-libs/libmicrohttpd[messages] )
-	sftp? ( net-libs/libssh )
+	sftp? ( net-libs/libssh[sftp] )
 	net-misc/curl
 	samba? (
 		|| ( >=net-fs/samba-3.4.6[smbclient] net-fs/cifs-utils )
 	)
+
 	bluetooth? ( net-wireless/bluez )
 	sys-apps/dbus
 	caps? ( sys-libs/libcap )
@@ -138,7 +140,7 @@ DEPEND="${COMMON_DEPEND}
 	x86? ( dev-lang/nasm )
 	java? ( virtual/jre )"
 
-S=${WORKDIR}/${MY_P}
+S=${WORKDIR}/${MY_P}-Frodo
 
 pkg_setup() {
 	python-single-r1_pkg_setup
@@ -149,8 +151,9 @@ src_unpack() {
 }
 
 src_prepare() {
-	epatch "${FILESDIR}"/${PN}-9999-nomythtv.patch
+	epatch "${FILESDIR}"/${PN}-12.1-nomythtv.patch
 	epatch "${FILESDIR}"/${PN}-9999-no-arm-flags.patch #400617
+	epatch "${FILESDIR}"/${PN}-12.3-no-sse2.patch #475266
 	# Backported fixes
 	EPATCH_MULTI_MSG="Applying patches backported from master..." \
 		EPATCH_SUFFIX="patch" \
@@ -196,7 +199,7 @@ src_prepare() {
 	epatch_user #293109
 
 	# Tweak autotool timestamps to avoid regeneration
-	find . -type f -print0 | xargs -0 touch -r configure
+	find . -type f -exec touch -r configure {} +
 }
 
 src_configure() {
