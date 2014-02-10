@@ -95,7 +95,7 @@ src_install() {
 	fowners fedoracoin:fedoracoin /var/lib/fedoracoin/.fedoracoin
 	dosym /etc/fedoracoin/fedoracoin.conf /var/lib/fedoracoin/.fedoracoin/fedoracoin.conf
 
-	dodoc doc/README
+	dodoc doc/README.md
 
 	if use examples; then
 		docinto examples
