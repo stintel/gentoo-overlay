@@ -65,7 +65,7 @@ src_configure() {
 		$(use_enable scrypt) \
 		$(use_with udev libudev) \
 	# sanitize directories
-	sed -i 's~^\(\#define CGMINER_PREFIX \).*$~\1"'"${EPREFIX}/usr/lib/sgminer"'"~' config.h
+	sed -i 's~^\(\#define SGMINER_PREFIX \).*$~\1"'"${EPREFIX}/usr/lib/sgminer"'"~' config.h
 }
 
 src_install() {

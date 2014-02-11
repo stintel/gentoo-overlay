@@ -3,6 +3,10 @@
 
   11 Feb 2014; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
   sgminer-4.1.0.ebuild:
+  Fix kernel path.
+
+  11 Feb 2014; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
+  sgminer-4.1.0.ebuild:
   Remove SCRYPY-README.
 
   11 Feb 2014; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
