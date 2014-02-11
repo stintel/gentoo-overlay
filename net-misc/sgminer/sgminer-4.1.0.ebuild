@@ -71,9 +71,6 @@ src_configure() {
 src_install() {
 	dobin sgminer
 	dodoc AUTHORS.md NEWS.md README.md
-	if use scrypt; then
-		dodoc SCRYPT-README
-	fi
 	if use opencl; then
 		insinto /usr/lib/sgminer
 		doins kernel/*.cl
