@@ -1,4 +1,4 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/net-misc/sgminer/sgminer-2.7.4.ebuild,v 1.1 2012/08/30 21:30:41 blueness Exp $
 
@@ -43,7 +43,7 @@ DEPEND="${DEPEND}
 	virtual/pkgconfig
 	sys-apps/sed
 	adl? (
-		x11-libs/amd-adl-sdk
+		>=x11-libs/amd-adl-sdk-6.0
 	)
 "
 

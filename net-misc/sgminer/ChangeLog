@@ -1,6 +1,10 @@
   31 Jan 2013; Stijn Tintel <stijn+gentoo@linux-ipv6.be> cgminer-2.9.5.ebuild:
   Depend on virtual/udev instead of sys-fs/udev.
 
+  11 Feb 2014; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
+  sgminer-4.1.0.ebuild:
+  Depend on amd-adl-sdk 6.0
+
 *cgminer-3.1.1 (11 May 2013)
 
   11 May 2013; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
