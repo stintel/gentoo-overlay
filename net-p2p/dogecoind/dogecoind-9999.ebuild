@@ -96,7 +96,7 @@ src_install() {
 	fowners dogecoin:dogecoin /var/lib/dogecoin/.dogecoin
 	dosym /etc/dogecoin/dogecoin.conf /var/lib/dogecoin/.dogecoin/dogecoin.conf
 
-	dodoc doc/README
+	dodoc doc/README.md
 
 	if use examples; then
 		docinto examples

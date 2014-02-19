@@ -4,6 +4,10 @@
 
   19 Feb 2014; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
   dogecoind-9999.ebuild:
+  Rename README to README.md
+
+  19 Feb 2014; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
+  dogecoind-9999.ebuild:
   Use master-1.5 branch.
 
   19 Feb 2014; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
