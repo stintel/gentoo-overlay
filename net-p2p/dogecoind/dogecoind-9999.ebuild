@@ -15,6 +15,7 @@ case ${PV} in
 9999)
 	inherit git-2
 	EGIT_REPO_URI="git://github.com/dogecoin/dogecoin.git"
+	EGIT_BRANCH="master-1.5"
 	;;
 *)
 	SRC_URI="https://github.com/dogecoin/dogecoin/archive/v${PV/_/}.tar.gz -> dogecoin-v${PV}.tgz"

@@ -3,6 +3,10 @@
 # $Header: $
 
   19 Feb 2014; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
+  dogecoind-9999.ebuild:
+  Use master-1.5 branch.
+
+  19 Feb 2014; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
   dogecoind-1.3.ebuild, dogecoind-9999.ebuild:
   Inherit user.
 
