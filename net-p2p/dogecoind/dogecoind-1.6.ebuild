@@ -17,7 +17,7 @@ case ${PV} in
 	EGIT_REPO_URI="git://github.com/dogecoin/dogecoin.git"
 	;;
 *)
-	SRC_URI="https://github.com/dogecoin/dogecoin/archive/v${PV/_/}.tar.gz -> dogecoin-v${PV}.tgz"
+	SRC_URI="https://github.com/dogecoin/dogecoin/archive/${PV/_/}.tar.gz -> dogecoin-${PV}.tgz"
 esac
 
 LICENSE="MIT ISC GPL-2"
@@ -95,7 +95,7 @@ src_install() {
 	fowners dogecoin:dogecoin /var/lib/dogecoin/.dogecoin
 	dosym /etc/dogecoin/dogecoin.conf /var/lib/dogecoin/.dogecoin/dogecoin.conf
 
-	dodoc doc/README
+	dodoc doc/README.md
 
 	if use examples; then
 		docinto examples
