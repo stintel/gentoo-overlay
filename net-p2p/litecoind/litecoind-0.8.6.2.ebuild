@@ -6,7 +6,7 @@ EAPI="4"
 
 DB_VER="4.8"
 
-inherit db-use eutils versionator toolchain-funcs
+inherit db-use eutils versionator toolchain-funcs user
 
 DESCRIPTION="Litecoin crypto-currency wallet for automated services"
 HOMEPAGE="http://litecoin.org/"

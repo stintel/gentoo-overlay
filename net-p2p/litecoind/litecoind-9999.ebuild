@@ -1,4 +1,4 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/net-p2p/litecoind/litecoind-0.7.2.ebuild,v 1.2 2013/01/08 02:13:58 blueness Exp $
 
@@ -6,7 +6,7 @@ EAPI="4"
 
 DB_VER="4.8"
 
-inherit db-use eutils versionator toolchain-funcs
+inherit db-use eutils versionator toolchain-funcs user
 
 DESCRIPTION="Litecoin crypto-currency wallet for automated services"
 HOMEPAGE="http://litecoin.org/"
