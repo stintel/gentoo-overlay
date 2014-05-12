@@ -1,6 +1,17 @@
 # ChangeLog for media-tv/xbmc
-# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# Copyright 1999-2014 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/media-tv/xbmc/ChangeLog,v 1.26 2009/09/05 15:05:52 vapier Exp $
+
+*xbmc-13.0_p2-r1 (12 May 2014)
+
+  12 May 2014; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
+  +xbmc-13.0_p2-r1.ebuild, -files/xbmc-9.11-jpeg7-performance.diff,
+  -files/xbmc-9.11-smartplaylist-deletelastrule.diff,
+  -files/xbmc-9.11-wavpack.patch, files/xbmc-9999-nomythtv.patch,
+  -files/playercontrol_partymode_fix.diff,
+  -files/xbmc-fix-mysql-memoryleak.diff, metadata.xml:
+  media-tv/xbmc: Version bump. Based on upstream xbmc-13.0_p2.ebuild, with
+  Samba4 compat. Clean up old patches.
 
 *xbmc-12.2-r2 (11 Jul 2013)
 
