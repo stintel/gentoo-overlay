@@ -36,7 +36,7 @@ case ${PV} in
 	S=${WORKDIR}/${PN}-
 	[[ ${PV} == *_p* ]] \
 		&& S+=${PV/_p/-${CODENAME}_r} \
-		|| S+=${MY_PV}
+		|| S+=${MY_PV}-${CODENAME}
 	;;
 esac
 
