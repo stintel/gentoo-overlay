@@ -2,6 +2,12 @@
 # Copyright 1999-2014 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/media-tv/xbmc/ChangeLog,v 1.26 2009/09/05 15:05:52 vapier Exp $
 
+*xbmc-13.1 (29 Jun 2014)
+
+  29 Jun 2014; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
+  -xbmc-13.0_p2-r1.ebuild, +xbmc-13.1.ebuild, +files/generate.sh:
+  Version bump. Add generate.sh from upstream ebuild.
+
   29 Jun 2014; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
   xbmc-13.0_p2-r1.ebuild:
   Depend on sys-power/upower or sys-power/upower-pm-utils when udev USE flag is
