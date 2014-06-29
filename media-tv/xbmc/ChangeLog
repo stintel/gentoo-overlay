@@ -3,6 +3,11 @@
 # $Header: /var/cvsroot/gentoo-x86/media-tv/xbmc/ChangeLog,v 1.26 2009/09/05 15:05:52 vapier Exp $
 
   29 Jun 2014; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
+  xbmc-13.0_p2-r1.ebuild:
+  Depend on sys-power/upower or sys-power/upower-pm-utils when udev USE flag is
+  set.
+
+  29 Jun 2014; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
   xbmc-12.3-r1.ebuild, xbmc-13.0_p2-r1.ebuild:
   Fix USE dependency on media-libs/libsdl, "audio" USE flag was renamed to
   "sound".
