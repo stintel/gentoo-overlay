@@ -2,6 +2,10 @@
 # Copyright 1999-2014 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/media-tv/xbmc/ChangeLog,v 1.26 2009/09/05 15:05:52 vapier Exp $
 
+  06 Aug 2014; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
+  xbmc-13.1.ebuild:
+  Merge upstream ebuild changes.
+
   29 Jun 2014; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
   xbmc-13.1.ebuild:
   Fix work directory.

@@ -1,6 +1,6 @@
 # Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-tv/xbmc/xbmc-13.0_p2.ebuild,v 1.1 2014/05/11 19:08:33 vapier Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-tv/xbmc/xbmc-13.1.ebuild,v 1.1 2014/07/30 08:34:55 vapier Exp $
 
 EAPI="5"
 
@@ -33,10 +33,7 @@ case ${PV} in
 		http://mirrors.xbmc.org/releases/source/${MY_P}-generated-addons.tar.xz"
 	KEYWORDS="~amd64 ~x86"
 
-	S=${WORKDIR}/${PN}-
-	[[ ${PV} == *_p* ]] \
-		&& S+=${PV/_p/-${CODENAME}_r} \
-		|| S+=${MY_PV}-${CODENAME}
+	S=${WORKDIR}/${MY_P}-${CODENAME}
 	;;
 esac
 
@@ -45,7 +42,7 @@ HOMEPAGE="http://xbmc.org/"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="airplay alsa altivec avahi bluetooth bluray caps cec css debug +fishbmc gles goom java joystick midi mysql nfs +opengl profile +projectm pulseaudio pvr +rsxs rtmp +samba +sdl sse sse2 sftp udev upnp +usb vaapi vdpau webserver +X +xrandr"
+IUSE="airplay alsa altivec avahi bluetooth bluray caps cec css debug +fishbmc gles goom java joystick midi mysql nfs +opengl profile +projectm pulseaudio pvr +rsxs rtmp +samba +sdl sse sse2 sftp udisks upnp upower +usb vaapi vdpau webserver +X +xrandr"
 REQUIRED_USE="
 	pvr? ( mysql )
 	rsxs? ( X )
@@ -87,7 +84,7 @@ COMMON_DEPEND="${PYTHON_DEPS}
 	media-libs/libpng
 	projectm? ( media-libs/libprojectm )
 	media-libs/libsamplerate
-	sdl? ( media-libs/libsdl[opengl,sound,video,X] )
+	sdl? ( media-libs/libsdl[sound,opengl,video,X] )
 	alsa? ( media-libs/libsdl[alsa] )
 	>=media-libs/taglib-1.8
 	media-libs/libvorbis
@@ -121,7 +118,10 @@ COMMON_DEPEND="${PYTHON_DEPS}
 		virtual/glu
 		virtual/opengl
 	)
-	gles? ( virtual/opengl )
+	gles? (
+		virtual/opengl
+		media-libs/mesa[gles2]
+	)
 	vaapi? ( x11-libs/libva[opengl] )
 	vdpau? (
 		|| ( x11-libs/libvdpau >=x11-drivers/nvidia-drivers-180.51 )
@@ -135,10 +135,8 @@ COMMON_DEPEND="${PYTHON_DEPS}
 		x11-libs/libXrender
 	)"
 RDEPEND="${COMMON_DEPEND}
-	udev? (
-		sys-fs/udisks:0
-		|| ( sys-power/upower sys-power/upower-pm-utils )
-		)"
+	udisks? ( sys-fs/udisks:0 )
+	upower? ( || ( sys-power/upower sys-power/upower-pm-utils ) )"
 DEPEND="${COMMON_DEPEND}
 	app-arch/xz-utils
 	dev-lang/swig
@@ -231,7 +229,6 @@ src_configure() {
 		--disable-optimizations \
 		--enable-external-libraries \
 		$(has_version 'media-video/libav' && echo "--enable-libav-compat") \
-		--enable-gl \
 		$(use_enable airplay) \
 		$(use_enable avahi) \
 		$(use_enable bluray libbluray) \
