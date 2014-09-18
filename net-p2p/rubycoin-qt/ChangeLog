@@ -1,0 +1,11 @@
+# ChangeLog for net-p2p/rubycoin-qt
+# Copyright 1999-2014 Gentoo Foundation; Distributed under the GPL v2
+# $Header: $
+
+*rubycoin-qt-9999 (18 Sep 2014)
+
+  18 Sep 2014; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
+  +rubycoin-qt-9999.ebuild, +files/rubycoin-qt-bitcoingui-walletframe.patch,
+  +files/rubycoin-sys_leveldb.patch, +metadata.xml:
+  Initial import. Based on dogecoin-qt ebuild.
+
