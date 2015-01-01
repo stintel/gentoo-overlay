@@ -1,4 +1,4 @@
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/net-misc/sgminer/sgminer-2.7.4.ebuild,v 1.1 2012/08/30 21:30:41 blueness Exp $
 
@@ -11,7 +11,7 @@ inherit autotools versionator
 
 DESCRIPTION="Bitcoin CPU/GPU/FPGA miner in C"
 HOMEPAGE="https://bitcointalk.org/index.php?topic=28402.0"
-SRC_URI="https://github.com/veox/sgminer/archive/${PV}.tar.gz -> sgminer-v${PV}.tgz"
+SRC_URI="https://github.com/sgminer-dev/sgminer/archive/${PV}.tar.gz -> sgminer-v${PV}.tgz"
 
 
 LICENSE="GPL-3"
@@ -30,7 +30,7 @@ DEPEND="
 	ncurses? (
 		sys-libs/ncurses
 	)
-	dev-libs/jansson
+	>=dev-libs/jansson-2.5
 	opencl? (
 		virtual/opencl
 	)
@@ -48,7 +48,10 @@ DEPEND="${DEPEND}
 "
 
 src_prepare() {
-	ln -s /usr/include/ADL/* ADL_SDK/
+	use adl && ln -s /usr/include/ADL/* ADL_SDK/
+
+	epatch "${FILESDIR}/${P}-system-jansson.patch"
+	epatch "${FILESDIR}/${P}-fixes.patch"
 
 	eautoreconf
 }
