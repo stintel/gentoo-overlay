@@ -1,4 +1,4 @@
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/net-p2p/fedoracoind/fedoracoind-0.7.2.ebuild,v 1.2 2013/01/08 02:13:58 blueness Exp $
 
@@ -17,7 +17,7 @@ case ${PV} in
 	EGIT_REPO_URI="git://github.com/fedoracoin/fedoracoin.git"
 	;;
 *)
-	SRC_URI="https://github.com/fedoracoin/fedoracoin/archive/v${PV/_/}.tar.gz -> fedoracoin-v${PV}.tgz"
+	SRC_URI="https://github.com/fedoracoin/fedoracoin/archive/${PV/_/}.tar.gz -> fedoracoin-${PV}.tgz"
 esac
 
 LICENSE="MIT ISC GPL-2"
