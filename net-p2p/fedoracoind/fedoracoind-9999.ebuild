@@ -13,16 +13,17 @@ HOMEPAGE="http://fedoracoin.org/"
 
 case ${PV} in
 9999)
+	KEYWORDS=""
 	inherit git-2
 	EGIT_REPO_URI="git://github.com/fedoracoin/fedoracoin.git"
 	;;
 *)
+	KEYWORDS="~amd64"
 	SRC_URI="https://github.com/fedoracoin/fedoracoin/archive/${PV/_/}.tar.gz -> fedoracoin-${PV}.tgz"
 esac
 
 LICENSE="MIT ISC GPL-2"
 SLOT="0"
-KEYWORDS=""
 IUSE="examples ipv6 logrotate upnp"
 
 RDEPEND="

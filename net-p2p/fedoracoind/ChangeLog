@@ -4,6 +4,10 @@
 
   01 Jan 2015; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
   fedoracoind-9999.ebuild:
+  Keyword ~amd64 for non-live ebuild.
+
+  01 Jan 2015; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
+  fedoracoind-9999.ebuild:
   Fix SRC_URI for non-live versions.
 
   10 Feb 2014; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
