@@ -1,0 +1,10 @@
+# ChangeLog for net-misc/ccminer
+# Copyright 1999-2015 Gentoo Foundation; Distributed under the GPL v2
+# $Header: $
+
+*ccminer-1.2 (01 Jan 2015)
+
+  01 Jan 2015; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
+  +ccminer-1.2.ebuild:
+  Initial import.
+
