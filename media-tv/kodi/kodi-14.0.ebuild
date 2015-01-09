@@ -261,6 +261,11 @@ src_configure() {
 		$(use_enable xrandr)
 }
 
+src_compile() {
+	emake -j -f codegenerator.mk || die
+	emake || die
+}
+
 src_install() {
 	default
 	rm "${ED}"/usr/share/doc/*/{LICENSE.GPL,copying.txt}*
