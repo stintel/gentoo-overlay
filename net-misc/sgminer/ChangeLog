@@ -1,6 +1,14 @@
   31 Jan 2013; Stijn Tintel <stijn+gentoo@linux-ipv6.be> cgminer-2.9.5.ebuild:
   Depend on virtual/udev instead of sys-fs/udev.
 
+*sgminer-5.1.0 (18 Feb 2015)
+
+  18 Feb 2015; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
+  -sgminer-5.0.1.ebuild, +sgminer-5.1.0.ebuild,
+  -files/sgminer-5.0.1-fixes.patch, -files/sgminer-5.0.1-system-jansson.patch,
+  +files/sgminer-5.1.0-system-jansson.patch:
+  Version bump.
+
 *sgminer-5.0.1 (01 Jan 2015)
 
   01 Jan 2015; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>

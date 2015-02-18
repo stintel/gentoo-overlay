@@ -51,7 +51,6 @@ src_prepare() {
 	use adl && ln -s /usr/include/ADL/* ADL_SDK/
 
 	epatch "${FILESDIR}/${P}-system-jansson.patch"
-	epatch "${FILESDIR}/${P}-fixes.patch"
 
 	eautoreconf
 }
