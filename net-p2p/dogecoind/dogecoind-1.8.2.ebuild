@@ -4,7 +4,7 @@
 
 EAPI=4
 
-DB_VER="4.8"
+DB_VER="5.1"
 
 inherit autotools bash-completion-r1 db-use eutils user versionator systemd
 
