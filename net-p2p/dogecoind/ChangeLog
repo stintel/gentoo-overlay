@@ -3,6 +3,10 @@
 # $Header: $
 
   10 Mar 2015; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
+  +files/dogecoin.initd-r1:
+  Add new init script based on upstream bitcoind.
+
+  10 Mar 2015; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
   dogecoind-1.8.2.ebuild:
   Depend on sys-libs/db:5.1.
 
