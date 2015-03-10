@@ -1,6 +1,13 @@
 # ChangeLog for net-p2p/dogecoind
-# Copyright 1999-2014 Gentoo Foundation; Distributed under the GPL v2
+# Copyright 1999-2015 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
+
+*dogecoind-1.8.2 (10 Mar 2015)
+
+  10 Mar 2015; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
+  -dogecoind-1.6.ebuild, +dogecoind-1.8.2.ebuild,
+  +files/dogecoind-1.8.2-sys_leveldb.patch, metadata.xml:
+  Version bump. Based on upstream bitcoind-0.9.4 ebuild.
 
   17 Mar 2014; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
   dogecoind-9999.ebuild:

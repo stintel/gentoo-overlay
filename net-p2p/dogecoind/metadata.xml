@@ -7,5 +7,6 @@
 	<use>
         <flag name='logrotate'>Install support files for
                 <pkg>app-admin/logrotate</pkg></flag>
+		<flag name='wallet'>Enable wallet support</flag>
 	</use>
 </pkgmetadata>
