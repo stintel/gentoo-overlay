@@ -1,6 +1,10 @@
 # ChangeLog for net-p2p/feathercoind
-# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# Copyright 1999-2015 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
+
+  10 Mar 2015; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
+  feathercoind-9999.ebuild:
+  Inherit user.
 
 *feathercoind-9999 (29 Apr 2013)
 

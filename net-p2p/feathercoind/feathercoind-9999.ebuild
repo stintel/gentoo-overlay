@@ -1,4 +1,4 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -6,7 +6,7 @@ EAPI=4
 
 DB_VER="4.8"
 
-inherit db-use eutils git-2 versionator
+inherit db-use eutils git-2 user versionator
 
 DESCRIPTION="Original Feathercoin crypto-currency wallet for automated services"
 HOMEPAGE="http://feathercoin.org/"
