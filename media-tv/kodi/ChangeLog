@@ -3,6 +3,10 @@
 # $Header: $
 
   18 Mar 2015; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
+  kodi-14.1.ebuild, +files/kodi-14.0-dvddemux-ffmpeg.patch, files/generate.sh:
+  Merge upstream ebuild changes.
+
+  18 Mar 2015; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
   -kodi-14.0.ebuild:
   Remove old version.
 
