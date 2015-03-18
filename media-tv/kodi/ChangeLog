@@ -2,6 +2,10 @@
 # Copyright 1999-2015 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
 
+  18 Mar 2015; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
+  -kodi-14.0.ebuild:
+  Remove old version.
+
   09 Jan 2015; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
   kodi-14.0.ebuild:
   Generate code before running make.
