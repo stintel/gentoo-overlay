@@ -1,0 +1,8 @@
+# ChangeLog for net-analyzer/suricata
+# Copyright 1999-2015 Gentoo Foundation; Distributed under the GPL v2
+# $Header: $
+
+  23 Jun 2015; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
+  suricata-1.3.4.ebuild:
+  Cleanup ebuild.
+

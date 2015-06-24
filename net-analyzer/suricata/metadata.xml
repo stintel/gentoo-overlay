@@ -2,6 +2,6 @@
 <pkgmetadata>
 <use>
 	<flag name="cuda">Enable CUDA support</flag>
-	<flag name="netfilter">Enable netfilter support</flag>
+	<flag name="nfqueue">Enable NFQUEUE support for inline IDP</flag>
 </use>
 </pkgmetadata>
