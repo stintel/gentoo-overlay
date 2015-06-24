@@ -2,6 +2,9 @@
 <pkgmetadata>
 <use>
 	<flag name="cuda">Enable CUDA support</flag>
+	<flag name="luajit">Enable Luajit support</flag>
+	<flag name="nflog">Enable libnetfilter_log support</flag>
 	<flag name="nfqueue">Enable NFQUEUE support for inline IDP</flag>
+	<flag name="unix-socket">Enable unix socket</flag>
 </use>
 </pkgmetadata>
