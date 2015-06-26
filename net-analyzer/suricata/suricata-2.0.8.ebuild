@@ -61,6 +61,8 @@ src_configure() {
 src_install() {
 	emake DESTDIR="${D}" install
 
+	newinitd "${FILESDIR}/${PN}.initd" ${PN}
+
 	dodir "/etc/${PN}"
 	insinto "/etc/${PN}"
 	doins classification.config

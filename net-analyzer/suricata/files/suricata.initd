@@ -1,0 +1,10 @@
+#!/sbin/runscript
+# Copyright 1999-2015 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: $
+
+description="Suricata"
+pidfile="/run/suricata.pid"
+command="/usr/bin/suricata"
+command_args="${SURICATA_OPTS} --pidfile ${pidfile} -D"
+start_stop_daemon_args="--pidfile ${pidfile}"
