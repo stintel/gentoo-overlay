@@ -4,6 +4,10 @@
 
   03 Jul 2015; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
   litecoind-0.10.2.2.ebuild:
+  Fix bash-completion function file name.
+
+  03 Jul 2015; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
+  litecoind-0.10.2.2.ebuild:
   Fix manual page names.
 
   03 Jul 2015; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>

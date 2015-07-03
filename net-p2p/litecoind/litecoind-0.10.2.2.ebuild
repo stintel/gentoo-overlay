@@ -93,7 +93,7 @@ src_install() {
 	newman contrib/debian/manpages/bitcoind.1 litecoind.1
 	newman contrib/debian/manpages/bitcoin.conf.5 litecoin.conf.5
 
-	newbashcomp contrib/${PN}.bash-completion ${PN}
+	newbashcomp contrib/bitcoind.bash-completion ${PN}
 
 	if use examples; then
 		docinto examples
