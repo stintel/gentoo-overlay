@@ -53,6 +53,9 @@ src_prepare() {
 	epatch "${FILESDIR}/${P}-sys-leveldb.patch"
 	rm -r src/leveldb
 	eautoreconf
+
+	sed -i 's/bitcoin/litecoin/g;s/Bitcoin/Litecoin/g;s/BITCOIN/LITECOIN/g' \
+		contrib/init/bitcoind.openrc
 }
 
 src_configure() {
@@ -79,7 +82,7 @@ src_install() {
 	fperms 600 /etc/litecoin/litecoin.conf
 
 	newconfd "${FILESDIR}/litecoin.confd" ${PN}
-	newinitd "${FILESDIR}/litecoin.initd-r1" ${PN}
+	newinitd "contrib/init/bitcoind.openrc" ${PN}
 	systemd_dounit "${FILESDIR}/litecoind.service"
 
 	keepdir /var/lib/litecoin/.litecoin
