@@ -55,7 +55,8 @@ src_prepare() {
 	eautoreconf
 
 	sed -i 's/bitcoin/litecoin/g;s/Bitcoin/Litecoin/g;s/BITCOIN/LITECOIN/g' \
-		contrib/init/bitcoind.openrc
+		contrib/init/bitcoind.openrc \
+		contrib/init/bitcoind.openrcconf
 }
 
 src_configure() {
@@ -81,7 +82,7 @@ src_install() {
 	fowners litecoin:litecoin /etc/litecoin/litecoin.conf
 	fperms 600 /etc/litecoin/litecoin.conf
 
-	newconfd "${FILESDIR}/litecoin.confd" ${PN}
+	newconfd "contrib/init/bitcoind.openrcconf" ${PN}.conf
 	newinitd "contrib/init/bitcoind.openrc" ${PN}
 	systemd_dounit "${FILESDIR}/litecoind.service"
 
