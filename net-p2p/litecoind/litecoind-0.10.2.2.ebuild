@@ -90,7 +90,8 @@ src_install() {
 
 	dodoc doc/README.md doc/release-notes.md
 	dodoc doc/tor.md
-	doman contrib/debian/manpages/{litecoind.1,litecoin.conf.5}
+	newman contrib/debian/manpages/bitcoind.1 litecoind.1
+	newman contrib/debian/manpages/bitcoin.conf.5 litecoin.conf.5
 
 	newbashcomp contrib/${PN}.bash-completion ${PN}
 
