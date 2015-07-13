@@ -90,7 +90,8 @@ src_install() {
 
 	dodoc doc/README.md doc/release-notes/RELEASE_NOTES_1_8.1.md
 	dodoc doc/tor.md
-	doman contrib/debian/manpages/{dogecoind.1,dogecoin.conf.5}
+	newman contrib/debian/manpages/bitcoind.1 dogecoind.1
+	newman contrib/debian/manpages/bitcoin.conf.5 dogecoin.conf.5
 
 	newbashcomp contrib/${PN}.bash-completion ${PN}
 
