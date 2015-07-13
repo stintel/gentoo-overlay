@@ -88,7 +88,7 @@ src_install() {
 	fowners dogecoin:dogecoin /var/lib/dogecoin/.dogecoin
 	dosym /etc/dogecoin/dogecoin.conf /var/lib/dogecoin/.dogecoin/dogecoin.conf
 
-	dodoc doc/README.md doc/release-notes.md
+	dodoc doc/README.md doc/release-notes/RELEASE_NOTES_1_8.1.md
 	dodoc doc/tor.md
 	doman contrib/debian/manpages/{dogecoind.1,dogecoin.conf.5}
 
