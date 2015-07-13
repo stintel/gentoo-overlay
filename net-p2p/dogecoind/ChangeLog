@@ -3,6 +3,10 @@
 # $Header: $
 
   13 Jul 2015; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
+  dogecoind-1.8.2.ebuild, -files/dogecoin.initd-r1:
+  Remove old init script.
+
+  13 Jul 2015; Stijn Tintel (stintel) <stijn+gentoo@linux-ipv6.be>
   dogecoind-1.8.2.ebuild:
   Fix bash-completion function file name.
 

@@ -79,7 +79,7 @@ src_install() {
 	fperms 600 /etc/dogecoin/dogecoin.conf
 
 	newconfd "${FILESDIR}/dogecoin.confd" ${PN}
-	newinitd "${FILESDIR}/dogecoin.initd-r1" ${PN}
+	newinitd "${FILESDIR}/dogecoin.initd" ${PN}
 	systemd_dounit "${FILESDIR}/dogecoind.service"
 
 	keepdir /var/lib/dogecoin/.dogecoin
