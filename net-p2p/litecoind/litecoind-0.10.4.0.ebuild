@@ -45,7 +45,6 @@ pkg_setup() {
 src_prepare() {
 	epatch "${FILESDIR}"/0.9.0-sys_leveldb.patch
 	epatch "${FILESDIR}"/litecoind-0.10.2.2-memenv_h.patch
-	epatch "${FILESDIR}"/litecoin-miniupnpc-abi.patch
 	epatch "${FILESDIR}"/litecoind-0.10.2.2-fix-gnustack.patch
 	eautoreconf
 	rm -r src/leveldb
