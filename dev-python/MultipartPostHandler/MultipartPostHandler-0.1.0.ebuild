@@ -12,7 +12,7 @@ DESCRIPTION="A handler for urllib2 to enable multipart form uploading"
 HOMEPAGE="http://pypi.python.org/pypi/MultipartPostHandler"
 SRC_URI="mirror://pypi/${PN:0:1}/${PN}/${P}.tar.gz"
 
-LICENSE="GPL-2"
+LICENSE="LGPL-2.1"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 
