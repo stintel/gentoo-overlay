@@ -4,7 +4,7 @@
 
 EAPI=4
 
-DB_VER="5.1"
+DB_VER="4.8"
 
 inherit autotools bash-completion-r1 db-use eutils user versionator systemd
 
@@ -50,6 +50,7 @@ pkg_setup() {
 }
 
 src_prepare() {
+	epatch "${FILESDIR}/${P}-db4.8.patch"
 	epatch "${FILESDIR}/${P}-sys_leveldb.patch"
 	rm -r src/leveldb
 	eautoreconf
@@ -104,4 +105,19 @@ src_install() {
 		insinto /etc/logrotate.d
 		newins "${FILESDIR}/dogecoind.logrotate" dogecoind
 	fi
+}
+
+pkg_postinst() {
+	local v
+	for v in ${REPLACING_VERSIONS}; do
+		if ! version_compare 1.8.2 ${v}; then
+			ewarn "Berkeley DB has been downgraded from 5.1 to 4.8."
+			ewarn "To downgrade your wallet, stop your client and run this before restarting:"
+			ewarn
+			ewarn "$ mv wallet.dat wallet.dat.db51"
+			ewarn "$ db5.1_dump wallet.dat.db51 | db4.8_load wallet.dat"
+			ewarn
+			ewarn "You can now start your client again."
+		fi
+	done
 }
