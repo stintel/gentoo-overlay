@@ -4,11 +4,9 @@ Date:   Mon Sep 9 03:06:17 2013 +0000
 
     configure: Add unsupported --with-system-leveldb configure flag
 
-diff --git a/configure.ac b/configure.ac
-index 3ed4549..5a5852d 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -332,10 +332,22 @@ AC_TRY_COMPILE([#include <sys/socket.h>],
+@@ -381,10 +381,22 @@ AC_TRY_COMPILE([#include <sys/socket.h>]
   [ AC_MSG_RESULT(no)]
  )
  
@@ -32,3 +30,14 @@ index 3ed4549..5a5852d 100644
  AC_SUBST(LEVELDB_CPPFLAGS)
  AC_SUBST(LIBLEVELDB)
  AC_SUBST(LIBMEMENV)
+--- a/src/leveldbwrapper.cpp
++++ b/src/leveldbwrapper.cpp
+@@ -10,7 +10,7 @@
+ #include <leveldb/cache.h>
+ #include <leveldb/env.h>
+ #include <leveldb/filter_policy.h>
+-#include <memenv.h>
++#include <leveldb/helpers/memenv.h>
+ 
+ void HandleError(const leveldb::Status &status) throw(leveldb_error) {
+     if (status.ok())
