@@ -110,6 +110,11 @@ src_install() {
 pkg_postinst() {
 	local v
 	for v in ${REPLACING_VERSIONS}; do
+		if ! version_is_at_least 1.10.0 ${v}; then
+			ewarn "The block database format has changed."
+			ewarn "You need to re-index once, by starting with the -reindex parameter."
+			ewarn "Add it to DOGECOIND_OPTS in /etc/conf.d/dogecoin.conf"
+		fi
 		if ! version_compare 1.8.2 ${v}; then
 			ewarn "Berkeley DB has been downgraded from 5.1 to 4.8."
 			ewarn "To downgrade your wallet, stop your client and run this before restarting:"
