@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<use>
+		<flag name='adl'>Enable support for controlling fans and overclocking on AMD cards with AMD Display Library</flag>
+		<flag name='avalon'>Enable support for mining with Avalon ASICs</flag>
+		<flag name='bab'>Enable support for mining with BlackArrow Bitfury ASICs</flag>
+		<flag name='bflsc'>Enable support for mining with Butterfly Labs ASICs</flag>
+		<flag name='bitforce'>Enable support for mining with ButterFly Labs BitFORCE FPGAs</flag>
+		<flag name='bitfury'>Enable support for mining with BitFury ASICs</flag>
+		<flag name='hashfast'>Enable support for mining with HashFast ASICs</flag>
+		<flag name='icarus'>Enable support for mining with Icarus FPGAs</flag>
+		<flag name='klondike'>Enable support for mining with Klondike ASICs</flag>
+		<flag name='knc'>Enable support for mining with KnC miners</flag>
+		<flag name='modminer'>Enable support for ModMiner FPGAs</flag>
+		<flag name='opencl'>Enable support for mining with OpenCL-capable devices (GPUs)</flag>
+		<flag name='scrypt'>Enable support for scrypt mining algorithm</flag>
+		<flag name='ztex'>Enable support for mining with Ztex FPGAs</flag>
+	</use>
+</pkgmetadata>
