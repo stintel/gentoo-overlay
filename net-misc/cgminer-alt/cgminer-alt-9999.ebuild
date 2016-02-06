@@ -25,6 +25,8 @@ REQUIRED_USE="
 "
 
 DEPEND="
+	!net-misc/cgminer
+	!net-misc/cgminer-decred
 	net-misc/curl
 	ncurses? (
 		sys-libs/ncurses:0
