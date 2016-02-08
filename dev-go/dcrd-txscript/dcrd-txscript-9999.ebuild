@@ -15,7 +15,7 @@ inherit golang-build
 
 DESCRIPTION="Implementation of the decred transaction script language"
 HOMEPAGE="https://github.com/decred/dcrd/tree/master/txscript"
-LICENSE="MIT"
+LICENSE="ISC"
 SLOT="0"
 IUSE=""
 RESTRICT="test"
