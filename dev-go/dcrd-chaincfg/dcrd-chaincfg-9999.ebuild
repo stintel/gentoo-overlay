@@ -15,7 +15,7 @@ inherit golang-build
 
 DESCRIPTION="Chain configuration parameters for the three standard Decred networks"
 HOMEPAGE="https://github.com/decred/dcrd/tree/master/chaincfg"
-LICENSE="MIT"
+LICENSE="ISC"
 SLOT="0"
 IUSE=""
 RESTRICT="test"
