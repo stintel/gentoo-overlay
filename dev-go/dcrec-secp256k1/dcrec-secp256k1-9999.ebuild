@@ -7,9 +7,9 @@ EAPI=5
 EGO_PN="github.com/decred/dcrd/dcrec/secp256k1"
 
 if [[ ${PV} = *9999* ]]; then
-        inherit golang-vcs
+	inherit golang-vcs
 else
-        die
+	die
 fi
 inherit golang-build
 
@@ -19,5 +19,5 @@ LICENSE="ISC"
 SLOT="0"
 IUSE=""
 RESTRICT="test"
-DEPEND=""
+DEPEND="dev-go/fastsha256"
 RDEPEND=""
