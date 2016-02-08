@@ -19,5 +19,7 @@ LICENSE="ISC"
 SLOT="0"
 IUSE=""
 RESTRICT="test"
-DEPEND="dev-go/dcr-ed25519"
+DEPEND="
+	dev-go/dcr-ed25519
+	dev-go/fastsha256"
 RDEPEND=""
