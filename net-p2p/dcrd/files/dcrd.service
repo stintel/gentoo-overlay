@@ -1,0 +1,14 @@
+[Unit]
+Description=Start dcrd
+After=network.target
+
+[Service]
+Type=simple
+Restart=always
+User=dcrd
+ExecStart=/usr/bin/dcrd
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target
+
