@@ -15,7 +15,7 @@ inherit golang-build
 
 DESCRIPTION="Concrete types for marshalling to and from the decred JSON-RPC API"
 HOMEPAGE="https://github.com/decred/dcrd/tree/master/dcrjson"
-LICENSE="MIT"
+LICENSE="ISC"
 SLOT="0"
 IUSE=""
 RESTRICT="test"
