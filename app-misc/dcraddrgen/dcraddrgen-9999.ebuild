@@ -20,3 +20,8 @@ DEPEND="
 	dev-go/btcsuite-ripemd160
 	dev-go/dcr-blake256"
 RDEPEND=""
+
+src_install() {
+	golang-build_src_install
+	dobin "${PN}"
+}
