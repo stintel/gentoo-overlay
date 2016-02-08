@@ -15,7 +15,7 @@ inherit golang-build
 
 DESCRIPTION="A wrapper around the hash function used for decred"
 HOMEPAGE="https://github.com/decred/dcrd/tree/master/chaincfg/chainhash"
-LICENSE="MIT"
+LICENSE="ISC"
 SLOT="0"
 IUSE=""
 RESTRICT="test"
