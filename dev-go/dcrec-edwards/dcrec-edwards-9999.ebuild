@@ -7,13 +7,13 @@ EAPI=5
 EGO_PN="github.com/decred/dcrd/dcrec/edwards"
 
 if [[ ${PV} = *9999* ]]; then
-        inherit golang-vcs
+	inherit golang-vcs
 else
-        die
+	die
 fi
 inherit golang-build
 
-DESCRIPTION="Implementation of edwards elliptic curve cryptography needed for working with Decred"
+DESCRIPTION="Implementation of edwards elliptic curve cryptography needed for Decred"
 HOMEPAGE="https://github.com/decred/dcrd/tree/master/dcrec/edwards"
 LICENSE="ISC"
 SLOT="0"
