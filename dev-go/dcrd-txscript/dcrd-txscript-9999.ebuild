@@ -20,6 +20,7 @@ SLOT="0"
 IUSE=""
 RESTRICT="test"
 DEPEND="
+	dev-go/btclog
 	dev-go/dcrd-chaincfg
 	dev-go/dcrd-chainhash
 	dev-go/dcrd-wire
