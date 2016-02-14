@@ -1,25 +1,30 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
-EAPI=4
+EAPI=5
 
 DB_VER="4.8"
 
-inherit db-use eutils git-2 user versionator
+inherit autotools db-use eutils user
 
 DESCRIPTION="Original Feathercoin crypto-currency wallet for automated services"
 HOMEPAGE="http://feathercoin.org/"
-SRC_URI="
-"
-EGIT_PROJECT='feathercoin'
-EGIT_REPO_URI="git://github.com/FeatherCoin/FeatherCoin.git"
-EGIT_BRANCH='master'
+
+case ${PV} in
+	9999)
+		inherit git-r3
+		EGIT_REPO_URI="git://github.com/FeatherCoin/FeatherCoin.git"
+		EGIT_BRANCH='0.9.3'
+		;;
+	*)
+		SRC_URI=""
+esac
 
 LICENSE="MIT ISC GPL-2"
 SLOT="0"
 KEYWORDS=""
-IUSE="examples ipv6 logrotate upnp"
+IUSE="examples ipv6 logrotate test upnp wallet"
 
 RDEPEND="
 	>=dev-libs/boost-1.41.0[threads(+)]
@@ -31,6 +36,7 @@ RDEPEND="
 		net-libs/miniupnpc
 	)
 	sys-libs/db:$(db_ver_to_slot "${DB_VER}")[cxx]
+	virtual/bitcoin-leveldb
 "
 DEPEND="${RDEPEND}
 	>=app-shells/bash-4.1
@@ -42,35 +48,28 @@ pkg_setup() {
 	enewuser "${UG}" -1 -1 /var/lib/feathercoin "${UG}"
 }
 
-src_compile() {
-	OPTS=()
+src_prepare() {
+	epatch "${FILESDIR}/feathercoin-sys_leveldb.patch"
+	eautoreconf
+}
 
-	OPTS+=("DEBUGFLAGS=")
-	OPTS+=("CXXFLAGS=${CXXFLAGS}")
-	OPTS+=("LDFLAGS=${LDFLAGS}")
-
-	OPTS+=("BDB_INCLUDE_PATH=$(db_includedir "${DB_VER}")")
-	OPTS+=("BDB_LIB_SUFFIX=-${DB_VER}")
-
-	if use upnp; then
-		OPTS+=(USE_UPNP=1)
-	else
-		OPTS+=(USE_UPNP=)
-	fi
-	use ipv6 || OPTS+=("USE_IPV6=-")
-
-	cd src || die
-	emake -f makefile.unix "${OPTS[@]}" ${PN}
+src_configure() {
+	econf \
+		--disable-ccache \
+		$(use_with upnp miniupnpc) $(use_enable upnp upnp-default) \
+		$(use_enable test tests)  \
+		$(use_enable wallet)  \
+		--with-system-leveldb  \
+		--without-cli  \
+		--without-gui
 }
 
 src_test() {
-	cd src || die
-	emake -f makefile.unix "${OPTS[@]}" test_feathercoin
-	./test_feathercoin || die 'Tests failed'
+	emake check
 }
 
 src_install() {
-	dobin src/${PN}
+	emake DESTDIR="${D}" install
 
 	insinto /etc/feathercoin
 	newins "${FILESDIR}/feathercoin.conf" feathercoin.conf
@@ -86,7 +85,7 @@ src_install() {
 	fowners feathercoin:feathercoin /var/lib/feathercoin/.feathercoin
 	dosym /etc/feathercoin/feathercoin.conf /var/lib/feathercoin/.feathercoin/feathercoin.conf
 
-	dodoc doc/README
+	dodoc doc/README.md
 
 	if use examples; then
 		docinto examples
