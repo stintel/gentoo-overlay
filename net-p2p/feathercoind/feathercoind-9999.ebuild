@@ -8,22 +8,26 @@ DB_VER="4.8"
 
 inherit autotools db-use eutils user
 
+MyPN="${PN/d$/}"
+MyP="${MyPN}-${PV}"
+
 DESCRIPTION="Original Feathercoin crypto-currency wallet for automated services"
 HOMEPAGE="http://feathercoin.org/"
 
 case ${PV} in
 	9999)
+		KEYWORDS=""
 		inherit git-r3
 		EGIT_REPO_URI="git://github.com/FeatherCoin/FeatherCoin.git"
 		EGIT_BRANCH='0.9.3'
 		;;
 	*)
-		SRC_URI=""
+		KEYWORDS="~amd64"
+		SRC_URI="https://github.com/FeatherCoin/FeatherCoin/archive/v${PV}.tar.gz -> ${MyP}.tar.gz"
 esac
 
 LICENSE="MIT ISC GPL-2"
 SLOT="0"
-KEYWORDS=""
 IUSE="examples ipv6 logrotate test upnp wallet"
 
 RDEPEND="
