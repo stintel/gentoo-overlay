@@ -9,7 +9,7 @@ HOMEPAGE="https://github.com/samr7/vanitygen"
 
 case "${PV}" in
 	9999)
-		inherit git-2
+		inherit git-r3
 		EGIT_REPO_URI="git://github.com/samr7/vanitygen.git"
 		;;
 	*)
