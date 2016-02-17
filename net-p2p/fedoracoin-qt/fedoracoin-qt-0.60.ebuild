@@ -32,7 +32,6 @@ RDEPEND="
 		net-libs/miniupnpc
 	)
 	sys-libs/db:$(db_ver_to_slot "${DB_VER}")[cxx]
-	<=dev-libs/leveldb-1.12.0[-snappy]
 	dev-qt/qtgui:4
 	dbus? (
 		dev-qt/qtdbus:4
@@ -47,9 +46,6 @@ DOCS="doc/README.md doc/release-notes.md"
 S="${WORKDIR}/${MyP}"
 
 src_prepare() {
-	#epatch "${FILESDIR}"/${MyPN}-sys_leveldb.patch
-	#rm -r src/leveldb
-
 	sed 's/BDB_INCLUDE_PATH=.*//' -i 'fedoracoin-qt.pro'
 
 	cd src || die
