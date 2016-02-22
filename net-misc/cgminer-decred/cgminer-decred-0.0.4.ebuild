@@ -14,7 +14,7 @@ LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~x86 ~amd64"
 
-IUSE="+adl avalon bab bflsc bitforce bitfury examples hardened hashfast icarus knc klondike modminer ncurses +opencl scrypt +udev ztex"
+IUSE="adl avalon bab bflsc bitforce bitfury examples hardened hashfast icarus knc klondike modminer ncurses +opencl scrypt +udev ztex"
 REQUIRED_USE="
 	|| ( avalon bab bflsc bitforce bitfury hashfast icarus knc klondike modminer opencl ztex )
 	adl? ( opencl )
