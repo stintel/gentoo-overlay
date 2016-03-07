@@ -28,6 +28,7 @@ DEPEND="
 	dev-go/btcsuite-seelog
 	dev-go/btcsuite-websocket
 	dev-go/dcrutil
+	dev-go/go-protobuf
 	dev-go/go-spew"
 RDEPEND=""
 
