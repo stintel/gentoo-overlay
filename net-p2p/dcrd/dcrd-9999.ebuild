@@ -20,6 +20,7 @@ SLOT="0"
 IUSE=""
 RESTRICT="test"
 DEPEND="
+	dev-go/bitset
 	dev-go/btclog
 	dev-go/btcsuite-flags
 	dev-go/btcsuite-socks
