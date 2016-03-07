@@ -37,7 +37,9 @@ DEPEND="
 	dev-go/dcrd-txscript
 	dev-go/dcrd-wire
 	dev-go/dcrrpcclient
-	dev-go/dcrutil"
+	dev-go/dcrutil
+	dev-go/go-net
+	dev-go/grpc"
 RDEPEND=""
 
 src_install() {
