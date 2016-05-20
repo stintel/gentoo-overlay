@@ -6,9 +6,11 @@ EAPI="5"
 
 inherit autotools
 
+My_PV="${PV}_miners"
+
 DESCRIPTION="cgminer fork for Decred"
 HOMEPAGE="https://github.com/decred/cgminer"
-SRC_URI="https://github.com/decred/cgminer/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://github.com/decred/cgminer/archive/v${My_PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="GPL-3"
 SLOT="0"
@@ -49,7 +51,7 @@ DEPEND="${DEPEND}
 	)
 "
 
-S="${WORKDIR}/cgminer-${PV}"
+S="${WORKDIR}/cgminer-${My_PV}"
 
 src_prepare() {
 	ln -s /usr/include/ADL/* ADL_SDK/
