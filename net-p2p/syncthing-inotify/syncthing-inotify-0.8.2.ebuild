@@ -17,7 +17,8 @@ KEYWORDS="~amd64"
 IUSE="systemd"
 
 DEPEND="dev-go/backoff"
-RDEPEND="${DEPEND}"
+RDEPEND="${DEPEND}
+		net-p2p/syncthing"
 
 src_install() {
 	dobin syncthing-inotify
