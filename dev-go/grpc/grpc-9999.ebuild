@@ -21,5 +21,5 @@ IUSE=""
 RESTRICT="test"
 DEPEND="
 	>=dev-go/go-net-9999
-	dev-go/go-protobuf"
+	>=dev-go/go-protobuf-9999"
 RDEPEND=""
