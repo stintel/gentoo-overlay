@@ -23,7 +23,6 @@ DEPEND="
 	dev-go/btcd-wire
 	dev-go/btclog
 	dev-go/btcsuite-bolt
-	dev-go/btcsuite-flags
 	dev-go/btcsuite-ripemd160
 	dev-go/btcsuite-scrypt
 	dev-go/btcsuite-secretbox
@@ -38,6 +37,7 @@ DEPEND="
 	dev-go/dcrd-wire
 	dev-go/dcrrpcclient
 	dev-go/dcrutil
+	dev-go/go-flags
 	dev-go/go-net
 	dev-go/grpc"
 RDEPEND=""
