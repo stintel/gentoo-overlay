@@ -21,7 +21,6 @@ IUSE=""
 RESTRICT="test"
 DEPEND="
 	dev-db/bolt
-	dev-go/btcd-wire
 	dev-go/btclog
 	dev-go/btcsuite-ripemd160
 	dev-go/btcsuite-scrypt
