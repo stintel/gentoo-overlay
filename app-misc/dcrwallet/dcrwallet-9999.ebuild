@@ -11,7 +11,7 @@ if [[ ${PV} = *9999* ]]; then
 else
 	die
 fi
-inherit golang-build
+inherit golang-build user
 
 DESCRIPTION="A secure decred wallet daemon written in Go"
 HOMEPAGE="https://github.com/decred/dcrwallet"
@@ -42,8 +42,30 @@ DEPEND="
 	dev-go/grpc"
 RDEPEND=""
 
+PUSER="decred"
+PUG="${PUSER}:${PUSER}"
+PHOME="/var/lib/${PUSER}"
+PCONFDIR="/etc/decred"
+PCONFFILE="${PCONFDIR}/dcrwallet.conf"
+
+pkg_setup() {
+	enewgroup "${PUSER}"
+	enewuser "${PUSER}" -1 -1 "${PHOME}" "${PUSER}"
+}
+
 src_install() {
 	exeinto /usr/bin
 	doexe "${S}/dcrwallet"
 	dodoc -r "${S}/src/${EGO_PN}/docs/"
+
+	insinto "${PCONFDIR}"
+	newins "${S}/src/${EGO_PN}/sample-dcrwallet.conf" dcrwallet.conf
+	fowners "${PUG}" "${PCONFFILE}"
+	fperms 600 "${PCONFFILE}"
+
+	keepdir "${PHOME}"/.dcrwallet
+	fperms 700 "${PHOME}"
+	fowners "${PUG}" "${PHOME}"
+	fowners "${PUG}" "${PHOME}"/.dcrwallet
+	dosym "${PCONFFILE}" "${PHOME}"/.dcrwallet/dcrwallet.conf
 }
