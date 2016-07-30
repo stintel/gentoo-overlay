@@ -17,7 +17,7 @@ DESCRIPTION="An alternative full node dcrd implementation written in Go (golang)
 HOMEPAGE="https://github.com/decred/dcrd/blob/master/README.md"
 LICENSE="ISC"
 SLOT="0"
-IUSE=""
+IUSE="systemd"
 RESTRICT="test"
 DEPEND="
 	dev-go/bitset
@@ -54,11 +54,13 @@ src_install() {
 	fowners "${PUG}" "${PCONFFILE}"
 	fperms 600 "${PCONFFILE}"
 
-	systemd_dounit "${FILESDIR}/dcrd.service"
-
 	keepdir "${PHOME}"/.dcrd
 	fperms 700 "${PHOME}"
 	fowners "${PUG}" "${PHOME}"
 	fowners "${PUG}" "${PHOME}"/.dcrd
 	dosym "${PCONFFILE}" "${PHOME}"/.dcrd/dcrd.conf
+
+	if use systemd; then
+		systemd_dounit "${FILESDIR}/dcrd.service"
+	fi
 }
