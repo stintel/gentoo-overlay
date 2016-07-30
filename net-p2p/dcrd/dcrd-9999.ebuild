@@ -33,10 +33,10 @@ DEPEND="
 	dev-go/grpc"
 RDEPEND=""
 
-PUSER="dcrd"
+PUSER="decred"
 PUG="${PUSER}:${PUSER}"
 PHOME="/var/lib/${PUSER}"
-PCONFDIR="/etc/dcrd"
+PCONFDIR="/etc/decred"
 PCONFFILE="${PCONFDIR}/dcrd.conf"
 
 pkg_setup() {
@@ -61,5 +61,4 @@ src_install() {
 	fowners "${PUG}" "${PHOME}"
 	fowners "${PUG}" "${PHOME}"/.dcrd
 	dosym "${PCONFFILE}" "${PHOME}"/.dcrd/dcrd.conf
-
 }
