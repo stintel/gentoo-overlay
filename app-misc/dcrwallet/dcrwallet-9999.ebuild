@@ -71,5 +71,6 @@ src_install() {
 
 	if use systemd; then
 		systemd_dounit "${FILESDIR}/${PN}.service"
+		systemd_newuserunit "${FILESDIR}/${PN}.service.user" "${PN}.service"
 	fi
 }
