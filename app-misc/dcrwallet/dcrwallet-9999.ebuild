@@ -11,13 +11,13 @@ if [[ ${PV} = *9999* ]]; then
 else
 	die
 fi
-inherit golang-build user
+inherit golang-build systemd user
 
 DESCRIPTION="A secure decred wallet daemon written in Go"
 HOMEPAGE="https://github.com/decred/dcrwallet"
 LICENSE="ISC"
 SLOT="0"
-IUSE=""
+IUSE="systemd"
 RESTRICT="test"
 DEPEND="
 	dev-db/bolt
@@ -68,4 +68,8 @@ src_install() {
 	fowners "${PUG}" "${PHOME}"
 	fowners "${PUG}" "${PHOME}"/.dcrwallet
 	dosym "${PCONFFILE}" "${PHOME}"/.dcrwallet/dcrwallet.conf
+
+	if use systemd; then
+		systemd_dounit "${FILESDIR}/${PN}.service"
+	fi
 }
