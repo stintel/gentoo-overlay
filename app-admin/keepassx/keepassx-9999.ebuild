@@ -19,26 +19,22 @@ IUSE="qt4 qt5 test"
 REQUIRED_USE="^^ ( qt4 qt5 )"
 
 DEPEND="
-	>=dev-libs/libgcrypt-1.6.0:0=
-	sys-libs/zlib
-	x11-libs/libX11
-	x11-libs/libXtst
-"
-if use qt4; then
-	DEPEND="${DEPEND}
+	qt4? (
 		dev-qt/qtcore:4
 		dev-qt/qtdbus:4
 		dev-qt/qtgui:4
 		dev-qt/qttest:4
-	"
-elif use qt5; then
-	DEPEND="${DEPEND}
+	)
+	qt5? (
 		dev-qt/qtcore:5
 		dev-qt/qtdbus:5
 		dev-qt/qtgui:5
 		dev-qt/qttest:5
-	"
-fi
+	)
+	>=dev-libs/libgcrypt-1.6.0:0=
+	sys-libs/zlib
+	x11-libs/libX11
+	x11-libs/libXtst"
 RDEPEND="${DEPEND}"
 
 DOCS=(CHANGELOG)
