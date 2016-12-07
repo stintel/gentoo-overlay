@@ -17,22 +17,21 @@ IUSE="qt4 qt5"
 
 REQUIRED_USE="|| ( qt4 qt5 )"
 
-DEPEND="x11-libs/geis
-		x11-libs/libX11
-		x11-libs/libXext
-		x11-libs/libXtst"
-if use qt4; then
-	DEPEND="${DEPEND}
+DEPEND="qt4? (
 			dev-qt/qtcore:4
-			dev-qt/qtgui:4"
-else
-	DEPEND="${DEPEND}
+			dev-qt/qtgui:4
+		)
+		qt5? (
 			dev-qt/qtcore:5
 			dev-qt/qtgui:5
 			dev-qt/qtwidgets:5
 			dev-qt/qtx11extras:5
-			dev-qt/qtxml:5"
-fi
+			dev-qt/qtxml:5
+		)
+		x11-libs/geis
+		x11-libs/libX11
+		x11-libs/libXext
+		x11-libs/libXtst"
 RDEPEND="${DEPEND}"
 
 S="${S}/${PN}"
