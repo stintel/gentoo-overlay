@@ -25,5 +25,6 @@ IUSE=""
 RESTRICT="test"
 DEPEND="
 	dev-go/go-net:0/${PVR}
-	dev-go/go-protobuf:0/${PVR}"
+	dev-go/go-protobuf:0/${PVR}
+	dev-go/go-oauth2:0/0_pre20160222"
 RDEPEND=""
