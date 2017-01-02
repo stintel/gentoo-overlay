@@ -4,7 +4,7 @@
 
 EAPI=5
 
-EGO_PN="cloud.google.com/go"
+EGO_PN="google.golang.org/cloud"
 
 if [[ ${PV} = *9999* ]]; then
 	inherit golang-vcs
@@ -13,8 +13,8 @@ else
 fi
 inherit golang-build
 
-DESCRIPTION="Provides decred-specific convenience functions and types "
-HOMEPAGE="https://google.golang.org/grpc"
+DESCRIPTION="Go on Google Cloud Platform"
+HOMEPAGE="https://cloud.google.com/go/home"
 LICENSE="ISC"
 SLOT="0"
 IUSE=""
