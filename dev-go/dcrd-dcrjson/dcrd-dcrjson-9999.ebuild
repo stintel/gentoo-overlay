@@ -1,4 +1,4 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
@@ -19,5 +19,5 @@ LICENSE="ISC"
 SLOT="0"
 IUSE=""
 RESTRICT="test"
-DEPEND=""
+DEPEND="dev-go/dcrd-blockchain"
 RDEPEND=""
