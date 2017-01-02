@@ -4,7 +4,7 @@
 
 EAPI=5
 
-EGO_SRC="github.com/grpc/grpc-go"
+EGO_SRC="google.golang.org/grpc"
 EGO_PN=${EGO_SRC}/...
 
 if [[ ${PV} = *9999* ]]; then
@@ -12,7 +12,7 @@ if [[ ${PV} = *9999* ]]; then
 else
 	KEYWORDS="~amd64"
 	EGIT_COMMIT="b1097423a0b9330bca6814ab392234fbfad2f406"
-	SRC_URI="https://${EGO_SRC}/archive/${EGIT_COMMIT}.tar.gz -> ${P}.tar.gz"
+	SRC_URI="https://github.com/grpc/grpc-go/archive/${EGIT_COMMIT}.tar.gz -> ${P}.tar.gz"
 	inherit golang-vcs-snapshot
 fi
 inherit golang-build
