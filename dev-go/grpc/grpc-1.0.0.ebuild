@@ -11,8 +11,7 @@ if [[ ${PV} = *9999* ]]; then
 	inherit golang-vcs
 else
 	KEYWORDS="~amd64"
-	EGIT_COMMIT="b1097423a0b9330bca6814ab392234fbfad2f406"
-	SRC_URI="https://github.com/grpc/grpc-go/archive/${EGIT_COMMIT}.tar.gz -> ${P}.tar.gz"
+	SRC_URI="https://github.com/grpc/grpc-go/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 	inherit golang-vcs-snapshot
 fi
 inherit golang-build
@@ -25,7 +24,7 @@ IUSE=""
 RESTRICT="test"
 DEPEND="
 	dev-go/go-glog:0
-	dev-go/go-net:0/${PVR}
-	dev-go/go-protobuf:0/${PVR}
-	dev-go/go-oauth2:0/0_pre20160222"
+	dev-go/go-oauth2:0
+	dev-go/go-net:0
+	dev-go/go-protobuf:0"
 RDEPEND=""
