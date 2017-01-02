@@ -17,7 +17,7 @@ else
 fi
 inherit golang-build
 
-DESCRIPTION="Provides decred-specific convenience functions and types "
+DESCRIPTION="The Go language implementation of gRPC. HTTP/2 based RPC"
 HOMEPAGE="https://google.golang.org/grpc"
 LICENSE="ISC"
 SLOT="0/${PVR}"
