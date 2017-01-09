@@ -19,9 +19,3 @@ IUSE=""
 DEPEND="app-misc/mosquitto
 		net-firewall/ipset"
 RDEPEND="${DEPEND}"
-
-src_install() {
-	cmake-utils_src_install
-
-	newconfd "${FILESDIR}/${PN}.conf" "${PN}"
-}
