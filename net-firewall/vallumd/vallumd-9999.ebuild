@@ -24,5 +24,4 @@ src_install() {
 	cmake-utils_src_install
 
 	newconfd "${FILESDIR}/${PN}.conf" "${PN}"
-	newinitd "${FILESDIR}/${PN}.init" "${PN}"
 }
