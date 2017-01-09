@@ -6,7 +6,7 @@ EAPI=6
 
 inherit cmake-utils git-r3 systemd
 
-EGIT_REPO_URI="git://git.linux-ipv6.be/vallumd.git"
+EGIT_REPO_URI="https://github.com/stintel/vallumd.git"
 
 DESCRIPTION="Centralize or distribute IP blacklists"
 HOMEPAGE="https://github.com/stintel/vallumd"
