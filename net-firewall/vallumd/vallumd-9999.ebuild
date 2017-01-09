@@ -4,7 +4,7 @@
 
 EAPI=6
 
-inherit cmake-utils git-r3 systemd
+inherit cmake-utils git-r3
 
 EGIT_REPO_URI="https://github.com/stintel/vallumd.git"
 
@@ -14,7 +14,7 @@ HOMEPAGE="https://github.com/stintel/vallumd"
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS=""
-IUSE="systemd"
+IUSE=""
 
 DEPEND="app-misc/mosquitto
 		net-firewall/ipset"
@@ -25,8 +25,4 @@ src_install() {
 
 	newconfd "${FILESDIR}/${PN}.conf" "${PN}"
 	newinitd "${FILESDIR}/${PN}.init" "${PN}"
-
-	if use systemd; then
-		systemd_dounit "${FILESDIR}/${PN}.service"
-	fi
 }
