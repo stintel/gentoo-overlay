@@ -1,7 +1,6 @@
 My Gentoo overlay. This is old and messy.
 
-Install with layman:
-layman -o http://www.linux-ipv6.be/layman.xml S -a stintel
-
+Enable the overlay in Portage:
+mkdir -p /etc/portage/repos.conf; curl -o /etc/portage/repos.conf/stintel.conf https://www.linux-ipv6.be/stintel.conf
 
 **DISCLAIMER: I cannot be held responsible for any damage this might cause to either your brain, hardware, relationship, children, pets, ... **
