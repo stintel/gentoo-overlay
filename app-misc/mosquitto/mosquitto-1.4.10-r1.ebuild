@@ -13,7 +13,7 @@ SRC_URI="http://mosquitto.org/files/source/${P}.tar.gz"
 LICENSE="EPL-1.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="bridge examples libressl +persistence +srv ssl tcpd websockets"
+IUSE="bridge examples libressl +persistence psk +srv ssl tcpd websockets"
 
 RDEPEND="tcpd? ( sys-apps/tcp-wrappers )
 	ssl? (
@@ -24,6 +24,7 @@ RDEPEND="tcpd? ( sys-apps/tcp-wrappers )
 DEPEND="${RDEPEND}
 	${PYTHON_DEPS}
 	srv? ( net-dns/c-ares )"
+USE_DEPEND="libressl? ( !psk )"
 
 pkg_setup() {
 	enewgroup mosquitto
@@ -58,6 +59,7 @@ src_configure() {
 		"WITH_PERSISTENCE=$(usex persistence)"
 		"WITH_SRV=$(usex srv)"
 		"WITH_TLS=$(usex ssl)"
+		"WITH_TLS_PSK=$(usex psk)"
 		"WITH_WEBSOCKETS=$(usex websockets)"
 		"WITH_WRAP=$(usex tcpd)"
 	)
