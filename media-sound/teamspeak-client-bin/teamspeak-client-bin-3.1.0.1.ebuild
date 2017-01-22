@@ -1,4 +1,4 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
@@ -25,6 +25,7 @@ RDEPEND="
 	>=dev-qt/qtgui-5.5:5[accessibility]
 	>=dev-qt/qtnetwork-5.5:5
 	>=dev-qt/qtsql-5.5:5[sqlite]
+	>=dev-qt/qtwebengine-5.5.5
 	>=dev-qt/qtwidgets-5.5:5
 	sys-libs/glibc
 	sys-libs/zlib
