@@ -1,0 +1,2 @@
+# all available versions of dev-libs/mongo-c-client are broken
+app-misc/mosquitto-auth-plug	mongodb
