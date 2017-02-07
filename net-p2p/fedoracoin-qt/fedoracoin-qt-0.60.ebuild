@@ -1,4 +1,4 @@
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/net-p2p/fedoracoin-qt/fedoracoin-qt-1.4.1.ebuild,v 1.1 2014/01/30 18:12:56 sdamashek Exp $
 
@@ -46,6 +46,8 @@ DOCS="doc/README.md doc/release-notes.md"
 S="${WORKDIR}/${MyP}"
 
 src_prepare() {
+	epatch "${FILESDIR}/miniupnpc-14.patch"
+
 	sed 's/BDB_INCLUDE_PATH=.*//' -i 'fedoracoin-qt.pro'
 
 	cd src || die
