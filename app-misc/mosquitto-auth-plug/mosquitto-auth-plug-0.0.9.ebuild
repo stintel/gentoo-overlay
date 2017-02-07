@@ -28,6 +28,8 @@ DEPEND="app-misc/mosquitto
 RDEPEND="${DEPEND}"
 
 src_prepare() {
+	eapply "${FILESDIR}/${P}-libressl.patch"
+
 	use cdb || echo "BACKEND_CDB:=no" >> "${S}/config.mk"
 	use http || echo "BACKEND_HTTP:=no" >> "${S}/config.mk"
 	use jwt || echo  "BACKEND_JWT:=no" >> "${S}/config.mk"

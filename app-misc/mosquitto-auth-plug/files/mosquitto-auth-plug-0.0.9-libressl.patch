@@ -1,0 +1,14 @@
+--- a/cache.c
++++ b/cache.c
+@@ -27,6 +27,11 @@
+  * POSSIBILITY OF SUCH DAMAGE.
+  */
+ 
++#if OPENSSL_VERSION_NUMBER < 0x10100000L || defined(LIBRESSL_VERSION_NUMBER)
++#define EVP_MD_CTX_new EVP_MD_CTX_create
++#define EVP_MD_CTX_free EVP_MD_CTX_destroy
++#endif
++
+ #include <stdlib.h>
+ #include <stdio.h>
+ #include <string.h>
