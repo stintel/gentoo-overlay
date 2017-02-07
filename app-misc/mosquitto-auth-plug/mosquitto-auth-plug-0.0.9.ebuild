@@ -46,9 +46,9 @@ src_prepare() {
 }
 
 src_compile() {
-	CFLAGS="-fPIC -I/usr/include/openssl"
+	append-cflags "-fPIC -I/usr/include/openssl"
 
-	emake CFLAGS="${CFLAGS}"
+	emake
 }
 
 src_install() {
