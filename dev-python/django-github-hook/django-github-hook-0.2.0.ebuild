@@ -16,5 +16,6 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
 
-DEPEND=">=dev-python/django-1.8[${PYTHON_USEDEP}]"
+DEPEND=">=dev-python/django-1.8[${PYTHON_USEDEP}]
+		dev-python/django-rest-framework[${PYTHON_USEDEP}]"
 RDEPEND="${DEPEND}"
