@@ -1,0 +1,31 @@
+From f98f75bb7fb63b5fd82ab9e5582f77166e0060ee Mon Sep 17 00:00:00 2001
+From: Stijn Tintel <stijn@linux-ipv6.be>
+Date: Sat, 18 Feb 2017 13:02:21 +0100
+Subject: [PATCH] * contrib: don't hard depend on mountall
+
+The mountall service is Debian specific, so it shouldn't be a hard
+dependency. Change need mountall to use mountall instead. This makes the
+init scrit compatible with Gentoo, and possibly other distros.
+
+Signed-off-by: Stijn Tintel <stijn@linux-ipv6.be>
+---
+ contrib/init.openrc | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/contrib/init.openrc b/contrib/init.openrc
+index 453ba60..faad3f9 100755
+--- a/contrib/init.openrc
++++ b/contrib/init.openrc
+@@ -10,8 +10,7 @@ required_dirs="/var/run"
+ required_files="/etc/f2b/f2b.conf"
+ 
+ depend() {
+-  need mountall
+-  use net
++  use mountall net
+   after bootmisc
+   config "/etc/f2b/f2b.conf"
+ }
+-- 
+2.10.2
+

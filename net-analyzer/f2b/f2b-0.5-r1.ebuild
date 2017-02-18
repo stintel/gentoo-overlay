@@ -21,6 +21,12 @@ DEPEND="pcre? ( dev-libs/libpcre )
 		redis? ( dev-db/redis )"
 RDEPEND="${DEPEND}"
 
+src_prepare() {
+	eapply "${FILESDIR}/${P}-openrc-compat.patch"
+
+	default
+}
+
 src_configure() {
 	local mycmakeargs=($
 		-DENABLE_CLIENT=$(usex client)
