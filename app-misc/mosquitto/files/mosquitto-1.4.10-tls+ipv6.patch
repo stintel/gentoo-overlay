@@ -1,0 +1,42 @@
+From 98ea68490626b1d18aee2004b411294c85e62212 Mon Sep 17 00:00:00 2001
+From: "Roger A. Light" <roger@atchoo.org>
+Date: Wed, 30 Nov 2016 11:31:30 +0000
+Subject: [PATCH] [323] Allow outgoing IPv6 connections to use TLS.
+
+Bug: https://github.com/eclipse/mosquitto/issues/323
+---
+ ChangeLog.txt  |  5 +++++
+ lib/net_mosq.c | 10 ++--------
+ 2 files changed, 7 insertions(+), 8 deletions(-)
+
+diff --git a/lib/net_mosq.c b/lib/net_mosq.c
+index f18d41b..26f9855 100644
+--- a/lib/net_mosq.c
++++ b/lib/net_mosq.c
+@@ -281,14 +281,7 @@ int _mosquitto_try_connect(struct mosquitto *mosq, const char *host, uint16_t po
+ 
+ 	*sock = INVALID_SOCKET;
+ 	memset(&hints, 0, sizeof(struct addrinfo));
+-#ifdef WITH_TLS
+-	if(mosq->tls_cafile || mosq->tls_capath || mosq->tls_psk){
+-		hints.ai_family = PF_INET;
+-	}else
+-#endif
+-	{
+-		hints.ai_family = PF_UNSPEC;
+-	}
++	hints.ai_family = PF_UNSPEC;
+ 	hints.ai_flags = AI_ADDRCONFIG;
+ 	hints.ai_socktype = SOCK_STREAM;
+ 
+@@ -542,6 +535,7 @@ int _mosquitto_socket_connect(struct mosquitto *mosq, const char *host, uint16_t
+ 			COMPAT_CLOSE(sock);
+ 			return MOSQ_ERR_TLS;
+ 		}
++
+ 		SSL_set_ex_data(mosq->ssl, tls_ex_index_mosq, mosq);
+ 		bio = BIO_new_socket(sock, BIO_NOCLOSE);
+ 		if(!bio){
+-- 
+2.10.2
+
