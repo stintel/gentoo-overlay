@@ -1,0 +1,36 @@
+From 2e2cfcaede51fc0dfc18f126aa7c28b79df4254c Mon Sep 17 00:00:00 2001
+From: Stijn Tintel <stijn@linux-ipv6.be>
+Date: Tue, 14 Mar 2017 17:24:31 +0100
+Subject: [PATCH] Fix compilation against musl libc.
+
+Commit e13af18ed9c527b8152697c9ede62f0e4e81bdd6 breaks mosquitto on
+systems with musl libc, due to unconditional inclusion of -lanl on
+Linux.
+
+Commit 433ee5c4d6852b507b43eae9c9a2c9028c6b48e5 already added
+conditional inclusion of -lanl, so just remove the unconditional
+inclusion completely.
+
+Signed-off-by: Stijn Tintel <stijn@linux-ipv6.be>
+---
+ config.mk | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/config.mk b/config.mk
+index 6e369c2..44639d2 100644
+--- a/config.mk
++++ b/config.mk
+@@ -159,10 +159,6 @@ ifeq ($(UNAME),QNX)
+ 	LIB_LIBS:=$(LIB_LIBS) -lsocket
+ endif
+ 
+-ifeq ($(UNAME),Linux)
+-	BROKER_LIBS:=$(BROKER_LIBS) -lanl
+-endif
+-
+ ifeq ($(WITH_WRAP),yes)
+ 	BROKER_LIBS:=$(BROKER_LIBS) -lwrap
+ 	BROKER_CFLAGS:=$(BROKER_CFLAGS) -DWITH_WRAP
+-- 
+2.10.2
+
