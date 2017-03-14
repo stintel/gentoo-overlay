@@ -34,7 +34,6 @@ pkg_setup() {
 src_prepare() {
 	epatch "${FILESDIR}/${P}-conditional-tests.patch"
 	epatch "${FILESDIR}/${P}-libressl.patch"
-	epatch "${FILESDIR}/${P}-tls+ipv6.patch"
 	if use persistence; then
 		sed -i -e "s:^#autosave_interval:autosave_interval:" \
 			-e "s:^#persistence false$:persistence true:" \
