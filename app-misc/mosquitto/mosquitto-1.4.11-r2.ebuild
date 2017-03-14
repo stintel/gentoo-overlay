@@ -20,10 +20,10 @@ RDEPEND="tcpd? ( sys-apps/tcp-wrappers )
 		libressl? ( dev-libs/libressl )
 		!libressl? ( dev-libs/openssl:0= )
 	)
+	srv? ( net-dns/c-ares )
 	websockets? ( net-libs/libwebsockets )"
 DEPEND="${RDEPEND}
-	${PYTHON_DEPS}
-	srv? ( net-dns/c-ares )"
+	${PYTHON_DEPS}"
 USE_DEPEND="libressl? ( !psk )"
 
 pkg_setup() {
