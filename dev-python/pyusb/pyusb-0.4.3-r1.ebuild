@@ -1,11 +1,12 @@
-# Copyright 1999-2011 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-python/pyusb/pyusb-0.4.3.ebuild,v 1.1 2011/03/05 21:30:55 josejx Exp $
+# $Header: $
 
-EAPI="2"
-SUPPORT_PYTHON_ABIS="1"
+EAPI="6"
 
-inherit distutils flag-o-matic
+PYTHON_COMPAT=( python2_7 )
+
+inherit distutils-r1 flag-o-matic
 
 DESCRIPTION="USB support for Python."
 HOMEPAGE="http://pyusb.sourceforge.net/"
@@ -21,14 +22,13 @@ IUSE="examples"
 DEPEND="virtual/libusb:0"
 RDEPEND="${DEPEND}"
 
-RESTRICT_PYTHON_ABIS="3*"
-
 src_prepare() {
+	default
 	epatch "${FILESDIR}/${P}-ndebug.patch"
 }
 
 src_install() {
-	distutils_src_install
+	distutils-r1_src_install
 	if use examples; then
 		insinto /usr/share/doc/${PF}
 		doins -r samples

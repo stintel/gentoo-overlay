@@ -1,13 +1,12 @@
-# Copyright 1999-2011 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-python/pyusb/pyusb-1.0.0_alpha1.ebuild,v 1.2 2011/03/05 22:21:06 arfrever Exp $
+# $Header: $
 
-EAPI="3"
-PYTHON_DEPEND="*:2.5"
-SUPPORT_PYTHON_ABIS="1"
-RESTRICT_PYTHON_ABIS="*-jython"
+EAPI="6"
 
-inherit distutils
+PYTHON_COMPAT=( python2_7 )
+
+inherit distutils-r1
 
 MY_P="${P/_alpha/a}"
 MY_V="${MY_P/${PN}-}"
