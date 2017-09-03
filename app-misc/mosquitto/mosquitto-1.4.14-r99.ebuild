@@ -1,30 +1,28 @@
 # Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Id$
 
-EAPI="5"
+EAPI=5
 PYTHON_COMPAT=( python2_7 )
 
-inherit eutils systemd user python-any-r1
+inherit eutils systemd user toolchain-funcs python-any-r1
 
 DESCRIPTION="An Open Source MQTT v3 Broker"
 HOMEPAGE="http://mosquitto.org/"
 SRC_URI="http://mosquitto.org/files/source/${P}.tar.gz"
 LICENSE="EPL-1.0"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
-IUSE="bridge examples libressl +persistence psk +srv ssl tcpd websockets"
+KEYWORDS="~amd64 ~arm ~x86"
+IUSE="bridge examples libressl +persistence +srv ssl tcpd websockets"
 
 RDEPEND="tcpd? ( sys-apps/tcp-wrappers )
-	ssl? (
-		libressl? ( dev-libs/libressl )
-		!libressl? ( dev-libs/openssl:0= )
-	)
+		ssl? (
+				libressl? ( dev-libs/libressl )
+				!libressl? ( dev-libs/openssl:0= )
+		)"
+DEPEND="${RDEPEND}
+	${PYTHON_DEPS}
 	srv? ( net-dns/c-ares )
 	websockets? ( net-libs/libwebsockets )"
-DEPEND="${RDEPEND}
-	${PYTHON_DEPS}"
-USE_DEPEND="libressl? ( !psk )"
 
 pkg_setup() {
 	enewgroup mosquitto
@@ -32,7 +30,7 @@ pkg_setup() {
 }
 
 src_prepare() {
-	epatch "${FILESDIR}/${PN}-1.4.11-conditional-tests.patch"
+	epatch "${FILESDIR}/${PN}-1.4.10-conditional-tests.patch"
 	epatch "${FILESDIR}/${PN}-1.4.11-libressl.patch"
 	if use persistence; then
 		sed -i -e "s:^#autosave_interval:autosave_interval:" \
@@ -41,26 +39,24 @@ src_prepare() {
 			-e "s:^#persistence_location$:persistence_location /var/lib/mosquitto/:" \
 			mosquitto.conf || die
 	fi
+
+	# Remove prestripping
+	sed -i -e 's/-s --strip-program=${CROSS_COMPILE}${STRIP}//'\
+		client/Makefile lib/cpp/Makefile src/Makefile lib/Makefile || die
+
 	python_setup
 	python_fix_shebang test
 }
 
 src_configure() {
 	LIBDIR=$(get_libdir)
-	QA_PRESTRIPPED="/usr/sbin/mosquitto
-		/usr/bin/mosquitto_passwd
-		/usr/bin/mosquitto_sub
-		/usr/bin/mosquitto_pub
-		/usr/${LIBDIR}/libmosquittopp.so.1
-		/usr/${LIBDIR}/libmosquitto.so.1"
-
 	makeopts=(
+		"CC=$(tc-getCC)"
 		"LIB_SUFFIX=${LIBDIR:3}"
 		"WITH_BRIDGE=$(usex bridge)"
 		"WITH_PERSISTENCE=$(usex persistence)"
 		"WITH_SRV=$(usex srv)"
 		"WITH_TLS=$(usex ssl)"
-		"WITH_TLS_PSK=$(usex psk)"
 		"WITH_WEBSOCKETS=$(usex websockets)"
 		"WITH_WRAP=$(usex tcpd)"
 	)
