@@ -7,7 +7,7 @@ inherit autotools flag-o-matic versionator
 
 DESCRIPTION="Bitcoin CPU/GPU/FPGA miner in C"
 HOMEPAGE="https://bitcointalk.org/index.php?topic=28402.0"
-SRC_URI="https://github.com/tpruvot/${PN}/archive/v${PV}-tpruvot.tar.gz -> ccminer-v${PV}.tgz"
+SRC_URI="https://github.com/tpruvot/${PN}/archive/${PV}-tpruvot.tar.gz -> ccminer-v${PV}.tgz"
 
 LICENSE="GPL-3"
 SLOT="0"
