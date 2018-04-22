@@ -1,29 +1,47 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=5
+EAPI=6
 PYTHON_COMPAT=( python2_7 )
 
-inherit eutils systemd user toolchain-funcs python-any-r1
+inherit systemd user toolchain-funcs python-any-r1
 
 DESCRIPTION="An Open Source MQTT v3 Broker"
 HOMEPAGE="http://mosquitto.org/"
 SRC_URI="http://mosquitto.org/files/source/${P}.tar.gz"
+
 LICENSE="EPL-1.0"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~x86"
-IUSE="bridge examples libressl +persistence psk +srv ssl tcpd websockets"
+IUSE="bridge examples libressl +persistence psk +srv ssl tcpd test websockets"
+
+REQUIRED_USE="test? ( bridge )"
 
 RDEPEND="tcpd? ( sys-apps/tcp-wrappers )
-		ssl? (
-				libressl? ( dev-libs/libressl )
-				!libressl? ( dev-libs/openssl:0= )
-		)"
+	ssl? (
+		libressl? ( dev-libs/libressl )
+		!libressl? ( dev-libs/openssl:0= )
+	)"
 DEPEND="${RDEPEND}
 	${PYTHON_DEPS}
 	srv? ( net-dns/c-ares )
 	websockets? ( net-libs/libwebsockets )"
 USE_DEPEND="libressl? ( !psk )"
+
+_emake() {
+	LIBDIR=$(get_libdir)
+	emake \
+		CC="$(tc-getCC)" \
+		LIB_SUFFIX="${LIBDIR:3}" \
+		WITH_BRIDGE="$(usex bridge)" \
+		WITH_PERSISTENCE="$(usex persistence)" \
+		WITH_TLS_PSK="$(usex psk)" \
+		WITH_SRV="$(usex srv)" \
+		WITH_TLS="$(usex ssl)" \
+		WITH_WEBSOCKETS="$(usex websockets)" \
+		WITH_WRAP="$(usex tcpd)" \
+		"$@"
+}
 
 pkg_setup() {
 	enewgroup mosquitto
@@ -31,13 +49,13 @@ pkg_setup() {
 }
 
 src_prepare() {
-	epatch "${FILESDIR}/${PN}-1.4.10-conditional-tests.patch"
 	epatch "${FILESDIR}/${PN}-1.4.11-libressl.patch"
+
 	if use persistence; then
-		sed -i -e "s:^#autosave_interval:autosave_interval:" \
-			-e "s:^#persistence false$:persistence true:" \
-			-e "s:^#persistence_file:persistence_file:" \
-			-e "s:^#persistence_location$:persistence_location /var/lib/mosquitto/:" \
+		sed -i -e "/^#autosave_interval/s|^#||" \
+			-e "s|^#persistence false$|persistence true|" \
+			-e "/^#persistence_file/s|^#||" \
+			-e "s|#persistence_location|persistence_location /var/lib/mosquitto/|" \
 			mosquitto.conf || die
 	fi
 
@@ -47,33 +65,19 @@ src_prepare() {
 
 	python_setup
 	python_fix_shebang test
-}
-
-src_configure() {
-	LIBDIR=$(get_libdir)
-	makeopts=(
-		"CC=$(tc-getCC)"
-		"LIB_SUFFIX=${LIBDIR:3}"
-		"WITH_BRIDGE=$(usex bridge)"
-		"WITH_PERSISTENCE=$(usex persistence)"
-		"WITH_SRV=$(usex srv)"
-		"WITH_TLS=$(usex ssl)"
-		"WITH_TLS_PSK=$(usex psk)"
-		"WITH_WEBSOCKETS=$(usex websockets)"
-		"WITH_WRAP=$(usex tcpd)"
-	)
+	eapply_user
 }
 
 src_compile() {
-	emake "${makeopts[@]}"
+	_emake
 }
 
 src_test() {
-	emake "${makeopts[@]}" test
+	_emake test
 }
 
 src_install() {
-	emake "${makeopts[@]}" DESTDIR="${D}" prefix=/usr install
+	_emake DESTDIR="${D}" prefix=/usr install
 	keepdir /var/lib/mosquitto
 	fowners mosquitto:mosquitto /var/lib/mosquitto
 	dodoc readme.md CONTRIBUTING.md ChangeLog.txt
@@ -84,8 +88,8 @@ src_install() {
 
 	if use examples; then
 		docompress -x "/usr/share/doc/${PF}/examples"
-		insinto "/usr/share/doc/${PF}/examples"
-		doins -r examples/*
+		docinto "/usr/share/doc/${PF}"
+		doins -r examples
 	fi
 }
 
