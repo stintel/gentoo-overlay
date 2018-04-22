@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
@@ -13,7 +13,7 @@ SRC_URI="https://github.com/jpmens/${PN}/archive/${PV}/${P}.tar.gz"
 LICENSE="BSD-1 BSD NEWLIB"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="cdb examples http jwt ldap mongodb mysql postgres redis sqlite"
+IUSE="cdb examples files http jwt ldap memcached mongodb mysql postgres redis sqlite"
 
 DEPEND="app-misc/mosquitto
 		cdb? ( dev-db/cdb )
@@ -28,12 +28,12 @@ DEPEND="app-misc/mosquitto
 RDEPEND="${DEPEND}"
 
 src_prepare() {
-	eapply "${FILESDIR}/${P}-libressl.patch"
-
 	use cdb || echo "BACKEND_CDB:=no" >> "${S}/config.mk"
+	use files || echo "BACKEND_FILES:=no" >> "${S}/config.mk"
 	use http || echo "BACKEND_HTTP:=no" >> "${S}/config.mk"
 	use jwt || echo  "BACKEND_JWT:=no" >> "${S}/config.mk"
 	use ldap || echo "BACKEND_LDAP:=no" >> "${S}/config.mk"
+	use memcached || echo "BACKEND_MEMCACHED:=no" >> "${S}/config.mk"
 	use mongodb || echo "BACKEND_MONGO:=no" >> "${S}/config.mk"
 	use mysql || echo "BACKEND_MYSQL:=no" >> "${S}/config.mk"
 	use postgres || echo "BACKEND_POSTGRES:=no" >> "${S}/config.mk"
