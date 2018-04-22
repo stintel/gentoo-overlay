@@ -49,7 +49,7 @@ pkg_setup() {
 }
 
 src_prepare() {
-	epatch "${FILESDIR}/${PN}-1.4.11-libressl.patch"
+	eapply "${FILESDIR}/${PN}-1.4.11-libressl.patch"
 
 	if use persistence; then
 		sed -i -e "/^#autosave_interval/s|^#||" \
