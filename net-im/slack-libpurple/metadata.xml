@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<longdescription lang="en">
+		A Slack protocol plugin for libpurple IM clients.
+	</longdescription>
+	<upstream>
+		<bugs-to>https://github.com/dylex/slack-libpurple/issues</bugs-to>
+		<remote-id type="github">dylex/slack-libpurple</remote-id>
+	</upstream>
+</pkgmetadata>
