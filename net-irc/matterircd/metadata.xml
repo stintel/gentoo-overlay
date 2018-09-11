@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<longdescription lang="en">
+		Minimal IRC server which integrates with mattermost and slack Tested on FreeBSD / Linux / Windows
+	</longdescription>
+	<upstream>
+		<bugs-to>https://github.com/42wim/matterircd/issues</bugs-to>
+		<remote-id type="github">42wim/matterircd</remote-id>
+	</upstream>
+</pkgmetadata>
