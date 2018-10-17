@@ -21,6 +21,6 @@ KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 RDEPEND=""
-DEPEND="${RDEPEND}"
+DEPEND="dev-python/setuptools"
 
 S="${WORKDIR}/${MY_P}"
