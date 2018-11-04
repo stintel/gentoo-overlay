@@ -1,19 +1,17 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-p2p/fedoracoin-qt/fedoracoin-qt-1.4.1.ebuild,v 1.1 2014/01/30 18:12:56 sdamashek Exp $
 
-EAPI=5
+EAPI=6
 
 DB_VER="4.8"
 
-LANGS="af_ZA ar bg bs ca ca_ES cs cy da de el_GR en eo es es_CL et eu_ES fa fa_IR fi fr fr_CA gu_IN he hi_IN hr hu it ja la lt lv_LV nb nl pl pt_BR pt_PT ro_RO ru sk sr sv th_TH tr uk zh_CN zh_TW"
-inherit db-use eutils fdo-mime gnome2-utils kde4-functions qt4-r2
+inherit db-use eutils fdo-mime qmake-utils xdg
 
 MyPV="${PV/_/-}"
 MyPN="fedoracoin"
 MyP="${MyPN}-${MyPV}"
 
-DESCRIPTION="P2P Internet currency favored by Shiba Inus worldwide."
+DESCRIPTION="FedoraCoin (TIPS) crypto currency wallet"
 HOMEPAGE="https://fedoracoin.com/"
 SRC_URI="https://github.com/${MyPN}/${MyPN}/archive/${MyPV}.tar.gz -> ${MyP}.tar.gz"
 
@@ -32,9 +30,9 @@ RDEPEND="
 		net-libs/miniupnpc
 	)
 	sys-libs/db:$(db_ver_to_slot "${DB_VER}")[cxx]
-	dev-qt/qtgui:4
+	dev-qt/qtgui:5
 	dbus? (
-		dev-qt/qtdbus:4
+		dev-qt/qtdbus:5
 	)
 "
 DEPEND="${RDEPEND}
@@ -46,36 +44,13 @@ DOCS="doc/README.md doc/release-notes.md"
 S="${WORKDIR}/${MyP}"
 
 src_prepare() {
-	epatch "${FILESDIR}/miniupnpc-14.patch"
+	eapply "${FILESDIR}/miniupnpc-14.patch"
 
 	sed 's/BDB_INCLUDE_PATH=.*//' -i 'fedoracoin-qt.pro'
 
 	cd src || die
 
-	local filt= yeslang= nolang=
-
-	for lan in $LANGS; do
-		if [ ! -e qt/locale/bitcoin_$lan.ts ]; then
-			ewarn "Language '$lan' no longer supported. Ebuild needs update."
-		fi
-	done
-
-	for ts in $(ls qt/locale/*.ts)
-	do
-		x="${ts/*bitcoin_/}"
-		x="${x/.ts/}"
-		if ! use "linguas_$x"; then
-			nolang="$nolang $x"
-			rm "$ts"
-			filt="$filt\\|$x"
-		else
-			yeslang="$yeslang $x"
-		fi
-	done
-
-	filt="bitcoin_\\(${filt:2}\\)\\.\(qm\|ts\)"
-	sed "/${filt}/d" -i 'qt/bitcoin.qrc'
-	einfo "Languages -- Enabled:$yeslang -- Disabled:$nolang"
+	default
 }
 
 src_configure() {
@@ -100,7 +75,7 @@ src_configure() {
 	fi
 
 	#The litecoin codebase is mostly taken from bitcoin-qt
-	eqmake4 fedoracoin-qt.pro "${OPTS[@]}"
+	eqmake5 fedoracoin-qt.pro "${OPTS[@]}"
 }
 
 #Tests are broken with and without our litecoin-sys_leveldb.patch
@@ -111,8 +86,6 @@ src_configure() {
 #}
 
 src_install() {
-#	qt4-r2_src_install
-
 	dobin ${PN}
 
 	insinto /usr/share/pixmaps
@@ -121,23 +94,4 @@ src_install() {
 	make_desktop_entry "${PN} %u" "Fedoracoin-Qt" "/usr/share/pixmaps/${PN}.ico" "Qt;Network;P2P;Office;Finance;" "MimeType=x-scheme-handler/fedoracoin;\nTerminal=false"
 
 #	newman contrib/debian/manpages/bitcoin-qt.1 ${PN}.1
-
-#	if use kde; then
-#		insinto /usr/share/kde4/services
-#		newins contrib/debian/bitcoin-qt.protocol ${PN}.protocol
-#	fi
-}
-
-update_caches() {
-	gnome2_icon_cache_update
-	fdo-mime_desktop_database_update
-	buildsycoca
-}
-
-pkg_postinst() {
-	update_caches
-}
-
-pkg_postrm() {
-	update_caches
 }
