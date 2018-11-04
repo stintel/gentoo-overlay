@@ -48,6 +48,12 @@ pkg_setup() {
 	enewuser "${UG}" -1 -1 /var/lib/fedoracoin "${UG}"
 }
 
+src_prepare() {
+	eapply "${FILESDIR}/miniupnpc-14.patch"
+
+	default
+}
+
 src_compile() {
 	OPTS=()
 
