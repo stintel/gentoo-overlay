@@ -5,7 +5,7 @@ EAPI=6
 
 DB_VER="5.3"
 
-inherit autotools db-use eutils fdo-mime flag-o-matic gnome2-utils
+inherit autotools db-use eutils flag-o-matic gnome2-utils xdg
 
 MyPV="${PV/_/-}"
 MyPN="dogecoin"
@@ -97,22 +97,4 @@ src_install() {
 	make_desktop_entry "${PN} %u" "Dogecoin-Qt" "/usr/share/pixmaps/${PN}.ico" "Qt;Network;P2P;Office;Finance;" "MimeType=x-scheme-handler/dogecoin;\nTerminal=false"
 
 #	newman contrib/debian/manpages/bitcoin-qt.1 ${PN}.1
-
-#	if use kde; then
-#		insinto /usr/share/kde4/services
-#		newins contrib/debian/bitcoin-qt.protocol ${PN}.protocol
-#	fi
-}
-
-update_caches() {
-	gnome2_icon_cache_update
-	fdo-mime_desktop_database_update
-}
-
-pkg_postinst() {
-	update_caches
-}
-
-pkg_postrm() {
-	update_caches
 }
