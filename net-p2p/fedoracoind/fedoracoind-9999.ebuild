@@ -1,12 +1,11 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-p2p/fedoracoind/fedoracoind-0.7.2.ebuild,v 1.2 2013/01/08 02:13:58 blueness Exp $
 
-EAPI="4"
+EAPI=7
 
 DB_VER="4.8"
 
-inherit db-use eutils versionator toolchain-funcs user
+inherit db-use eutils toolchain-funcs user
 
 DESCRIPTION="Fedoracoin crypto-currency wallet for automated services"
 HOMEPAGE="http://fedoracoin.org/"
@@ -14,7 +13,7 @@ HOMEPAGE="http://fedoracoin.org/"
 case ${PV} in
 9999)
 	KEYWORDS=""
-	inherit git-2
+	inherit git-r3
 	EGIT_REPO_URI="git://github.com/fedoracoin/fedoracoin.git"
 	;;
 *)
@@ -28,7 +27,7 @@ IUSE="examples ipv6 logrotate upnp"
 
 RDEPEND="
 	>=dev-libs/boost-1.41.0[threads(+)]
-	dev-libs/openssl[-bindist]
+	dev-libs/openssl:0[-bindist]
 	logrotate? (
 		app-admin/logrotate
 	)
@@ -94,7 +93,7 @@ src_install() {
 	fperms 700 /var/lib/fedoracoin
 	fowners fedoracoin:fedoracoin /var/lib/fedoracoin/
 	fowners fedoracoin:fedoracoin /var/lib/fedoracoin/.fedoracoin
-	dosym /etc/fedoracoin/fedoracoin.conf /var/lib/fedoracoin/.fedoracoin/fedoracoin.conf
+	dosym ../../../../etc/fedoracoin/fedoracoin.conf /var/lib/fedoracoin/.fedoracoin/fedoracoin.conf
 
 	dodoc doc/README.md
 
