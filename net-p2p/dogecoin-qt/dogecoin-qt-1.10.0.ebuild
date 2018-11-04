@@ -1,13 +1,11 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
-# $Id$
 
 EAPI=5
 
 DB_VER="5.3"
 
-LANGS="ach af_ZA ar be_BY bg bs ca ca@valencia ca_ES cmn cs cy da de de_AT el_GR en eo es es_CL es_DO es_MX es_UY et eu_ES fa fa_IR fi fr fr_CA gl gu_IN he hi_IN hr hu id_ID it ja ka kk_KZ ko_KR ky la lt lv_LV mn ms_MY nb nl pam pl pt_BR pt_PT ro_RO ru sah sk sl_SI sq sr sv th_TH tr uk ur_PK uz@Cyrl vi vi_VN zh_HK zh_CN zh_TW"
-inherit autotools db-use eutils fdo-mime flag-o-matic gnome2-utils kde4-functions qt4-r2
+inherit autotools db-use eutils fdo-mime flag-o-matic gnome2-utils
 
 MyPV="${PV/_/-}"
 MyPN="dogecoin"
@@ -20,18 +18,16 @@ SRC_URI="https://github.com/${MyPN}/${MyPN}/archive/v${MyPV}.tar.gz -> ${MyP}.ta
 LICENSE="MIT ISC GPL-3 LGPL-2.1 public-domain || ( CC-BY-SA-3.0 LGPL-2.1 )"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="dbus ipv6 kde +qrcode qt4 qt5 upnp"
+IUSE="dbus ipv6 kde +qrcode upnp"
 
 RDEPEND="
 	dev-libs/boost[threads(+)]
 	dev-libs/openssl:0[-bindist]
 	dev-libs/protobuf:=
-	dbus? (
-		qt4? ( dev-qt/qtdbus:4 )
-		qt5? ( dev-qt/qtdbus:5 )
-	)
-	qt4? ( dev-qt/qtgui:4 )
-	qt5? ( dev-qt/qtgui:5 dev-qt/qtnetwork:5 dev-qt/qtwidgets:5 )
+	dbus? ( dev-qt/qtdbus:5 )
+	dev-qt/qtgui:5
+	dev-qt/qtnetwork:5
+	dev-qt/qtwidgets:5
 	qrcode? (
 		media-gfx/qrencode
 	)
@@ -42,46 +38,19 @@ RDEPEND="
 	virtual/bitcoin-leveldb
 "
 DEPEND="${RDEPEND}
-	qt5? ( dev-qt/linguist-tools:5 )
+	dev-qt/linguist-tools:5
 "
-REQUIRED_USE="^^ ( qt4 qt5 )"
 
 DOCS="doc/README.md doc/release-notes.md"
 
 S="${WORKDIR}/${MyP}"
 
 src_prepare() {
+	sed -i 's/fPIE/fPIC/g' configure.ac || die
 	epatch "${FILESDIR}/${MyPN}-1.8.3-sys_leveldb.patch"
 	epatch "${FILESDIR}/${MyP}-bdb53.patch"
 	eautoreconf
-	rm -r src/leveldb
-
-	cd src || die
-
-	local filt= yeslang= nolang= lan ts x
-
-	for lan in $LANGS; do
-		if [ ! -e qt/locale/bitcoin_$lan.ts ]; then
-			ewarn "Language '$lan' no longer supported. Ebuild needs update."
-		fi
-	done
-
-	for ts in qt/locale/*.ts
-	do
-		x="${ts/*bitcoin_/}"
-		x="${x/.ts/}"
-		if ! use "linguas_$x"; then
-			nolang="$nolang $x"
-			#rm "$ts"
-			filt="$filt\\|$x"
-		else
-			yeslang="$yeslang $x"
-		fi
-	done
-
-	filt="bitcoin_\\(${filt:2}\\)\\.\(qm\|ts\)"
-	sed "/${filt}/d" -i 'qt/bitcoin_locale.qrc'
-	einfo "Languages -- Enabled:$yeslang -- Disabled:$nolang"
+	rm -r src/leveldb || die
 }
 
 src_configure() {
@@ -104,7 +73,7 @@ src_configure() {
 		--without-libs \
 		--without-utils \
 		--without-daemon  \
-		--with-gui=$(usex qt5 qt5 qt4) \
+		--with-gui=qt5 \
 		$(use_with dbus qtdbus)  \
 		$(use_with qrcode qrencode)  \
 		${my_econf}
@@ -118,8 +87,6 @@ src_configure() {
 #}
 
 src_install() {
-#	qt4-r2_src_install
-
 	dobin "src/qt/${PN}"
 
 	insinto /usr/share/pixmaps
@@ -138,7 +105,6 @@ src_install() {
 update_caches() {
 	gnome2_icon_cache_update
 	fdo-mime_desktop_database_update
-	buildsycoca
 }
 
 pkg_postinst() {

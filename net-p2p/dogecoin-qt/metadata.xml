@@ -6,7 +6,6 @@
 		Dogecoin is a scrypt-based alternative to Bitcoin.
 	</longdescription>
 	<use>
-		<flag name="linguas_de_AT">German locale for Austria</flag>
 		<flag name='qrcode'>Enable generation of QR Codes for receiving payments</flag>
 	</use>
 </pkgmetadata>
