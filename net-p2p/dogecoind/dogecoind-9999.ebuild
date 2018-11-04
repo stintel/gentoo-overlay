@@ -1,11 +1,11 @@
 # Copyright 2010-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=4
+EAPI=7
 
 DB_VER="4.8"
 
-inherit autotools bash-completion-r1 db-use eutils user versionator systemd
+inherit autotools bash-completion-r1 db-use eutils user systemd
 
 MyPV="${PV/_/}"
 MyPN="dogecoin"
@@ -55,10 +55,12 @@ pkg_setup() {
 }
 
 src_prepare() {
-	epatch "${FILESDIR}/${MyPN}-1.10.0-bdb48.patch"
-	epatch "${FILESDIR}/${PN}-1.8.3-sys_leveldb.patch"
+	eapply "${FILESDIR}/${MyPN}-1.10.0-bdb48.patch"
+	eapply "${FILESDIR}/${PN}-1.8.3-sys_leveldb.patch"
 	rm -r src/leveldb
 	eautoreconf
+
+	default
 }
 
 src_configure() {
@@ -93,7 +95,7 @@ src_install() {
 	fperms 700 /var/lib/dogecoin
 	fowners dogecoin:dogecoin /var/lib/dogecoin/
 	fowners dogecoin:dogecoin /var/lib/dogecoin/.dogecoin
-	dosym /etc/dogecoin/dogecoin.conf /var/lib/dogecoin/.dogecoin/dogecoin.conf
+	dosym ../../../../etc/dogecoin/dogecoin.conf /var/lib/dogecoin/.dogecoin/dogecoin.conf
 
 	dodoc doc/README.md doc/release-notes/RELEASE_NOTES_1_8.1.md
 	dodoc doc/tor.md
