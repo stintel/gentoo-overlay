@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
@@ -28,6 +28,8 @@ DEPEND="app-misc/mosquitto
 RDEPEND="${DEPEND}"
 
 src_prepare() {
+	eapply "${FILESDIR}/9fe7b4ece3f486c04a64271c9abccbbac6a73bc4.patch"
+
 	use cdb || echo "BACKEND_CDB:=no" >> "${S}/config.mk"
 	use files || echo "BACKEND_FILES:=no" >> "${S}/config.mk"
 	use http || echo "BACKEND_HTTP:=no" >> "${S}/config.mk"

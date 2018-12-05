@@ -1,0 +1,21 @@
+From 9fe7b4ece3f486c04a64271c9abccbbac6a73bc4 Mon Sep 17 00:00:00 2001
+From: Jan-Piet Mens <jp@mens.de>
+Date: Tue, 27 Nov 2018 13:13:54 +0100
+Subject: [PATCH] fix free char[] 	closes #379
+
+---
+ be-jwt.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/be-jwt.c b/be-jwt.c
+index eb59254..147b602 100644
+--- a/be-jwt.c
++++ b/be-jwt.c
+@@ -202,7 +202,6 @@ static int http_post(void *handle, char *uri, const char *clientid, const char *
+ 
+ 	curl_easy_cleanup(curl);
+ 	curl_slist_free_all(headerlist);
+-	free(url);
+ 	free(data);
+ 	free(string_envs);
+ 	free(escaped_token);
