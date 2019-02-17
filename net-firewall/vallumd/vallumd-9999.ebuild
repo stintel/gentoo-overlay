@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
@@ -22,5 +22,12 @@ SLOT="0"
 IUSE=""
 
 DEPEND="app-misc/mosquitto
-		net-firewall/ipset"
+		<net-firewall/ipset-7"
 RDEPEND="${DEPEND}"
+
+src_configure() {
+	local mycmakeargs=(
+		-DWITH_LIBIPSET_V6_COMPAT=BOOL:ON
+	)
+	cmake-utils_src_configure
+}
