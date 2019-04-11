@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="4"
@@ -32,7 +32,7 @@ src_configure() {
 	filter-flags -ggdb -pipe -m*
 	append-cppflags -I/opt/cuda/include
 	append-ldflags -L/opt/cuda/lib64
-	use hardened && append-cppflags -nopie
+	use hardened && append-cppflags -no-pie
 
 	default
 }
