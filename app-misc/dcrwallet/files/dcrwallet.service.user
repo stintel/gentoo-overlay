@@ -1,0 +1,12 @@
+[Unit]
+Description=Decred Wallet
+After=network.target
+
+[Service]
+Type=simple
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStart=/usr/bin/dcrwallet
+Restart=always
+
+[Install]
+WantedBy=default.target

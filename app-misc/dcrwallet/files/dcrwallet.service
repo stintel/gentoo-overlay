@@ -1,0 +1,14 @@
+[Unit]
+Description=Decred Wallet
+After=dcrd.service network.service
+
+[Service]
+Type=simple
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStart=/usr/bin/dcrwallet -C /etc/decred/dcrwallet.conf
+Restart=always
+User=decred
+Group=decred
+
+[Install]
+WantedBy=multi-user.target
