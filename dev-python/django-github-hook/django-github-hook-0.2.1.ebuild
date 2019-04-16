@@ -12,9 +12,9 @@ SRC_URI="https://github.com/sheppard/${PN}/archive/v${PV}/${P}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="~amd64"
 IUSE=""
 
 DEPEND=">=dev-python/django-1.8[${PYTHON_USEDEP}]
-		dev-python/django-rest-framework[${PYTHON_USEDEP}]"
+		dev-python/djangorestframework[${PYTHON_USEDEP}]"
 RDEPEND="${DEPEND}"
