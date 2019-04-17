@@ -1,7 +1,0 @@
-/var/lib/dogecoin/.dogecoin/debug.log {
-	weekly
-	sharedscripts
-	postrotate
-		killall -HUP dogecoind
-	endscript
-}
