@@ -1,0 +1,56 @@
+=== modified file 'libgeis/backend/grail/geis_grail_backend.c'
+--- a/libgeis/backend/grail/geis_grail_backend.c	2015-07-22 20:20:25 +0000
++++ b/libgeis/backend/grail/geis_grail_backend.c	2016-01-26 14:35:48 +0000
+@@ -1431,7 +1431,9 @@
+                       _grail_be_grail_fd_callback,
+                       gbe);
+ 
+-    gbe->devices = geis_bag_new(sizeof(UFDevice), 2, 2.0f);
++    gbe->devices = geis_bag_new(sizeof(UFDevice),
++                                geis_bag_default_init_alloc,
++                                geis_bag_default_growth_factor);
+     if (!gbe->devices)
+     {
+       geis_error("failed to create UFDevices store");
+@@ -1447,7 +1449,9 @@
+       goto unwind_devices;
+     }
+ 
+-    gbe->slice_states = geis_bag_new(sizeof(struct _GeisSliceState), 2, 1.5f);
++    gbe->slice_states = geis_bag_new(sizeof(struct _GeisSliceState),
++                                     geis_bag_default_init_alloc,
++                                     geis_bag_default_growth_factor);
+     if (!gbe->slice_states)
+     {
+       geis_error("failed to create slice times store");
+
+=== modified file 'libgeis/geis_subscription.c'
+--- a/libgeis/geis_subscription.c	2012-12-04 12:39:16 +0000
++++ b/libgeis/geis_subscription.c	2016-01-26 14:43:43 +0000
+@@ -238,8 +238,10 @@
+   for (i = 0; i < bag->sub_store_size; ++i)
+   {
+     if (bag->sub_store[i])
++    {
+       _subscription_unref(bag->sub_store[i]);
+       bag->sub_store[i] = NULL;
++    }
+   }
+ }
+ 
+
+=== modified file 'libs/geis-util/geis_bag.h'
+--- a/libs/geis-util/geis_bag.h	2011-12-21 17:35:47 +0000
++++ b/libs/geis-util/geis_bag.h	2016-01-26 14:35:48 +0000
+@@ -52,8 +52,8 @@
+ };
+ 
+ 
+-static const GeisSize  geis_bag_default_init_alloc    = 2;
+-static const GeisFloat geis_bag_default_growth_factor = 1.5f;
++#define geis_bag_default_init_alloc    2
++#define geis_bag_default_growth_factor 1.5f
+ 
+ 
+ /**
+

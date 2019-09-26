@@ -1,10 +1,9 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
-# $Id$
 
-EAPI=5
+EAPI=7
 
-PYTHON_COMPAT=( python3_{3,4,5} )
+PYTHON_COMPAT=( python3_{5,6,7} )
 
 inherit python-any-r1
 
@@ -30,6 +29,12 @@ CDEPEND="evemu? ( app-misc/evemu )
 DEPEND="${CDEPEND}
 		virtual/pkgconfig"
 RDEPEND="${CDEPEND}"
+
+src_prepare() {
+	eapply "${FILESDIR}/${P}-trunk-r337.patch"
+	eapply "${FILESDIR}/${P}-fix-pointer-compare.patch"
+	default
+}
 
 src_configure() {
 	econf \
