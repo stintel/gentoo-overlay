@@ -1,5 +1,5 @@
---- a/touchegg-gui/src/touchegg-gui/data/transaction_manager/TransactionManager.cpp
-+++ b/touchegg-gui/src/touchegg-gui/data/transaction_manager/TransactionManager.cpp
+--- a/src/touchegg-gui/data/transaction_manager/TransactionManager.cpp
++++ b/src/touchegg-gui/data/transaction_manager/TransactionManager.cpp
 @@ -19,10 +19,10 @@
  // **********             STATIC METHODS AND VARIABLES             ********** //
  // ************************************************************************** //

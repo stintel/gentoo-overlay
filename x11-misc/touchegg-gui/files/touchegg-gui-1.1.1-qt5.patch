@@ -1,5 +1,5 @@
---- a/touchegg-gui/src/touchegg-gui/presentation/config_forms/ConfigForm.h
-+++ b/touchegg-gui/src/touchegg-gui/presentation/config_forms/ConfigForm.h
+--- a/src/touchegg-gui/presentation/config_forms/ConfigForm.h
++++ b/src/touchegg-gui/presentation/config_forms/ConfigForm.h
 @@ -16,6 +16,7 @@
  #define CONFIGFORM_H
  
@@ -8,8 +8,8 @@
  
  /**
   * @~spanish
---- a/touchegg-gui/touchegg-gui.pro
-+++ b/touchegg-gui/touchegg-gui.pro
+--- a/touchegg-gui.pro
++++ b/touchegg-gui.pro
 @@ -1,6 +1,6 @@
  TEMPLATE        = app
  TARGET          = touchegg-gui
@@ -18,8 +18,8 @@
  OBJECTS_DIR    += build
  MOC_DIR        += build
  RCC_DIR        += build
---- a/touchegg-gui/src/touchegg-gui/presentation/widgets/MenuItem.h
-+++ b/touchegg-gui/src/touchegg-gui/presentation/widgets/MenuItem.h
+--- a/src/touchegg-gui/presentation/widgets/MenuItem.h
++++ b/src/touchegg-gui/presentation/widgets/MenuItem.h
 @@ -16,6 +16,8 @@
  #define MENUITEM_H
  
@@ -29,8 +29,8 @@
  namespace Ui { class MenuItem; }
  
  /**
---- a/touchegg-gui/src/touchegg-gui/presentation/widgets/GestureConfigWidget.h
-+++ b/touchegg-gui/src/touchegg-gui/presentation/widgets/GestureConfigWidget.h
+--- a/src/touchegg-gui/presentation/widgets/GestureConfigWidget.h
++++ b/src/touchegg-gui/presentation/widgets/GestureConfigWidget.h
 @@ -19,6 +19,8 @@
  #include "src/touchegg-gui/presentation/config_forms/ConfigFormFactory.h"
  #include "src/touchegg-gui/presentation/config_forms/ConfigForm.h"
@@ -40,8 +40,8 @@
  namespace Ui { class GestureConfigWidget; }
  
  
---- a/touchegg-gui/src/touchegg-gui/presentation/main_window/MainWindow.h
-+++ b/touchegg-gui/src/touchegg-gui/presentation/main_window/MainWindow.h
+--- a/src/touchegg-gui/presentation/main_window/MainWindow.h
++++ b/src/touchegg-gui/presentation/main_window/MainWindow.h
 @@ -19,6 +19,8 @@
  #include "src/touchegg-gui/presentation/widgets/MenuItem.h"
  #include "src/touchegg-gui/presentation/main_window/GesturesTab.h"
@@ -51,8 +51,8 @@
  namespace Ui { class MainWindow; }
  
  /**
---- a/touchegg-gui/src/touchegg-gui/presentation/main_window/GeneralSettingsTab.h
-+++ b/touchegg-gui/src/touchegg-gui/presentation/main_window/GeneralSettingsTab.h
+--- a/src/touchegg-gui/presentation/main_window/GeneralSettingsTab.h
++++ b/src/touchegg-gui/presentation/main_window/GeneralSettingsTab.h
 @@ -17,6 +17,8 @@
  
  #include "src/touchegg-gui/util/Include.h"
@@ -62,8 +62,8 @@
  namespace Ui { class GeneralSettingsTab; }
  
  
---- a/touchegg-gui/src/touchegg-gui/presentation/main_window/GesturesTab.h
-+++ b/touchegg-gui/src/touchegg-gui/presentation/main_window/GesturesTab.h
+--- a/src/touchegg-gui/presentation/main_window/GesturesTab.h
++++ b/src/touchegg-gui/presentation/main_window/GesturesTab.h
 @@ -18,6 +18,9 @@
  #include "src/touchegg-gui/util/Include.h"
  #include "src/touchegg-gui/logic/facade/Facade.h"
@@ -74,8 +74,8 @@
  namespace Ui { class GesturesTab; }
  
  
---- a/touchegg-gui/src/touchegg-gui/Main.cpp
-+++ b/touchegg-gui/src/touchegg-gui/Main.cpp
+--- a/src/touchegg-gui/Main.cpp
++++ b/src/touchegg-gui/Main.cpp
 @@ -13,6 +13,7 @@
   */
  #include "src/touchegg-gui/util/Include.h"
