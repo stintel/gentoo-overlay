@@ -1,5 +1,5 @@
---- a/touchegg/src/touchegg/util/Include.h
-+++ b/touchegg/src/touchegg/util/Include.h
+--- a/src/touchegg/util/Include.h
++++ b/src/touchegg/util/Include.h
 @@ -23,8 +23,9 @@
      // Qt
      #include <QtCore>
@@ -11,8 +11,8 @@
  
      // Xlib
      #include <X11/Xlib.h>
---- a/touchegg/touchegg.pro
-+++ b/touchegg/touchegg.pro
+--- a/touchegg.pro
++++ b/touchegg.pro
 @@ -1,6 +1,6 @@
  TEMPLATE     = app
  TARGET       = touchegg
