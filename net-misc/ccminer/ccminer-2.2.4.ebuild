@@ -1,9 +1,9 @@
-# Copyright 1999-2019 Gentoo Authors
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="4"
+EAPI="6"
 
-inherit autotools flag-o-matic versionator
+inherit autotools cuda flag-o-matic versionator
 
 DESCRIPTION="Bitcoin CPU/GPU/FPGA miner in C"
 HOMEPAGE="https://bitcointalk.org/index.php?topic=28402.0"
@@ -24,6 +24,9 @@ RDEPEND="${DEPEND}"
 S="${WORKDIR}/${P}-tpruvot"
 
 src_prepare() {
+	default
+	cuda_src_prepare
+	export CUDA_CFLAGS=$NVCCFLAGS
 	eautoreconf
 }
 
