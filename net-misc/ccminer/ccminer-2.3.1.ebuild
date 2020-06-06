@@ -3,7 +3,7 @@
 
 EAPI="6"
 
-inherit autotools cuda flag-o-matic versionator
+inherit autotools cuda flag-o-matic
 
 DESCRIPTION="Bitcoin CPU/GPU/FPGA miner in C"
 HOMEPAGE="https://bitcointalk.org/index.php?topic=28402.0"
