@@ -11,7 +11,7 @@ MY_PN="iptools"
 MY_P="${MY_PN}-${PV}"
 
 DESCRIPTION="Utilites for manipulating IPv4 and IPv6 addresses"
-HOMEPAGE="http://pypi.python.org/pypi/iptools"
+HOMEPAGE="https://pypi.python.org/pypi/iptools"
 SRC_URI="mirror://pypi/${MY_PN:0:1}/${MY_PN}/${MY_P}.tar.gz"
 
 LICENSE="BSD"
