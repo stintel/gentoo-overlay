@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<longdescription lang="en">
+		Dendrite is a second-generation Matrix homeserver written in Go.
+	</longdescription>
+	<upstream>
+		<bugs-to>https://github.com/matrix-org/dendrite/issues</bugs-to>
+		<remote-id type="github">matrix-org/dendrite</remote-id>
+	</upstream>
+</pkgmetadata>

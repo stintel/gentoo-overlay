@@ -1,0 +1,15 @@
+#!/sbin/openrc-run
+# Copyright 2020 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+name="dendrite daemon"
+description=""
+command=/usr/bin/dendrite-monolith-server
+command_args="${dendrite_args}"
+command_background="true"
+command_user="${dendrite_user}:${dendrite_group}"
+pidfile="/run/${RC_SVCNAME}.pid"
+
+depend() {
+	need net
+}
