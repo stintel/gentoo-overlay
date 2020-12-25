@@ -11,7 +11,7 @@ inherit distutils-r1
 
 DESCRIPTION="The tool for updating your Suricata rules."
 HOMEPAGE="https://github.com/OISF/suricata-update"
-SRC_URI="mirror://pypi/${PN:0:1}/${PN}/${PN}-${MyPV}.tar.gz"
+SRC_URI="https://github.com/OISF/suricata-update/archive/${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
