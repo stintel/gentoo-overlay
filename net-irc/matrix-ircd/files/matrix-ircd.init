@@ -1,0 +1,17 @@
+#!/sbin/openrc-run
+# Copyright 2020 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+name="matrix-ircd daemon"
+description=""
+command="/usr/bin/matrix-ircd"
+command_args="${matrix_ircd_args}"
+command_background="true"
+command_user="${matrix_ircd_user}:${matrix_ircd_group}"
+error_log="${matrix_ircd_logdir}/stderr.log"
+output_log="${matrix_ircd_logdir}/stdout.log"
+pidfile="/run/${RC_SVCNAME}.pid"
+
+depend() {
+	need net
+}

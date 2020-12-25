@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<longdescription lang="en">
+		An IRCd implementation backed by Matrix.
+	</longdescription>
+	<upstream>
+		<bugs-to>https://github.com/matrix-org/matrix-ircd/issues</bugs-to>
+		<remote-id type="github">matrix-org/matrix-ircd</remote-id>
+	</upstream>
+</pkgmetadata>
