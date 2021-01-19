@@ -1,9 +1,9 @@
 #!/sbin/openrc-run
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 command=/usr/bin/matterircd
-command_args="-conf /etc/matterircd.toml"
+command_args="--conf /etc/matterircd.toml"
 pidfile=/var/run/matterircd/matterircd.pid
 start_stop_daemon_args="--make-pidfile --background --user nobody --group nobody --chdir /var/run/matterircd --stdout /var/log/matterircd/matterircd.log --stderr /var/log/matterircd/matterircd.log"
 
