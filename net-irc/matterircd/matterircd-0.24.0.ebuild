@@ -11,7 +11,7 @@ if [[ ${PV} = *9999* ]]; then
 	KEYWORDS=""
 else
 	SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~arm ~amd64"
+	KEYWORDS="~amd64 ~arm"
 fi
 
 DESCRIPTION="Connect to your mattermost or slack using your IRC-client of choice."
