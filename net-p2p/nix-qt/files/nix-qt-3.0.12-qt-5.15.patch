@@ -1,0 +1,40 @@
+--- a/src/qt/overviewpage.cpp
++++ b/src/qt/overviewpage.cpp
+@@ -22,6 +22,7 @@
+ 
+ #include <QAbstractItemDelegate>
+ #include <QPainter>
++#include <QPainterPath>
+ 
+ #define DECORATION_SIZE 54
+ #define NUM_ITEMS 5
+--- a/src/qt/receiverequestdialog.h
++++ b/src/qt/receiverequestdialog.h
+@@ -11,6 +11,7 @@
+ #include <QImage>
+ #include <QLabel>
+ #include <QPainter>
++#include <QPainterPath>
+ 
+ class OptionsModel;
+ 
+--- a/src/qt/splashscreen.cpp
++++ b/src/qt/splashscreen.cpp
+@@ -24,6 +24,7 @@
+ #include <QCloseEvent>
+ #include <QDesktopWidget>
+ #include <QPainter>
++#include <QPainterPath>
+ #include <QRadialGradient>
+ 
+ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) :
+--- a/src/qt/trafficgraphwidget.cpp
++++ b/src/qt/trafficgraphwidget.cpp
+@@ -6,6 +6,7 @@
+ #include <qt/clientmodel.h>
+ 
+ #include <QPainter>
++#include <QPainterPath>
+ #include <QColor>
+ #include <QTimer>
+ 

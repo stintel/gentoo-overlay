@@ -1,4 +1,4 @@
-# Copyright 2010-2020 Gentoo Authors
+# Copyright 2010-2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -61,6 +61,8 @@ src_prepare() {
 	sed -i 's/^\(complete -F _nixd \)nixd \(nix-qt\)$/\1\2/' contrib/nixd.bash-completion || die
 
 	eapply "${FILESDIR}"/${P}-boost-1.72-missing-include.patch
+	eapply "${FILESDIR}"/${P}-boost-1.73.0.patch
+	eapply "${FILESDIR}"/${P}-qt-5.15.patch
 	eapply "${FILESDIR}"/${P}-sys_leveldb.patch
 
 	eapply_user
