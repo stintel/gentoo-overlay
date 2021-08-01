@@ -26,4 +26,7 @@ src_install() {
 
 	insinto /etc/
 	newins "${S}/src/${EGO_PN}/matterircd.toml.example" matterircd.toml
+
+	insinto /etc/logrotate.d/
+	newins "${FILESDIR}/${PN}.logrotate" "${PN}"
 }

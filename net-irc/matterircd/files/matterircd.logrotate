@@ -1,0 +1,6 @@
+/var/log/matterircd/*.log {
+	su nobody nobody
+	copytruncate
+	missingok
+	notifempty
+}
