@@ -32,7 +32,6 @@ src_prepare() {
 }
 
 src_configure() {
-	# this throws a warning in flag-o-matic.eclass but it fixes a linking issue
-	append-ldflags -lcurl
+	export with_curl="yes"
 	default
 }
