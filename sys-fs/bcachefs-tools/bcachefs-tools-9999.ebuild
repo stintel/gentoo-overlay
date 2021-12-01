@@ -30,7 +30,6 @@ src_prepare() {
 	sed -i 's/ -O2//' Makefile
 
 	if use elibc_musl; then
-		append-cflags -DPAGE_SHIFT=12
 		append-cflags -D__always_inline=inline
 		append-cflags -D\''__attribute_const__=__attribute__((__const__))'\'
 	fi
