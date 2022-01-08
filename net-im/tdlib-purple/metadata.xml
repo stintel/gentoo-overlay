@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<longdescription lang="en">
+		New libpurple plugin for Telegram
+	</longdescription>
+	<upstream>
+		<bugs-to>https://github.com/ars3niy/tdlib-purple/issues</bugs-to>
+		<remote-id type="github">ars3niy/tdlib-purple</remote-id>
+	</upstream>
+</pkgmetadata>
