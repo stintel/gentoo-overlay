@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<longdescription lang="en">
+		TDLib (Telegram Database library) is a cross-platform library for building Telegram clients.
+	</longdescription>
+	<upstream>
+		<bugs-to>https://github.com/tdlib/td/issues</bugs-to>
+		<remote-id type="github">tdlib/td</remote-id>
+	</upstream>
+	<use>
+		<flag name='jni'>Enable native Java interface through JNI</flag>
+		<flag name='lto'>Build with link time optimization (LTO)</flag>
+	</use>
+</pkgmetadata>
