@@ -12,13 +12,18 @@ SRC_URI="https://github.com/ars3niy/tdlib-purple/archive/refs/tags/v${PV}.tar.gz
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64"
+IUSE="webp"
 
-DEPEND="net-im/pidgin
+DEPEND="webp? ( media-libs/libwebp )
+		net-im/pidgin
 		~net-libs/tdlib-1.7.9"
 RDEPEND="${DEPEND}"
 BDEPEND=""
 
 src_configure() {
-	local mycmakeargs=( -DNoVoip=True )
+	local mycmakeargs=(
+		-DNoVoip=True
+		-DNoWebp=$(usex webp false true)
+	)
 	cmake_src_configure
 }
