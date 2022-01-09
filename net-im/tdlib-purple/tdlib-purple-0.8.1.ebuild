@@ -21,6 +21,8 @@ DEPEND="webp? ( media-libs/libwebp )
 RDEPEND="${DEPEND}"
 BDEPEND=""
 
+PATCHES=( "${FILESDIR}/${P}-link-zlib.patch" )
+
 src_configure() {
 	local mycmakeargs=(
 		-DNoVoip=True

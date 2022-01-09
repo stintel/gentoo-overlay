@@ -1,0 +1,14 @@
+Index: tdlib-purple-0.8.1/CMakeLists.txt
+===================================================================
+--- tdlib-purple-0.8.1.orig/CMakeLists.txt
++++ tdlib-purple-0.8.1/CMakeLists.txt
+@@ -95,6 +95,9 @@ add_subdirectory(fmt)
+ target_compile_options(fmt PRIVATE -fPIC)
+ target_link_libraries(telegram-tdlib PRIVATE fmt::fmt)
+ 
++find_package(ZLIB)
++target_link_libraries(telegram-tdlib PRIVATE ZLIB::ZLIB)
++
+ if (NOT NoLottie)
+     if (NOT NoBundledLottie)
+         add_subdirectory(rlottie)
