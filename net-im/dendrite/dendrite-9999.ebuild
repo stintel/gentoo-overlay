@@ -2069,6 +2069,7 @@ EGO_SUM=(
 
 go-module_set_globals
 
+KEYWORDS="~amd64 ~x86"
 SRC_URI="https://github.com/matrix-org/dendrite/archive/v${PV}.tar.gz -> ${P}.tar.gz
 		${EGO_SUM_SRC_URI}"
 
@@ -2079,7 +2080,6 @@ HOMEPAGE="https://github.com/matrix-org/dendrite"
 
 LICENSE="Apache-2.0"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 DEPEND=""
