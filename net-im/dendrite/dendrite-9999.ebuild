@@ -8,6 +8,7 @@ inherit go-module
 if [[ ${PV} == *9999 ]]; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/matrix-org/dendrite.git"
+	KEYWORDS=""
 else
 
 EGO_SUM=(
