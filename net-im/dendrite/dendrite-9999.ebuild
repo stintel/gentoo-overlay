@@ -51,7 +51,7 @@ src_install() {
 
 	dodir /etc/dendrite
 	insinto /etc/dendrite
-	newins dendrite-config.yaml dendrite.yaml
+	newins dendrite-sample.monolith.yaml dendrite.yaml
 
 	newconfd "${FILESDIR}/dendrite.conf" dendrite
 	newinitd "${FILESDIR}/dendrite.init" dendrite
