@@ -1,10 +1,10 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI=6
+EAPI=7
 
-inherit cmake-utils
+inherit cmake
 
 DESCRIPTION="lightweight automatic anti-bot turret for your public serivces"
 HOMEPAGE="https://github.com/AdUser/f2b"
@@ -36,11 +36,11 @@ src_configure() {
 		-DENABLE_PCRE=$(usex pcre)
 		-DENABLE_REDIS=$(usex redis)
 	)
-	cmake-utils_src_configure
+	cmake_src_configure
 }
 
 src_install() {
-	cmake-utils_src_install
+	cmake_src_install
 
 	newinitd "${S}/contrib/init.openrc" "${PN}"
 }
