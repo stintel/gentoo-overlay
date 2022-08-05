@@ -3,7 +3,7 @@
 
 EAPI=7
 
-inherit go-module
+inherit go-module unpacker
 
 if [[ ${PV} == *9999 ]]; then
 	inherit git-r3
@@ -15,7 +15,7 @@ go-module_set_globals
 
 KEYWORDS="~amd64 ~x86"
 SRC_URI="https://github.com/matrix-org/dendrite/archive/v${PV}.tar.gz -> ${P}.tar.gz
-		https://gentoo.adlevio.net/${P}-deps.tar.xz"
+		https://gentoo.adlevio.net/${P}-deps.tar.zst"
 
 fi
 
@@ -35,6 +35,7 @@ src_unpack() {
 		git-r3_src_unpack
 		go-module_live_vendor
 	else
+		unpacker_src_unpack
 		go-module_src_unpack
 	fi
 }
