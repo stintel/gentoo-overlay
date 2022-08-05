@@ -28,7 +28,7 @@ IUSE=""
 
 DEPEND=""
 RDEPEND="acct-user/dendrite ${DEPEND}"
-BDEPEND=""
+BDEPEND=">=dev-lang/go-1.18.0"
 
 src_unpack() {
 	if [[ ${PV} == *9999 ]]; then
