@@ -11,8 +11,6 @@ if [[ ${PV} == *9999 ]]; then
 	KEYWORDS=""
 else
 
-go-module_set_globals
-
 KEYWORDS="~amd64 ~x86"
 SRC_URI="https://github.com/matrix-org/dendrite/archive/v${PV}.tar.gz -> ${P}.tar.gz
 		https://gentoo.adlevio.net/${P}-deps.tar.zst"
