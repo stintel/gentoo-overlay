@@ -48,7 +48,6 @@ src_install() {
 
 	dobin "${S}/bin/"*
 
-	dodir /etc/dendrite
 	insinto /etc/dendrite
 	newins dendrite-sample.monolith.yaml dendrite.yaml
 
