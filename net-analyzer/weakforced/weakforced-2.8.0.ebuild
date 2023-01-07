@@ -16,7 +16,7 @@ LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64"
 
-IUSE="dns geoip sodium trackalert"
+IUSE="dns geoip sodium systemd trackalert"
 REQUIRED_USE="${LUA_REQUIRED_USE}"
 
 DEPEND="acct-group/wforce
@@ -60,9 +60,9 @@ src_configure() {
 		$(use_enable dns) \
 		$(use_enable geoip) \
 		$(use_enable sodium) \
+		$(use_enable systemd) \
 		$(use_enable trackalert) \
 		$(use_with lua_single_target_luajit luajit) \
-		--enable-systemd \
 		--sysconfdir=/etc/weakforced \
 		--with-lua="${ELUA}"
 }
