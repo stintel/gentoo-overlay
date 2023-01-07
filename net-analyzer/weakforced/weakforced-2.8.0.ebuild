@@ -79,7 +79,9 @@ src_install() {
 	doins "${S}/wforce/wforce.conf"
 
 	newinitd "${FILESDIR}/wforce.init" wforce
-	systemd_dounit "${S}/wforce/wforce.service"
+	if use systemd; then
+		systemd_dounit "${S}/wforce/wforce.service"
+	fi
 
 	if use trackalert; then
 		dobin "${S}/trackalert/trackalert"
@@ -87,6 +89,8 @@ src_install() {
 		doins "${S}/trackalert/trackalert.conf"
 
 		newinitd "${FILESDIR}/trackalert.init" trackalert
-		systemd_dounit "${S}/trackalert/trackalert.service"
+		if use systemd; then
+			systemd_dounit "${S}/trackalert/trackalert.service"
+		fi
 	fi
 }
