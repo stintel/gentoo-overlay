@@ -5,5 +5,5 @@
 name="wforce daemon"
 description=""
 command=/usr/bin/wforce
-command_args="${wforce_args}"
-command_user="wforce:wforce"
+command_args="${WFORCE_OPTIONS}"
+command_user="${WFORCE_USER}:${WFORCE_GROUP}"

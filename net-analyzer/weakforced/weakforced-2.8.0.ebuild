@@ -81,6 +81,8 @@ src_install() {
 	newinitd "${FILESDIR}/wforce.init" wforce
 	if use systemd; then
 		systemd_dounit "${S}/wforce/wforce.service"
+	else
+		newconfd "${FILESDIR}/wforce.confd" "${PN}"
 	fi
 
 	if use trackalert; then
@@ -91,6 +93,8 @@ src_install() {
 		newinitd "${FILESDIR}/trackalert.init" trackalert
 		if use systemd; then
 			systemd_dounit "${S}/trackalert/trackalert.service"
+		else
+			newconfd "${FILESDIR}/trackalert.confd" trackalert
 		fi
 	fi
 }

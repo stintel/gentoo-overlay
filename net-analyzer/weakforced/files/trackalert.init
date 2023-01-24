@@ -5,5 +5,5 @@
 name="trackalert daemon"
 description=""
 command=/usr/bin/trackalert
-command_args="${trackalert_args}"
-command_user="wforce:wforce"
+command_args="${TRACKALERT_OPTIONS}"
+command_user="${TRACKALERT_USER}:${TRACKALERT_GROUP}"
