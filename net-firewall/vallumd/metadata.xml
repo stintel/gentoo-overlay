@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
+	<use>
+		<flag name="ipset">Use <pkg>net-firewall/ipset</pkg>.</flag>
+		<flag name="nftables">Use <pkg>net-libs/libnftnl</pkg>.</flag>
+	</use>
 </pkgmetadata>

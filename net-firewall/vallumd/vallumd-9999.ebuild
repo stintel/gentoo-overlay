@@ -7,6 +7,7 @@ inherit cmake
 
 if [ "${PV}" = 9999 ]; then
 	inherit git-r3
+	EGIT_BRANCH="nft"
 	EGIT_REPO_URI="https://codeberg.org/stintel/vallumd.git"
 else
 	KEYWORDS="~amd64 ~mips ~x86"
@@ -19,8 +20,17 @@ HOMEPAGE="https://codeberg.org/stintel/vallumd"
 
 LICENSE="GPL-3"
 SLOT="0"
-IUSE=""
+IUSE="+ipset nftables"
+REQUIRED_USE="^^ ( ipset nftables )"
 
 DEPEND="app-misc/mosquitto
-		net-firewall/ipset"
+		ipset? ( net-firewall/ipset )
+		nftables? ( net-libs/libnftnl )"
 RDEPEND="${DEPEND}"
+
+src_configure() {
+	local mycmakeargs=(
+		-DUSE_BACKEND=$(usex ipset ipset nftables)
+	)
+	cmake_src_configure
+}
