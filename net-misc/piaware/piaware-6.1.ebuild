@@ -17,3 +17,11 @@ RDEPEND="${DEPEND} dev-tcltk/tcllauncher dev-tcltk/tcllib dev-tcltk/tls"
 BDEPEND="acct-group/piaware acct-user/piaware dev-tcltk/itcl"
 
 PATCHES=( "${FILESDIR}/${P}-fix-iproute-path.patch" )
+
+src_install() {
+	default
+
+	keepdir /etc/piaware
+	fowners piaware:piaware /etc/piaware
+	fperms 700 /etc/piaware
+}
