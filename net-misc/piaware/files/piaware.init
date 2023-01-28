@@ -1,0 +1,15 @@
+#!/sbin/openrc-run
+# Copyright 2019 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+name="piaware daemon"
+description=""
+command=/usr/bin/piaware
+command_args="${piaware_args}"
+command_background="true"
+command_user="${PIAWARE_USER}:${PIAWARE_GROUP}"
+pidfile="/run/${RC_SVCNAME}.pid"
+
+depend() {
+	need dump1090
+}

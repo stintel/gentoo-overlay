@@ -1,0 +1,11 @@
+--- a/package/fa_sysinfo.tcl
++++ b/package/fa_sysinfo.tcl
+@@ -141,7 +141,7 @@ namespace eval ::fa_sysinfo {
+ 		# and everything else, in that order. If there's still a tie,
+ 		# use the interface name as a tiebreaker.
+ 
+-		if {[catch {set fp [::fa_sudo::open_as "|/sbin/ip -o link show"]} catchResult] == 1} {
++		if {[catch {set fp [::fa_sudo::open_as "|/bin/ip -o link show"]} catchResult] == 1} {
+ 			puts stderr "ip command not found on this version of Linux, you may need to install the iproute2 package and try again"
+ 			return ""
+ 		}
