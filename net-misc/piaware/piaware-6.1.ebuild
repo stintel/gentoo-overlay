@@ -14,6 +14,6 @@ IUSE=""
 
 DEPEND=""
 RDEPEND="${DEPEND} dev-tcltk/tcllauncher dev-tcltk/tcllib dev-tcltk/tls"
-BDEPEND="dev-tcltk/itcl"
+BDEPEND="acct-group/piaware acct-user/piaware dev-tcltk/itcl"
 
 PATCHES=( "${FILESDIR}/${P}-fix-iproute-path.patch" )
