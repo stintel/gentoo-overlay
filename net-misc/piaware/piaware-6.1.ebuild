@@ -28,4 +28,7 @@ src_install() {
 	keepdir /etc/piaware
 	fowners piaware:piaware /etc/piaware
 	fperms 700 /etc/piaware
+
+	newconfd "${FILESDIR}/piaware.conf" piaware
+	newinitd "${FILESDIR}/piaware.init" piaware
 }
