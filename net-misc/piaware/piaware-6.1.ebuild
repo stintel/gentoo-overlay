@@ -13,7 +13,11 @@ KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 DEPEND=""
-RDEPEND="${DEPEND} dev-tcltk/tcllauncher dev-tcltk/tcllib dev-tcltk/tls"
+RDEPEND="${DEPEND}
+		dev-tcltk/tcllauncher
+		dev-tcltk/tcllib
+		dev-tcltk/tls
+		net-wireless/dump1090"
 BDEPEND="acct-group/piaware acct-user/piaware dev-tcltk/itcl"
 
 PATCHES=( "${FILESDIR}/${P}-fix-iproute-path.patch" )
