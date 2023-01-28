@@ -31,4 +31,7 @@ src_install() {
 
 	newconfd "${FILESDIR}/piaware.conf" piaware
 	newinitd "${FILESDIR}/piaware.init" piaware
+
+	keepdir /var/cache/piaware
+	fowners piaware:piaware /var/cache/piaware
 }
