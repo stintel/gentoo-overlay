@@ -130,7 +130,7 @@ DESCRIPTION="Cargo subcommand to show result of macro expansion"
 # Double check the homepage as the cargo_metadata crate
 # does not provide this value so instead repository is used
 HOMEPAGE="https://github.com/dtolnay/cargo-expand"
-SRC_URI="https://github.com/dtolnay/cargo-expand/archive/refs/tags/${V}.tar.gz -> ${P}.tar.gz
+SRC_URI="https://github.com/dtolnay/cargo-expand/archive/refs/tags/${PV}.tar.gz -> ${P}.tar.gz
 	$(cargo_crate_uris)"
 
 # License set may be more restrictive as OR is not respected
