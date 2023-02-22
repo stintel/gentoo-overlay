@@ -140,7 +140,7 @@ SLOT="0"
 KEYWORDS="~amd64"
 
 DEPEND=""
-RDEPEND="${DEPEND}"
+RDEPEND="dev-lang/rust[nightly]"
 BDEPEND=""
 
 # rust does not use *FLAGS from make.conf, silence portage warning
