@@ -8,7 +8,8 @@ inherit cargo git-r3
 DESCRIPTION="An IRCd implementation backed by Matrix"
 HOMEPAGE="https://matrix.org/docs/projects/client/matrix-ircd/"
 
-EGIT_REPO_URI="https://github.com/matrix-org/matrix-ircd.git"
+EGIT_REPO_URI="https://github.com/stintel/matrix-ircd.git"
+EGIT_BRANCH="fixes"
 
 LICENSE="Apache-2.0"
 SLOT="0"
