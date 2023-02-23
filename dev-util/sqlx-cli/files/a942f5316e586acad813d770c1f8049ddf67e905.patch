@@ -1,0 +1,31 @@
+From a942f5316e586acad813d770c1f8049ddf67e905 Mon Sep 17 00:00:00 2001
+From: Craig Bester <me@craigbester.com>
+Date: Wed, 22 Feb 2023 12:16:48 +0200
+Subject: [PATCH] fix: install default drivers before sqlx-cli create/drop
+
+---
+ sqlx-cli/src/lib.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/sqlx-cli/src/lib.rs b/sqlx-cli/src/lib.rs
+index 696391b85..bc03149a2 100644
+--- a/sqlx-cli/src/lib.rs
++++ b/sqlx-cli/src/lib.rs
+@@ -80,8 +80,6 @@ pub async fn run(opt: Opt) -> Result<()> {
+ 
+ /// Attempt to connect to the database server, retrying up to `ops.connect_timeout`.
+ async fn connect(opts: &ConnectOpts) -> sqlx::Result<AnyConnection> {
+-    sqlx::any::install_default_drivers();
+-
+     retry_connect_errors(opts, AnyConnection::connect).await
+ }
+ 
+@@ -97,6 +95,8 @@ where
+     F: FnMut(&'a str) -> Fut,
+     Fut: Future<Output = sqlx::Result<T>> + 'a,
+ {
++    sqlx::any::install_default_drivers();
++
+     backoff::future::retry(
+         backoff::ExponentialBackoffBuilder::new()
+             .with_max_elapsed_time(Some(Duration::from_secs(opts.connect_timeout)))

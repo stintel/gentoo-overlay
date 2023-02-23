@@ -318,6 +318,8 @@ inherit cargo
 
 MyC="eade49cfb04f2bffa05254ee45e4bd8283f9b1b5"
 
+PATCHES=( "${FILESDIR}/a942f5316e586acad813d770c1f8049ddf67e905.patch" )
+
 DESCRIPTION="Command-line utility for SQLx, the Rust SQL toolkit."
 # Double check the homepage as the cargo_metadata crate
 # does not provide this value so instead repository is used
@@ -339,4 +341,10 @@ BDEPEND=""
 # update with proper path to binaries this crate installs, omit leading /
 QA_FLAGS_IGNORED="usr/bin/${PN}"
 
-S="${WORKDIR}/sqlx-${MyC}/${PN}"
+S="${WORKDIR}/sqlx-${MyC}"
+
+src_prepare() {
+	default
+	export S="${WORKDIR}/sqlx-${MyC}/${PN}"
+
+}
