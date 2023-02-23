@@ -318,7 +318,10 @@ inherit cargo
 
 MyC="eade49cfb04f2bffa05254ee45e4bd8283f9b1b5"
 
-PATCHES=( "${FILESDIR}/a942f5316e586acad813d770c1f8049ddf67e905.patch" )
+PATCHES=(
+	"${FILESDIR}/006da611e17ef4f5e08fdb09f4c4a25a2656adcd.patch"
+	"${FILESDIR}/a942f5316e586acad813d770c1f8049ddf67e905.patch"
+)
 
 DESCRIPTION="Command-line utility for SQLx, the Rust SQL toolkit."
 # Double check the homepage as the cargo_metadata crate
