@@ -4,7 +4,7 @@
 
 name="dendrite daemon"
 description=""
-command=/usr/bin/dendrite-monolith-server
+command=/usr/bin/dendrite
 command_args="${dendrite_args}"
 command_background="true"
 command_user="${dendrite_user}:${dendrite_group}"

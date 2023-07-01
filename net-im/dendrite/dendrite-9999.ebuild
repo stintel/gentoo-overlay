@@ -44,12 +44,12 @@ src_compile() {
 
 src_install() {
 	# Put SQLite databases in /var/lib/dendrite
-	sed -i 's"connection_string: file:"connection_string: file:/var/lib/dendrite/"' dendrite-sample.monolith.yaml
+	sed -i 's"connection_string: file:"connection_string: file:/var/lib/dendrite/"' dendrite-sample.yaml
 
 	dobin "${S}/bin/"*
 
 	insinto /etc/dendrite
-	newins dendrite-sample.monolith.yaml dendrite.yaml
+	newins dendrite-sample.yaml dendrite.yaml
 
 	newconfd "${FILESDIR}/dendrite.conf" dendrite
 	newinitd "${FILESDIR}/dendrite.init" dendrite
