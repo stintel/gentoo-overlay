@@ -1,0 +1,12 @@
+#!/sbin/openrc-run
+
+name="Audit daemon event forwarder"
+description=""
+command=/usr/bin/auditd-forwarder
+command_args=""
+command_background=yes
+pidfile="/run/${RC_SVCNAME}.pid"
+
+depend() {
+    need auditd
+}
