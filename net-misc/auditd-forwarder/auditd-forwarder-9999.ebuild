@@ -3,7 +3,8 @@
 
 EAPI=8
 
-inherit cargo git-r3
+LLVM_MAX_SLOT=15
+inherit cargo llvm git-r3
 
 DESCRIPTION="Forward auditd events over MQTT"
 HOMEPAGE="https://codeberg.org/stintel/auditd-forwarder"
