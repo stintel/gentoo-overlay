@@ -16,8 +16,7 @@ IUSE="webp"
 
 DEPEND="webp? ( media-libs/libwebp )
 		net-im/pidgin
-		~net-libs/tdlib-1.8.0
-		!x11-plugins/pidgin-telegram"
+		~net-libs/tdlib-1.8.0"
 RDEPEND="${DEPEND}"
 BDEPEND=""
 
