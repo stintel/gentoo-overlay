@@ -3,20 +3,20 @@
 
 EAPI=8
 
-inherit cmake
+inherit cmake git-r3
 
 DESCRIPTION="New libpurple plugin for Telegram"
-HOMEPAGE="https://github.com/ars3niy/tdlib-purple"
-SRC_URI="https://github.com/ars3niy/tdlib-purple/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz"
+HOMEPAGE="https://github.com/BenWiederhake/tdlib-purple"
+EGIT_REPO_URI="https://github.com/BenWiederhake/tdlib-purple"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64"
+KEYWORDS=""
 IUSE="webp"
 
 DEPEND="webp? ( media-libs/libwebp )
 		net-im/pidgin
-		~net-libs/tdlib-1.7.9
+		~net-libs/tdlib-1.8.0
 		!x11-plugins/pidgin-telegram"
 RDEPEND="${DEPEND}"
 BDEPEND=""
