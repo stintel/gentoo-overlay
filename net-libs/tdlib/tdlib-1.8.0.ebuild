@@ -7,9 +7,7 @@ inherit cmake
 
 DESCRIPTION="Cross-platform library for building Telegram clients"
 HOMEPAGE="https://core.telegram.org/tdlib"
-#SRC_URI="https://github.com/tdlib/td/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz"
-COMMIT_HASH="7d41d9eaa58a6e0927806283252dc9e74eda5512"
-SRC_URI="https://github.com/tdlib/td/archive/${COMMIT_HASH}.tar.gz"
+SRC_URI="https://github.com/tdlib/td/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="Boost-1.0"
 SLOT="0"
@@ -22,7 +20,7 @@ RDEPEND="${DEPEND}"
 BDEPEND="dev-lang/php
 		dev-util/gperf"
 
-S="${WORKDIR}/td-${COMMIT_HASH}"
+S="${WORKDIR}/td-${PV}"
 
 src_configure() {
 	local mycmakeargs=(
