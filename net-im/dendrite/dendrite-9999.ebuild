@@ -39,12 +39,12 @@ src_unpack() {
 }
 
 src_compile() {
-	GOBIN="${S}/bin" go install -trimpath -v "${S}/./cmd/..."
+	GOBIN="${S}/bin" go install -trimpath -v "${S}/./cmd/..." || die
 }
 
 src_install() {
 	# Put SQLite databases in /var/lib/dendrite
-	sed -i 's"connection_string: file:"connection_string: file:/var/lib/dendrite/"' dendrite-sample.yaml
+	sed -i 's"connection_string: file:"connection_string: file:/var/lib/dendrite/"' dendrite-sample.yaml || die
 
 	dobin "${S}/bin/"*
 
