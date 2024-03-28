@@ -39,6 +39,9 @@ src_unpack() {
 }
 
 src_compile() {
+	# bug 906073
+	use elibc_musl && export CGO_CFLAGS="-D_LARGEFILE64_SOURCE"
+
 	GOBIN="${S}/bin" go install -trimpath -v "${S}/./cmd/..." || die
 }
 
