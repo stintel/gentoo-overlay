@@ -1,4 +1,4 @@
-My Gentoo overlay. This is old and messy.
+# stintel's gentoo overlay
 
 Enable the overlay in Portage:
 `mkdir -p /etc/portage/repos.conf; curl -o /etc/portage/repos.conf/stintel.conf https://www.linux-ipv6.be/stintel.conf`
