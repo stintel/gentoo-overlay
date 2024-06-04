@@ -15,5 +15,5 @@ LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 
-DEPEND=">=dev-python/django-1.8[${PYTHON_USEDEP}]"
+DEPEND=">=dev-python/django-1.11[${PYTHON_USEDEP}]"
 RDEPEND="${DEPEND}"
