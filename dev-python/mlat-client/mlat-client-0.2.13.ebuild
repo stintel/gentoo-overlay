@@ -4,7 +4,7 @@
 EAPI=8
 
 DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=( python3_{8,9,10,11,12} )
+PYTHON_COMPAT=( python3_{12..13} )
 inherit distutils-r1
 
 DESCRIPTION="Mode S multilateration client"
@@ -14,3 +14,5 @@ SRC_URI="https://github.com/mutability/mlat-client/archive/v${PV}.tar.gz -> ${P}
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
+
+RDEPEND="dev-python/pyasyncore[$PYTHON_USEDEP]"
