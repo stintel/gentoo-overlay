@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<longdescription lang="en">
+		Readsb is a Mode-S/ADSB/TIS decoder for RTLSDR, BladeRF, Modes-Beast and GNS5894 devices. Future development version with protocol buffer storage.
+	</longdescription>
+	<upstream>
+		<remote-id type="github">Mictronics/readsb-protobuf</remote-id>
+	</upstream>
+	<use>
+		<flag name="bladerf">Build with BladeRF support</flag>
+		<flag name="plutosdr">Build with PlutoSDR support</flag>
+		<flag name="rtlsdr">Build with RTLSDR support</flag>
+	</use>
+</pkgmetadata>
