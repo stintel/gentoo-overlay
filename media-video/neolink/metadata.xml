@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<longdescription lang="en">
+		Neolink is a small program that acts as a proxy between Reolink IP cameras and normal RTSP clients.
+	</longdescription>
+	<upstream>
+		<remote-id type="github">QuantumEntangledAndy/neolink</remote-id>
+	</upstream>
+</pkgmetadata>
