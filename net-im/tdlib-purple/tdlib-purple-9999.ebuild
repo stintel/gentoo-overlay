@@ -16,7 +16,7 @@ IUSE="webp"
 
 DEPEND="webp? ( media-libs/libwebp )
 		net-im/pidgin
-		~net-libs/tdlib-1.8.0"
+		>=net-libs/tdlib-1.8.35"
 RDEPEND="${DEPEND}"
 BDEPEND=""
 
