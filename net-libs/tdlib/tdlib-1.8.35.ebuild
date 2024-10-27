@@ -5,9 +5,13 @@ EAPI=8
 
 inherit cmake
 
+PV_COMMIT="8d08b34e22a08e58db8341839c4e18ee06c516c5"
+
 DESCRIPTION="Cross-platform library for building Telegram clients"
 HOMEPAGE="https://core.telegram.org/tdlib"
-SRC_URI="https://github.com/tdlib/td/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://github.com/tdlib/td/archive/${PV_COMMIT}.tar.gz -> ${P}.tar.gz"
+
+S="${WORKDIR}/td-${PV_COMMIT}"
 
 LICENSE="Boost-1.0"
 SLOT="0"
@@ -19,8 +23,6 @@ DEPEND="dev-libs/openssl
 RDEPEND="${DEPEND}"
 BDEPEND="dev-lang/php
 		dev-util/gperf"
-
-S="${WORKDIR}/td-${PV}"
 
 src_configure() {
 	local mycmakeargs=(
