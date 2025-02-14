@@ -15,9 +15,7 @@ KEYWORDS=""
 
 DEPEND=""
 RDEPEND="${DEPEND}"
-BDEPEND="
-	sys-devel/clang
-	virtual/rust"
+BDEPEND=""
 
 src_unpack() {
 	git-r3_src_unpack
