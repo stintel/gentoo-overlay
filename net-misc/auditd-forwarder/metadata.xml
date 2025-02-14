@@ -5,4 +5,7 @@
 	<email>stijn@linux-ipv6.be</email>
 	<name>Stijn Tintel</name>
 </maintainer>
+<upstream>
+	<remote-id type="codeberg">stintel/auditd-forwarder</remote-id>
+</upstream>
 </pkgmetadata>
