@@ -7,18 +7,18 @@ inherit go-module unpacker
 
 if [[ ${PV} == *9999 ]]; then
 	inherit git-r3
-	EGIT_REPO_URI="https://github.com/matrix-org/dendrite.git"
+	EGIT_REPO_URI="https://github.com/element-hq/dendrite.git"
 	KEYWORDS=""
 else
 
 KEYWORDS="~amd64 ~x86"
-SRC_URI="https://github.com/matrix-org/dendrite/archive/v${PV}.tar.gz -> ${P}.tar.gz
+SRC_URI="https://github.com/element-hq/dendrite/archive/v${PV}.tar.gz -> ${P}.tar.gz
 		https://gentoo.adlevio.net/${P}-deps.tar.zst"
 
 fi
 
 DESCRIPTION="Dendrite is a second-generation Matrix homeserver written in Go!"
-HOMEPAGE="https://github.com/matrix-org/dendrite"
+HOMEPAGE="https://github.com/element-hq/dendrite"
 
 LICENSE="Apache-2.0"
 SLOT="0"
@@ -26,7 +26,7 @@ IUSE=""
 
 DEPEND=""
 RDEPEND="acct-user/dendrite ${DEPEND}"
-BDEPEND=">=dev-lang/go-1.18.0"
+BDEPEND=">=dev-lang/go-1.22.0"
 
 src_unpack() {
 	if [[ ${PV} == *9999 ]]; then
