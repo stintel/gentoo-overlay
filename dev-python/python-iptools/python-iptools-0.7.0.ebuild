@@ -5,7 +5,7 @@ EAPI="8"
 
 DISTUTILS_USE_PEP517=setuptools
 PYPI_PN=iptools
-PYTHON_COMPAT=( python3_{8..12} )
+PYTHON_COMPAT=( python3_{8..14} )
 
 inherit distutils-r1 pypi
 
@@ -22,4 +22,3 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 
 DEPEND="dev-python/setuptools"
-
