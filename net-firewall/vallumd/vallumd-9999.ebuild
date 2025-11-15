@@ -1,7 +1,7 @@
 # Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
 inherit cmake
 
@@ -10,7 +10,7 @@ if [ "${PV}" = 9999 ]; then
 	EGIT_BRANCH="nft"
 	EGIT_REPO_URI="https://codeberg.org/stintel/vallumd.git"
 else
-	KEYWORDS="~amd64 ~mips ~x86"
+	KEYWORDS="~amd64 ~x86"
 	SRC_URI="https://codeberg.org/stintel/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 	S="${WORKDIR}/${PN}"
 fi
