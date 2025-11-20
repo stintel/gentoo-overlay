@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
+	<upstream>
+		<remote-id type="codeberg">stintel/auditd-forwarder</remote-id>
+	</upstream>
 	<use>
 		<flag name="ipset">Use <pkg>net-firewall/ipset</pkg>.</flag>
 		<flag name="nftables">Use <pkg>net-libs/libnftnl</pkg>.</flag>
