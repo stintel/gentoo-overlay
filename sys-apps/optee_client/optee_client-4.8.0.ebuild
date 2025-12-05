@@ -16,3 +16,10 @@ KEYWORDS="~arm64"
 DEPEND=""
 RDEPEND="${DEPEND}"
 BDEPEND=""
+
+src_configure() {
+	local mycmakeargs=(
+		-DCFG_USE_PKGCONFIG=ON
+	)
+	cmake_src_configure
+}
