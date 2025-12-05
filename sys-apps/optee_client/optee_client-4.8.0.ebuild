@@ -14,7 +14,7 @@ SLOT="0"
 KEYWORDS="~arm64"
 
 DEPEND=""
-RDEPEND="${DEPEND}"
+RDEPEND="acct-user/teesuppl ${DEPEND}"
 BDEPEND=""
 
 src_configure() {
