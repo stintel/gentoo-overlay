@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit cargo git-r3
+inherit cargo git-r3 systemd
 
 DESCRIPTION="Forward auditd events over MQTT"
 HOMEPAGE="https://codeberg.org/stintel/auditd-forwarder"
@@ -12,6 +12,7 @@ EGIT_REPO_URI="https://codeberg.org/stintel/auditd-forwarder.git"
 LICENSE="Apache-2.0 Apache-2.0-with-LLVM-exceptions BSD Boost-1.0 EPL-1.0 GPL-3 GPL-3+ ISC MIT Unicode-DFS-2016 Unlicense ZLIB"
 SLOT="0"
 KEYWORDS=""
+IUSE="systemd"
 
 DEPEND=""
 RDEPEND="${DEPEND}"
@@ -25,4 +26,8 @@ src_unpack() {
 src_install() {
 	cargo_src_install
 	newinitd "${FILESDIR}/${PN}.init" "${PN}"
+
+	if use systemd; then
+		systemd_dounit "${S}/init/${PN}.service"
+	fi
 }
