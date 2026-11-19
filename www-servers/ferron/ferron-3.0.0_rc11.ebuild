@@ -8,7 +8,7 @@ EAPI=8
 CRATES="
 "
 
-inherit cargo
+inherit cargo systemd
 
 MY_PV="${PV/_rc/-rc.}"
 MY_P="${PN}-${MY_PV}"
@@ -58,4 +58,6 @@ src_install() {
 	for bin in ferron{,-{fmt,kdl2ferron,passwd,precompress,serve}}; do
 		dobin "$(cargo_target_dir)/${bin}"
 	done
+
+	systemd_dounit "${FILESDIR}/ferron.service"
 }
