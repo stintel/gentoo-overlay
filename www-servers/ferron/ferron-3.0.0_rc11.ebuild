@@ -41,6 +41,11 @@ LICENSE+="
 SLOT="0"
 KEYWORDS="~amd64"
 
+RDEPEND="
+	acct-group/ferron
+	acct-user/ferron
+"
+
 src_prepare() {
 	rm -rf "${S}/modules/http-basicauth/phc-winner-argon2" "${S}/modules/observability-otlp/opentelemetry-proto"
 	mv "${WORKDIR}/phc-winner-argon2-${ARGON2_COMMIT}" "${S}/modules/http-basicauth/phc-winner-argon2" || die
