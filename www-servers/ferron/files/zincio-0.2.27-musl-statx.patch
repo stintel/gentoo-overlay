@@ -1,0 +1,7 @@
+--- a/src/fs/metadata.rs
++++ b/src/fs/metadata.rs
+@@ -54,3 +54,3 @@
+     /// Creates a new `Metadata` from a `libc::statx` structure.
+-    #[cfg(target_os = "linux")]
++    #[cfg(all(target_os = "linux", any(target_env = "gnu", musl_v1_2_3)))]
+     #[inline]
