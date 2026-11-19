@@ -1,0 +1,45 @@
+[Unit]
+Description=Ferron
+After=network.target
+
+[Service]
+Type=simple
+User=ferron
+Group=ferron
+
+ExecStartPre=/usr/bin/ferron validate -c /etc/ferron/ferron.conf
+ExecStart=/usr/bin/ferron run -c /etc/ferron/ferron.conf
+ExecReload=/usr/bin/ferron validate -c /etc/ferron/ferron.conf
+ExecReload=/bin/kill -s HUP $MAINPID
+
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+KeyringMode=private
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+NoNewPrivileges=yes
+PrivateDevices=yes
+PrivateMounts=yes
+PrivateTmp=yes
+ProcSubset=pid
+ProtectClock=yes
+ProtectControlGroups=yes
+ProtectHome=yes
+ProtectHostname=yes
+ProtectKernelLogs=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+ProtectProc=invisible
+ProtectSystem=strict
+LogsDirectory=ferron
+RemoveIPC=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+SystemCallArchitectures=native
+SystemCallErrorNumber=EPERM
+SystemCallFilter=@system-service
+
+[Install]
+WantedBy=multi-user.target
