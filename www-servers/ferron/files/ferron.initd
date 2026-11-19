@@ -1,0 +1,33 @@
+#!/sbin/openrc-run
+# Copyright 2026 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+description="Ferron web server"
+supervisor="supervise-daemon"
+command="/usr/bin/ferron"
+command_args="run -c /etc/ferron/ferron.conf"
+command_user="ferron:ferron"
+capabilities="^cap_net_bind_service"
+no_new_privs="yes"
+extra_started_commands="reload"
+description_reload="Validate and reload the Ferron configuration"
+
+depend() {
+	after net
+}
+
+start_pre() {
+	checkpath -d -m 0755 -o "${command_user}" /var/log/ferron || return 1
+	validate_config
+}
+
+validate_config() {
+	runuser -u ferron -g ferron -- "${command}" validate -c /etc/ferron/ferron.conf
+}
+
+reload() {
+	validate_config || return 1
+	ebegin "Reloading Ferron"
+	supervise-daemon "${RC_SVCNAME}" --signal HUP
+	eend $?
+}
