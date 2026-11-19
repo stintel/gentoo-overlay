@@ -51,6 +51,11 @@ src_prepare() {
 	mv "${WORKDIR}/phc-winner-argon2-${ARGON2_COMMIT}" "${S}/modules/http-basicauth/phc-winner-argon2" || die
 	mv "${WORKDIR}/opentelemetry-proto-${OTEL_COMMIT}" "${S}/modules/observability-otlp/opentelemetry-proto" || die
 
+	(
+		cd "${ECARGO_VENDOR}/zincio-0.2.27" || die
+		eapply "${FILESDIR}/zincio-0.2.27-musl-statx.patch"
+	)
+
 	default
 }
 
