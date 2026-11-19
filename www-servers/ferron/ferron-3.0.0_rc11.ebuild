@@ -59,5 +59,6 @@ src_install() {
 		dobin "$(cargo_target_dir)/${bin}"
 	done
 
+	newinitd "${FILESDIR}/ferron.initd" ferron
 	systemd_dounit "${FILESDIR}/ferron.service"
 }
