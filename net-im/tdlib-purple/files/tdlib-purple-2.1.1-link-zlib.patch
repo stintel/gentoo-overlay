@@ -1,0 +1,9 @@
+Link zlib directly for animated sticker decompression.
+
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -187,2 +187,4 @@
+ if (NOT NoLottie)
++    find_package(ZLIB REQUIRED)
++    target_link_libraries(telegram-tdlib PRIVATE ZLIB::ZLIB)
+     if (NOT NoPkgConfig)
